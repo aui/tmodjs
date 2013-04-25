@@ -1,6 +1,6 @@
 #	atc-前端模板预编译器
 
-<http://aui.github.io/atc>
+<http://cdc-im.github.io/atc>
 
 ======================================
 
@@ -41,7 +41,7 @@ atc 即 artTemplate compiler，基于 [artTemplate](https://github.com/aui/artTe
 *	compiler.cmd --- Windows 绿色批处理版本
 *	compiler.js	--- NodeJS 跨平台版
 
-在上手之前，我们先跑一个测试例子：
+跑一个测试例子就能明白如何使用了：
 
 ###	运行示例
 
@@ -51,7 +51,7 @@ atc 即 artTemplate compiler，基于 [artTemplate](https://github.com/aui/artTe
 
 模板预编译一切就这么简单！
 
-[在线查看编译好的示例](http://aui.github.io/atc/demo/)
+[在线查看编译好的示例](http://cdc-im.github.io/atc/demo/)
 
 ##	模板语法
 
@@ -69,12 +69,6 @@ atc 是 [artTemplate](https://github.com/aui/artTemplate) 的子项目，语法�
 
 	// 设置辅助方法编译方式：为true则克隆到每个编译后的文件中，为false则单独输出到文件
 	var $cloneHelpers = false;
-
-	// 模板引擎路径
-	var template = require('../../template.js');
-
-	// js格式化工具路径
-	var js_beautify = require('./lib/beautify.js');
 	
 	
 ##	模板include语句规范
