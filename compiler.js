@@ -2,7 +2,7 @@
 /*!
 :: ----------------------------------------------------------
 :: atc - Template Compiler Tools[NodeJS] v1.0
-:: https://github.com/aui/atc
+:: https://github.com/cdc-im/atc
 :: Released under the MIT, BSD, and GPL Licenses
 :: ----------------------------------------------------------
 */
