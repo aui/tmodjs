@@ -1,0 +1,21 @@
+{
+  "name": "template-compiler",
+  "description": "Template Compiler Tools",
+  "homepage": "https://github.com/aui/atc",
+  "keywords": [
+    "template"
+  ],
+  "author": "tangbin <1987.tangbin@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aui/atc.git"
+  },
+  "main": "compiler.js",
+  "version": "1.0.0",
+  "readmeFilename": "README.md",
+  "gitHead": "f591a7ede19d81c86db7eee2326ca33ecf036f32",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "BSD"
+}
