@@ -56,11 +56,11 @@ atc 即 artTemplate compiler，基于 [artTemplate](https://github.com/aui/artTe
 
 ##	模板语法
 
-atc 是 [artTemplate](https://github.com/aui/artTemplate) 的子项目，语法也与其保持一致，亦可通过它的插件简化模板语法。完整的模板语法可参考其 [文档](https://github.com/aui/artTemplate)。
+atc 是 [artTemplate](https://github.com/aui/artTemplate) 的子项目，语法也与其保持一致，亦可通过它的插件简化模板语法。
 
 ###	原生语法
 
-默认支持原生语法，正如本文开头的模板示例一样。
+默认支持原生语法，正如本文开头的模板示例便就是 atc 标准语法。
 
 模板使用``<%``与``%>``作为逻辑语句开始与闭合的标签，输出变量使用``=``或者``===``号开头，不同的是前者会对内容进行编码，以避免 XSS 漏洞。
 
@@ -68,7 +68,7 @@ atc 是 [artTemplate](https://github.com/aui/artTemplate) 的子项目，语法�
 
 如果想使用简单的模板语法，可以把``./lab/template-syntax.js``合并至``./lab/template.js``即可。
 
-本文开头的模板例子使用简单语法可以如下表述：
+本文开头的模板示例使用简单语法可以简化为：
 
 	{include './public/header'}
 	<h3>{title}</h3>
