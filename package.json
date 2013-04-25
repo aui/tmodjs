@@ -8,7 +8,7 @@
     "RequireJS",
     "SeaJS"
   ],
-  "author": "cdc",
+  "author": "cdc frontend team",
   "repository": {
     "type": "git",
     "url": "https://github.com/cdc-im/atc.git"
@@ -23,5 +23,6 @@
   "license": "BSD"
 }
 
+        
         
         
