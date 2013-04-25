@@ -1,14 +1,17 @@
 {
   "name": "template-compiler",
   "description": "Template Compiler Tools",
-  "homepage": "https://github.com/aui/atc",
+  "homepage": "https://github.com/cdc-im/atc",
   "keywords": [
-    "template"
+    "template",
+    "artTemplate",
+    "RequireJS",
+    "SeaJS"
   ],
   "author": "tangbin <1987.tangbin@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aui/atc.git"
+    "url": "https://github.com/cdc-im/atc.git"
   },
   "main": "compiler.js",
   "version": "1.0.0",
@@ -19,3 +22,5 @@
   },
   "license": "BSD"
 }
+
+        
