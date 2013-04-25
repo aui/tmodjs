@@ -43,8 +43,7 @@
 
 <p>虽然我们已经有了很多优秀的前端模板引擎可以选择，但前端模板技术与服务器模板技术却完全不是一个层面的东西，受浏览器限制，前端模板按文件与目录组织、include 这些基本的特性几乎无法实现，如：</p>
 
-<pre><code>&lt;!--template/index.html--&gt;
-&lt;%include('./public/header')%&gt;
+<pre><code>&lt;%include('./public/header')%&gt;
 &lt;h3&gt;&lt;%=title%&gt;&lt;/h3&gt;
 &lt;ul&gt;
     &lt;% for (i = 0; i &lt; list.length; i ++) { %&gt;
@@ -91,7 +90,35 @@
 
 <h2>模板语法</h2>
 
-<p>atc 是 <a href="https://github.com/aui/artTemplate">artTemplate</a> 的子项目，语法也与其保持一致，亦可通过它的插件简化模板语法。完整的模板语法可参考其 <a href="https://github.com/aui/artTemplate">文档</a>。</p>
+<p>atc 是 <a href="https://github.com/aui/artTemplate">artTemplate</a> 的子项目，语法也与其保持一致，亦可通过它的插件简化模板语法。</p>
+
+<h3>原生语法</h3>
+
+<p>默认支持原生语法，正如本文开头的模板示例便就是 atc 标准语法。</p>
+
+<p>模板使用<code>&lt;%</code>与<code>%&gt;</code>作为逻辑语句开始与闭合的标签，输出变量使用<code>=</code>或者<code>===</code>号开头，不同的是前者会对内容进行编码，以避免 XSS 漏洞。</p>
+
+<h3>简版语法</h3>
+
+<p>如果想使用简单的模板语法，可以把<code>./lab/template-syntax.js</code>合并至<code>./lab/template.js</code>即可。</p>
+
+<p>本文开头的模板示例使用简单语法可以简化为：</p>
+
+<pre><code>{include './public/header'}
+&lt;h3&gt;{title}&lt;/h3&gt;
+&lt;ul&gt;
+    {each list}
+       &lt;li&gt;
+            &lt;a href="{$value.url}"&gt;
+                {$value.title}
+            &lt;/a&gt;
+       &lt;/li&gt;
+    {/each}
+&lt;/ul&gt;
+{include './public/footer'}
+</code></pre>
+
+<p><a href="http://aui.github.com/artTemplate/extensions/index.html">简单语法详情</a></p>
 
 <h2>设置配置</h2>
 
@@ -107,7 +134,7 @@ var $charset = 'UTF-8';
 var $cloneHelpers = false;
 </code></pre>
 
-<h2>模板include语句规范</h2>
+<h2>模板 include 语句规范</h2>
 
 <p>为了让编译工具能够进行静态分析，需要如下约定：</p>
 
