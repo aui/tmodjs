@@ -10,7 +10,6 @@
 	
 虽然我们已经有了很多优秀的前端模板引擎可以选择，但前端模板技术与服务器模板技术却完全不是一个层面的东西，受浏览器限制，前端模板按文件与目录组织、include 这些基本的特性几乎无法实现，如：
 
-	<!--template/index.html-->
 	<%include('./public/header')%>
 	<h3><%=title%></h3>
 	<ul>
@@ -59,6 +58,33 @@ atc 即 artTemplate compiler，基于 [artTemplate](https://github.com/aui/artTe
 
 atc 是 [artTemplate](https://github.com/aui/artTemplate) 的子项目，语法也与其保持一致，亦可通过它的插件简化模板语法。完整的模板语法可参考其 [文档](https://github.com/aui/artTemplate)。
 
+###	原生语法
+
+默认支持原生语法，正如本文开头的模板示例一样。
+
+模板使用``<%``与``%>``作为逻辑语句开始与闭合的标签，输出变量使用``=``或者``===``号开头，不同的是前者会对内容进行编码，以避免 XSS 漏洞。
+
+###	简版语法
+
+如果想使用简单的模板语法，可以把``./lab/template-syntax.js``合并至``./lab/template.js``即可。
+
+本文开头的模板例子使用简单语法可以如下表述：
+
+	{include './public/header'}
+	<h3>{title}</h3>
+	<ul>
+	    {each list}
+	       <li>
+	        	<a href="{$value.url}">
+	        		{$value.title}
+	        	</a>
+	       </li>
+	    {/each}
+	</ul>
+	{include './public/footer'}
+	
+[简单语法详情](http://aui.github.com/artTemplate/extensions/index.html)
+
 ##	设置配置
 
 右键可直接编辑编译工具的源码修改配置：
@@ -73,7 +99,7 @@ atc 是 [artTemplate](https://github.com/aui/artTemplate) 的子项目，语法�
 	var $cloneHelpers = false;
 	
 	
-##	模板include语句规范
+##	模板 include 语句规范
 
 为了让编译工具能够进行静态分析，需要如下约定：
 
