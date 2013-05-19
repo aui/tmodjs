@@ -1,28 +1,35 @@
 {
   "name": "template-compiler",
+  "version": "1.0.8",
+  "readmeFilename": "README.md",
   "description": "Template Compiler Tools",
   "homepage": "https://github.com/cdc-im/atc",
   "keywords": [
     "template",
     "artTemplate",
     "RequireJS",
-    "SeaJS"
+    "SeaJS",
+    "AMD",
+    "CMD"
   ],
   "author": "cdc frontend team",
   "repository": {
     "type": "git",
     "url": "https://github.com/cdc-im/atc.git"
   },
-  "main": "compiler.js",
-  "version": "1.0.0",
-  "readmeFilename": "README.md",
-  "gitHead": "f591a7ede19d81c86db7eee2326ca33ecf036f32",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "main": "./compiler.js",
+  "bin": {
+    "atc": "./compiler.js"
   },
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "gitHead": "f591a7ede19d81c86db7eee2326ca33ecf036f32",
   "license": "BSD"
 }
 
+        
+        
         
         
         
