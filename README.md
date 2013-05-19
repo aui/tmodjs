@@ -41,11 +41,11 @@ atc 即 artTemplate compiler，基于 [artTemplate](https://github.com/aui/artTe
 
 首先 [下载 atc](https://github.com/cdc-im/atc/archive/master.zip) 并解压。
 
-双击 compiler.cmd 即可运行，打开后它会自动编译 ./demo/templates/ 中所有模板文件，并生成同名 js 文件。
+双击 compiler.cmd 即可运行，打开后它会自动编译 ./demo/templates/ 中所有模板文件，并生成同名 js 文件。模板预编译一切就这么简单！
 
-模板预编译一切就这么简单！编译结束后你可以打开 [./demo/index.html](http://cdc-im.github.io/atc/demo/)，看其模板如何被浏览器加载。
+编译结束后你可以打开 [./demo/index.html](http://cdc-im.github.io/atc/demo/)，看其模板如何被浏览器加载。
 
-可以看到演示模板 ./demo/templates/index.html 使用了``include``语句引用了多个公用模板，但使用者无需关心模板内部的包含关系，公用模板会被自动提前加载。
+其中演示模板 ./demo/templates/index.html 使用了``include``语句引用了多个公用模板，但使用者无需关心模板内部的包含关系，公用模板会被自动提前加载。
 
 ##	版本
 
@@ -88,7 +88,7 @@ atc 是 [artTemplate](https://github.com/aui/artTemplate) 的子项目，语法�
 
 ###	简版语法
 
-如果想使用简单的模板语法，可以把``./lab/template-syntax.js``合并至``./lab/template.js``即可（NodeJS版本开启``-d``参数后无需手动合并）。
+如果想使用简单的模板语法，可以把``./lab/template-syntax.js``合并至``./lab/template.js``即可（NodeJS版本开启``-d``参数会自动加载语法扩展，无需手动合并）。
 
 本文开头的模板示例使用简单语法可以简化为：
 

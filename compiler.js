@@ -397,7 +397,7 @@ var compiler = {
     },
 
 
-    /** 监听模板修改并自动自动编译 */
+    /** 监听模板的修改即时编译 */
     watch: function () {
 
         var that = this;
