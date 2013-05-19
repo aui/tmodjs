@@ -65,9 +65,9 @@
 
 <h2>关于 atc</h2>
 
-<p>atc 即 artTemplate compiler，基于 <a href="https://github.com/aui/artTemplate">artTemplate</a> 实现的前端模板预编译器，使用它可以让前端模版不再受浏览器的限制，支持如后端模版一样按文件放置、include 语句等特性，前端模板规模化后带来的弊端迎刃而解！</p>
+<p>atc 即 artTemplate compiler，基于 <a href="https://github.com/aui/artTemplate">artTemplate</a> 实现的前端模板预编译器，使用它可以让前端模版不再受浏览器的限制，支持如后端模版一样按文件放置、include 语句等特性：模板使用者无需关心模板内部的依赖，子模板会自动提前载入。</p>
 
-<p>编译后的模板不再依赖模板引擎，模板可以通过 <a href="http://seajs.org">SeaJS</a> 或 <a href="http://requirejs.org">RequireJS</a> 等加载器进行异步加载，亦能利用它们成熟的打包合并工具进行上线前的优化。</p>
+<p>编译后的模板不再依赖模板引擎，模板可以通过 <a href="http://seajs.org">SeaJS</a> 或 <a href="http://requirejs.org">RequireJS</a> 等加载器进行异步加载，亦能利用它们成熟的打包合并工具进行上线前的优化，如合并与压缩。</p>
 
 <h2>三分钟上手</h2>
 
@@ -75,11 +75,11 @@
 
 <p>首先 <a href="https://github.com/cdc-im/atc/archive/master.zip">下载 atc</a> 并解压。</p>
 
-<p>双击 compiler.cmd 即可运行，打开后它会自动编译 ./demo/templates/ 中所有模板文件，并生成同名 js 文件。</p>
+<p>双击 compiler.cmd 即可运行，打开后它会自动编译 ./demo/templates/ 中所有模板文件，并生成同名 js 文件。模板预编译一切就这么简单！</p>
 
-<p>模板预编译一切就这么简单！编译结束后你可以打开 <a href="http://cdc-im.github.io/atc/demo/">./demo/index.html</a>，看其模板如何被浏览器加载。</p>
+<p>编译结束后你可以打开 <a href="http://cdc-im.github.io/atc/demo/">./demo/index.html</a>，看其模板如何被浏览器加载。</p>
 
-<p>可以看到演示模板 ./demo/templates/index.html 使用了<code>include</code>语句引用了多个公用模板，但使用者无需关心模板内部的包含关系，公用模板会被自动提前加载。</p>
+<p>其中演示模板 ./demo/templates/index.html 使用了<code>include</code>语句引用了多个公用模板，但使用者无需关心模板内部的包含关系，公用模板会被自动提前加载。</p>
 
 <h2>版本</h2>
 
@@ -89,9 +89,13 @@
 
 <h3>NodeJS 版本</h3>
 
-<p>可以跨平台使用，也可以实时监控模板每一次保存的动作而进行编译（默认不开启）</p>
+<h4>特性</h4>
 
-<h4>安装</h4>
+<ul>
+<li>  基于 NodeJS 跨平台</li>
+<li>  实时编译，监控模板修改（默认不开启）</li>
+<li>  检测模板语法错误</li>
+</ul><h4>安装</h4>
 
 <pre><code>npm install template-compiler -g
 </code></pre>
@@ -125,7 +129,7 @@
 
 <h3>简版语法</h3>
 
-<p>如果想使用简单的模板语法，可以把<code>./lab/template-syntax.js</code>合并至<code>./lab/template.js</code>即可（NodeJS版本开启<code>-d</code>参数后无需手动合并）。</p>
+<p>如果想使用简单的模板语法，可以把<code>./lab/template-syntax.js</code>合并至<code>./lab/template.js</code>即可（NodeJS版本开启<code>-d</code>参数会自动加载语法扩展，无需手动合并）。</p>
 
 <p>本文开头的模板示例使用简单语法可以简化为：</p>
 
@@ -160,6 +164,10 @@
 <li> <code>&lt;%include('.' + '/idnex')%&gt;</code>路径不能够进行字符串运算</li>
 <li> <code>&lt;%include(value)%&gt;</code>路径不能使用变量</li>
 </ol><h1></h1>
+
+<h2>atc 用户</h2>
+
+<p>正在完善中.. <a href="https://github.com/cdc-im/atc/issues/1">+加入</a></p>
 
 <p>© cdc.tencent.com</p>
         </section>
