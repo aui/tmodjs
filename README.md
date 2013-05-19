@@ -31,9 +31,9 @@
 
 ##	关于 atc
 
-atc 即 artTemplate compiler，基于 [artTemplate](https://github.com/aui/artTemplate) 实现的前端模板预编译器，使用它可以让前端模版不再受浏览器的限制，支持如后端模版一样按文件放置、include 语句等特性，前端模板规模化后带来的弊端迎刃而解！
+atc 即 artTemplate compiler，基于 [artTemplate](https://github.com/aui/artTemplate) 实现的前端模板预编译器，使用它可以让前端模版不再受浏览器的限制，支持如后端模版一样按文件放置、include 语句等特性：模板使用者无需关心模板内部的依赖，子模板会自动提前载入。
 
-编译后的模板不再依赖模板引擎，模板可以通过 [SeaJS](http://seajs.org) 或 [RequireJS](http://requirejs.org) 等加载器进行异步加载，亦能利用它们成熟的打包合并工具进行上线前的优化。
+编译后的模板不再依赖模板引擎，模板可以通过 [SeaJS](http://seajs.org) 或 [RequireJS](http://requirejs.org) 等加载器进行异步加载，亦能利用它们成熟的打包合并工具进行上线前的优化，如合并与压缩。
 
 ##	三分钟上手
 
@@ -55,7 +55,11 @@ atc 即 artTemplate compiler，基于 [artTemplate](https://github.com/aui/artTe
 
 ###	NodeJS 版本
 
-可以跨平台使用，也可以实时监控模板每一次保存的动作而进行编译（默认不开启）
+####	特性
+
+*	基于 NodeJS 跨平台
+*	实时编译，监控模板修改（默认不开启）
+*	检测模板语法错误
 
 ####	安装
 
@@ -123,5 +127,8 @@ atc 是 [artTemplate](https://github.com/aui/artTemplate) 的子项目，语法�
 
 ======================================
 
+##	atc 用户
+
+正在完善中.. [+加入](https://github.com/cdc-im/atc/issues/1)
 
 © cdc.tencent.com

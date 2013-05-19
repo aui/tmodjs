@@ -240,7 +240,6 @@ var compiler = {
             'italic'    : ['\x1B[3m',  '\x1B[23m'],
             'underline' : ['\x1B[4m',  '\x1B[24m'],
             'inverse'   : ['\x1B[7m',  '\x1B[27m'],
-            'strikethrough' : ['\x1B[9m',  '\x1B[29m'],
             // colors
             'white'     : ['\x1B[37m', '\x1B[39m'],
             'grey'      : ['\x1B[90m', '\x1B[39m'],
