@@ -72,9 +72,10 @@ atc 即 artTemplate compiler，基于 [artTemplate](https://github.com/aui/artTe
 
 ####	[options] 配置参数
             
-*	``-w``或``--watch``实时监控模板修改
-*	``-d``或``--define-syntax``使用简单模板语法编译模板（自动加载语法扩展）
-*	``-c``或``--charset``设置模板编码，默认``utf-8``
+*	``-w``或``--watch``设置实时监控模板修改
+*	``-d``或``--define-syntax``设置使用简单模板语法编译模板（自动加载语法扩展）
+*	``-c charset``或``--charset charset``定义模板编码，默认``utf-8``
+*	``-o path``或``--output path``定义输出目录，默认输出到模板目录
 *	``--clone-helpers``设置辅助方法克隆到编译后的函数，默认外置($helpers.js)
 *	``--version``显示 atc 版本号
 *	``--help``显示帮助信息
