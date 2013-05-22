@@ -225,7 +225,7 @@ var compiler = {
     writeHelpers: function () {
 
         var helpers = [];
-        var fullname = this.options['path'] + '/' + this.HELPERSNAME;
+        var fullname = this._path  + '/' + this.HELPERSNAME;
         var prototype = template.prototype;
 
         for (var name in prototype) {
@@ -404,7 +404,6 @@ var compiler = {
     // 模板文件写入
     _fsWrite: function (file, data) {
 
-        file = file.replace(this.options['path'], this.options['output']);
         this._fsMkdir(path.dirname(file));
 
         return fs.writeFileSync(file, data, this.options['charset']);
@@ -437,7 +436,7 @@ var compiler = {
 
     // 删除模板文件
     _fsUnlink: function (file) {
-        file = file.replace(this.options['path'], this.options['output']);
+        file = file.replace(this._path , this._output);
         return fs.existsSync(file) && fs.unlink(file);
     },
 
@@ -448,7 +447,7 @@ var compiler = {
         var that = this;
 
         // 监控模板目录
-        this._onwatch(this.options['path'], function (event) {
+        this._onwatch(this._path , function (event) {
             var type = event.type;
             var fstype = event.fstype;
             var target = event.target;
@@ -468,7 +467,7 @@ var compiler = {
             }
         });
 
-        this.log('\n[grey]watch..[/grey]\n');
+        this.log('\n[inverse]Watch..[/inverse]\n\n');
     },
 
 
@@ -487,16 +486,19 @@ var compiler = {
         if (!this.options['cloneHelpers']) {
             name = this.HELPERSNAME;
             var dirname = path.dirname(file);
-            var join = path.join(this.options['path'], name);
+            var join = path.join(this._path , name);
             name = path.relative(dirname, join);
         }
 
 
-        var target = file.replace(this.EXTNAME_RE, '.js');
         var source = this._fsRead(file);
+        var target = file
+        .replace(this.EXTNAME_RE, '.js')
+        .replace(this._path , this._output);
 
-        var info_source = '.' + file.replace(this.options['path'], '');
-        var info_out = info_source.replace(this.EXTNAME_RE, '.js');
+        var info = file.replace(this._path, '');
+        var info_source = this.options['path'] + info;
+        var info_output = this.options['output'] + info.replace(this.EXTNAME_RE, '.js');
 
         this.log('Compile: [green]' + info_source + '[/green]');
 
@@ -505,11 +507,11 @@ var compiler = {
             var code = this.engine(source, name);
             code = this.format(code);
             this._fsWrite(target, code);
-            this.log('[grey] > ' + info_out + '[/grey]\n');
+            this.log('[grey] > ' + info_output + '[/grey]\n');
 
         } catch (e) {
 
-            this.log('[red] ' + e.name + '[/red]\n');
+            this.log(' [inverse][red]' + e.name + '[/red][/inverse]\n');
             success = false;
             this._debug(e.temp);
             process.exit(1);
@@ -523,12 +525,13 @@ var compiler = {
     _debug: function (code) {
         
         var code = this.format(code);
-        var debugFile = this.options['path'] + '/.debug.js';
+        var debugFile = this._output + '/.debug.js';
         
         try {
             this._fsWrite(debugFile, code);
             require(debugFile);
         } catch (e) {
+            console.log(code);
             this._fsUnlink(debugFile);
         }
     },
@@ -553,7 +556,7 @@ var compiler = {
 
         };
 
-        walk(this.options['path']);
+        walk(this._path );
     },
 
 
@@ -632,13 +635,13 @@ var compiler = {
         };
 
 
+        options['path'] = options['path'].replace(/[\/\\]$/, '');
+        options['output'] = (options['output'] || options['path']).replace(/[\/\\]$/, '');
+
+
         // 转换成绝对路径
-        options['path'] = path.resolve(options['path']).replace(/[\/\\]$/, '');
-        if (options['output']) {
-            options['output'] = path.resolve(options['output']).replace(/[\/\\]$/, '');
-        } else {
-            options['output'] = options['path'];
-        }
+        this._path = path.resolve(options['path']).replace(/[\/\\]$/, '');
+        this._output = path.resolve(options['output']).replace(/[\/\\]$/, '');
 
 
         // 加载引擎语法扩展
@@ -649,9 +652,9 @@ var compiler = {
         !options['cloneHelpers'] && this.writeHelpers();
 
 
-        this.log('[inverse]Template path: [green]'
-        + options['path']
-        + '[/green][/inverse]\n\n');
+        //this.log('[inverse]Output path: [green]'
+        //+ options['output']
+        //+ '[/green][/inverse]\n\n');
 
 
         // 编译所有模板
