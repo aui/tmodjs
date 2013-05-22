@@ -653,11 +653,17 @@ var compiler = {
         !options['cloneHelpers'] && this.writeHelpers();
 
 
-        // 编译所有模板
-        this.compileAll();
+        if (options['watch']) {
 
-        // 监控模板修改进行即时编译
-        options['watch'] && this.watch();
+            // 监控模板修改进行即时编译
+            this.watch();
+
+        } else {
+
+            // 编译目录中所有模板
+            this.compileAll();
+            
+        }
 
 
     }

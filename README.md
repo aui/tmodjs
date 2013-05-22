@@ -125,6 +125,31 @@ atc 是 [artTemplate](https://github.com/aui/artTemplate) 的子项目，语法�
 2.	``<%include('.' + '/idnex')%>``路径不能够进行字符串运算
 3.	``<%include(value)%>``路径不能使用变量
 
+##	更新日志
+
+###	v1.0.2
+
+NodeJS版本：
+
+*	增加``-o path``或``--output path``定义输出目录
+*	修复``-d``或``--define-syntax``可能失效的问题
+*	修改``-w``或``--watch``参数启动后的规则：只监控模板修改，而不再编译所有模板
+*	增强调试特性：模板语法错误将在控制台输出调试源码，并停止进程
+
+###	v1.0.1
+
+NodeJS版本：
+
+*	支持监控目录，即时编译
+*	使用命令行传递参数
+*	使用 npm 管理包
+*	支持设置简洁语法
+
+###	v1.0.0
+
+*	发布支持 NodeJS 与 Windows 批处理版本
+
+
 ##	atc 用户
 
 正在完善中.. [+加入，留下你的项目名](https://github.com/cdc-im/atc/issues/1)
