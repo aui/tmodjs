@@ -390,7 +390,8 @@ var compiler = {
 
     // 定义模板语法
     _defineSyntax: function () {
-        var code = fs.readFileSync('./lib/template-syntax.js', 'utf-8');
+        var file = __dirname + '/lib/template-syntax.js';
+        var code = fs.readFileSync(file, 'utf-8');
         eval(code);
     },
 
@@ -652,11 +653,6 @@ var compiler = {
         !options['cloneHelpers'] && this.writeHelpers();
 
 
-        //this.log('[inverse]Output path: [green]'
-        //+ options['output']
-        //+ '[/green][/inverse]\n\n');
-
-
         // 编译所有模板
         this.compileAll();
 
@@ -673,4 +669,5 @@ compiler.init();
 
 
 //module.exports = compiler;
+
 

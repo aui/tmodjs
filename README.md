@@ -127,6 +127,6 @@ atc 是 [artTemplate](https://github.com/aui/artTemplate) 的子项目，语法�
 
 ##	atc 用户
 
-正在完善中.. [+加入](https://github.com/cdc-im/atc/issues/1)
+正在完善中.. [+加入，留下你的项目名](https://github.com/cdc-im/atc/issues/1)
 
 © cdc.tencent.com
