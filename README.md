@@ -152,6 +152,6 @@ NodeJS版本：
 
 ##	atc 用户
 
-正在完善中.. [+加入，留下你的项目名](https://github.com/cdc-im/atc/issues/1)
+正在完善中.. [atc 用户+1](https://github.com/cdc-im/atc/issues/1)
 
 © cdc.tencent.com

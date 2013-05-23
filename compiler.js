@@ -85,7 +85,6 @@ var compiler = {
 
 
         // 提取include模板
-        // @see https://github.com/seajs/seajs/blob/master/src/util-deps.js
         var REQUIRE_RE = /"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|\/\*[\S\s]*?\*\/|\/(?:\\\/|[^/\r\n])+\/(?=[^\/])|\/\/.*|\.\s*include|(?:^|[^$])\binclude\s*\(\s*(["'])(.+?)\1\s*(,\s*(.+?)\s*)?\)/g; //"
         var SLASH_RE = /\\\\/g
 
@@ -113,7 +112,9 @@ var compiler = {
                 throw e;
             };
 
-            var render = template.compile(code); // 使用artTemplate编译模板
+
+            // 使用artTemplate编译模板
+            var render = template.compile(code);
             var prototype = render.prototype;
             
 
@@ -221,7 +222,7 @@ var compiler = {
     },
 
 
-    /** 输出外置公用辅助方法 */
+    /** 外置辅助方法 */
     writeHelpers: function () {
 
         var helpers = [];
@@ -233,7 +234,8 @@ var compiler = {
                 helpers.push('\'' + name + '\': ' + prototype[name].toString());
             }
         }
-        helpers = '{\r\n' + helpers.join(',\r\n') + '}';
+
+        helpers = '{\n' + helpers.join(',\n') + '}';
 
         var module = 'define(function () {'
         +    'return ' + helpers
@@ -662,7 +664,7 @@ var compiler = {
 
             // 编译目录中所有模板
             this.compileAll();
-            
+
         }
 
 
