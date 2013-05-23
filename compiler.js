@@ -18,38 +18,54 @@ var fs = require('fs');
 
 var compiler = {
 
-    version: 'v1.0.1',
+    version: 'v1.0.2',
 
     options: {
         path: null,
+        output: null,
         charset: 'utf-8',
         watch: false,
         cloneHelpers: false,
-        defineSyntax: null
+        defineSyntax: false
     },
 
 
     /** 显示帮助 */
     help: function () {
-        console.log('Usage:');
+        this.log('Usage:\n');
         console.log(
             '    atc [options] path'
         );
-        console.log('Options:');
+        this.log('Options:\n');
         this.log([
-            '    -w, --watch         [grey]use atc in watch mode (auto compile when file changed)[/grey]',
-            '    -d, --define-syntax [grey]use this if the template files are using simplified template syntax[/grey]',
-            '    -c, --charset       [grey]charset, utf-8 by default[/grey]',
-            '    --clone-helpers     [grey]clone the helper functions to the compiled files, by default, they are seprated[/grey]',
-            '    --version           [grey]display the version of atc[/grey]',
-            '    --help              [grey]show this help infomation[/grey]'
-        ].join('\n') + '\n');
-        console.log('Documentation can be found at http://cdc-im.github.io/atc/');
+            '    -w, --watch',
+            '    [grey]use atc in watch mode (auto compile when file changed)[/grey]',
+
+            '    -d, --define-syntax',
+            '    [grey]use this if the template files are using simplified template syntax[/grey]',
+
+            '    -c charset, --charset charset',
+            '    [grey]charset, utf-8 by default[/grey]',
+
+            '    -o path, --output path',
+            '    [grey]defining an output directory[/grey]',
+
+            '    --clone-helpers',
+            '    [grey]clone the helper functions to the compiled files, by default, they are seprated[/grey]',
+
+            '    --version',
+            '    [grey]display the version of atc[/grey]',
+
+            '    --help',
+            '    [grey]show this help infomation[/grey]'
+        ].join('\n') + '\n\n');
+
+        this.log('[grey]Documentation can be found at http://cdc-im.github.io/atc/[/grey]\n');
     },
 
 
-    // 合法的模板文件、文件夹前缀
-    PREFIX_RE: /^[^\._]/,
+    // 过滤不符合命名规范的目录与模板
+    FILTER_RE: /[^\w\.\-$]/,
 
     // 模板文件后缀
     EXTNAME_RE: /\.(html|htm|tpl)$/i,
@@ -69,7 +85,6 @@ var compiler = {
 
 
         // 提取include模板
-        // @see https://github.com/seajs/seajs/blob/master/src/util-deps.js
         var REQUIRE_RE = /"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|\/\*[\S\s]*?\*\/|\/(?:\\\/|[^/\r\n])+\/(?=[^\/])|\/\/.*|\.\s*include|(?:^|[^$])\binclude\s*\(\s*(["'])(.+?)\1\s*(,\s*(.+?)\s*)?\)/g; //"
         var SLASH_RE = /\\\\/g
 
@@ -97,7 +112,9 @@ var compiler = {
                 throw e;
             };
 
-            var render = template.compile(code); // 使用artTemplate编译模板
+
+            // 使用artTemplate编译模板
+            var render = template.compile(code);
             var prototype = render.prototype;
             
 
@@ -205,11 +222,11 @@ var compiler = {
     },
 
 
-    /** 输出外置公用辅助方法 */
+    /** 外置辅助方法 */
     writeHelpers: function () {
 
         var helpers = [];
-        var fullname = this.options['path'] + '/' + this.HELPERSNAME;
+        var fullname = this._path  + '/' + this.HELPERSNAME;
         var prototype = template.prototype;
 
         for (var name in prototype) {
@@ -217,7 +234,8 @@ var compiler = {
                 helpers.push('\'' + name + '\': ' + prototype[name].toString());
             }
         }
-        helpers = '{\r\n' + helpers.join(',\r\n') + '}';
+
+        helpers = '{\n' + helpers.join(',\n') + '}';
 
         var module = 'define(function () {'
         +    'return ' + helpers
@@ -285,7 +303,7 @@ var compiler = {
 
         // 排除“.”、“_”开头或者非英文命名的目录
         function filter (name) {
-            return /^[^\._]/.test(name) && !/[^\w\d\.$]/.test(name)
+            return !that.FILTER_RE.test(name);
         };
 
         function watch (parent) {
@@ -352,7 +370,7 @@ var compiler = {
 
                 
                 if (/windows/i.test(require('os').type())) {
-                    // window 下 nodejs fs.watch 异常(nodejs v0.10.5)
+                    // window 下 nodejs fs.watch 不稳定(nodejs v0.10.5)
                     clearTimeout(timer[fullname]);
                     timer[fullname] = setTimeout(function() {
                         callback(eventData);
@@ -374,21 +392,26 @@ var compiler = {
 
     // 定义模板语法
     _defineSyntax: function () {
-        var code = fs.readFileSync('./lib/template-syntax.js', 'utf-8');
+        var file = __dirname + '/lib/template-syntax.js';
+        var code = fs.readFileSync(file, 'utf-8');
         eval(code);
     },
 
 
     // 筛选模板文件
     _filter: function (name) {
-        return this.PREFIX_RE.test(name) && this.EXTNAME_RE.test(name);
+        return !this.FILTER_RE.test(name) && this.EXTNAME_RE.test(name);
     },
 
 
     // 模板文件写入
     _fsWrite: function (file, data) {
+
+        this._fsMkdir(path.dirname(file));
+
         return fs.writeFileSync(file, data, this.options['charset']);
     },
+
 
     // 模板文件读取
     _fsRead: function (file) {
@@ -396,13 +419,38 @@ var compiler = {
     },
 
 
-    /** 监听模板的修改即时编译 */
+    // 创建目录
+    _fsMkdir: function (dir) {
+
+        var currPath = dir;
+        var toMakeUpPath = [];
+
+        while (!fs.existsSync(currPath)) {
+            toMakeUpPath.unshift(currPath);
+            currPath = path.dirname(currPath);
+        }
+
+        toMakeUpPath.forEach(function (pathItem) {
+            fs.mkdirSync(pathItem);
+        });
+
+    },
+
+
+    // 删除模板文件
+    _fsUnlink: function (file) {
+        file = file.replace(this._path , this._output);
+        return fs.existsSync(file) && fs.unlink(file);
+    },
+
+
+    /** 监听模板的修改进行即时编译 */
     watch: function () {
 
         var that = this;
 
         // 监控模板目录
-        this._onwatch(this.options['path'], function (event) {
+        this._onwatch(this._path , function (event) {
             var type = event.type;
             var fstype = event.fstype;
             var target = event.target;
@@ -414,7 +462,7 @@ var compiler = {
 
                 if (type === 'delete') {
                     var js = fullname.replace(that.EXTNAME_RE, '.js');
-                    fs.existsSync(js) && fs.unlinkSync(js);
+                    that._fsUnlink(js);
                 } else
                 if (type === 'updated' || type === 'create') {
                     that.compile(fullname);
@@ -422,7 +470,7 @@ var compiler = {
             }
         });
 
-        this.log('\n[grey]watch..[/grey]\n');
+        this.log('\n[inverse]Watch..[/inverse]\n\n');
     },
 
 
@@ -441,16 +489,19 @@ var compiler = {
         if (!this.options['cloneHelpers']) {
             name = this.HELPERSNAME;
             var dirname = path.dirname(file);
-            var join = path.join(this.options['path'], name);
+            var join = path.join(this._path , name);
             name = path.relative(dirname, join);
         }
 
 
-        var target = file.replace(this.EXTNAME_RE, '.js');
         var source = this._fsRead(file);
+        var target = file
+        .replace(this.EXTNAME_RE, '.js')
+        .replace(this._path , this._output);
 
-        var info_source = '.' + file.replace(this.options['path'], '');
-        var info_out = info_source.replace(this.EXTNAME_RE, '.js');
+        var info = file.replace(this._path, '');
+        var info_source = this.options['path'] + info;
+        var info_output = this.options['output'] + info.replace(this.EXTNAME_RE, '.js');
 
         this.log('Compile: [green]' + info_source + '[/green]');
 
@@ -459,11 +510,11 @@ var compiler = {
             var code = this.engine(source, name);
             code = this.format(code);
             this._fsWrite(target, code);
-            this.log('[grey] > ' + info_out + '[/grey]\n');
+            this.log('[grey] > ' + info_output + '[/grey]\n');
 
         } catch (e) {
 
-            this.log('[red] ' + e.name + '[/red]\n');
+            this.log(' [inverse][red]' + e.name + '[/red][/inverse]\n');
             success = false;
             this._debug(e.temp);
             process.exit(1);
@@ -477,12 +528,15 @@ var compiler = {
     _debug: function (code) {
         
         var code = this.format(code);
-        var debugFile = this.options['path'] + '/.debug.js';
+        var debugFile = this._output + '/.debug.js';
         
         try {
             this._fsWrite(debugFile, code);
             require(debugFile);
-        } catch (e) {}
+        } catch (e) {
+            console.log(code);
+            this._fsUnlink(debugFile);
+        }
     },
 
 
@@ -505,7 +559,7 @@ var compiler = {
 
         };
 
-        walk(this.options['path']);
+        walk(this._path );
     },
 
 
@@ -527,15 +581,21 @@ var compiler = {
                     options.watch = true;
                     break;
 
-                // 每个输出的模块内嵌辅助方法
+                // 让每个输出的模块内嵌辅助方法
                 case '--clone-helpers':
                     options.cloneHelpers = true;
                     break;
 
-                // 版本号
-                case '--version':
-                    this.log(this.version + '\n');
-                    return;
+                // 加载模板语法设置
+                case '-d':
+                case '--define-syntax':
+                    options.defineSyntax = true;
+                    break;
+
+                // 输出目录
+                case '-o':
+                case '--output':
+                    options.output = args.shift();
                     break;
 
                 // 模板编码
@@ -544,23 +604,21 @@ var compiler = {
                     options.charset = args.shift().toLowerCase();
                     break;
 
-                // 加载模板语法设置
-                case '-d':
-                case '--define-syntax':
-                    this._defineSyntax();
+                // 版本号
+                case '--version':
+                    return this.log(this.version + '\n');
                     break;
 
                 // 显示帮助
                 case '--help':
-                    this.help();
-                    return;
+                    return this.help();
                     break;
 
                 // 模板目录
                 default:
 
                     if (v) {
-                        options.path = path.resolve(v).replace(/[\/\\]$/, '');
+                        options.path = v;
                     }
 
                     break;
@@ -580,19 +638,34 @@ var compiler = {
         };
 
 
+        options['path'] = options['path'].replace(/[\/\\]$/, '');
+        options['output'] = (options['output'] || options['path']).replace(/[\/\\]$/, '');
+
+
+        // 转换成绝对路径
+        this._path = path.resolve(options['path']).replace(/[\/\\]$/, '');
+        this._output = path.resolve(options['output']).replace(/[\/\\]$/, '');
+
+
+        // 加载引擎语法扩展
+        options['defineSyntax'] && this._defineSyntax();
+
+
         // 输出公用模块
         !options['cloneHelpers'] && this.writeHelpers();
 
 
-        this.log('[inverse]Template path: [green]'
-        + options['path']
-        + '[/green][/inverse]\n\n');
+        if (options['watch']) {
 
-        // 编译所有模板
-        this.compileAll();
+            // 监控模板修改进行即时编译
+            this.watch();
 
-        // 监控模板修改进行即时编译
-        options['watch'] && this.watch();
+        } else {
+
+            // 编译目录中所有模板
+            this.compileAll();
+
+        }
 
 
     }
@@ -603,5 +676,6 @@ var compiler = {
 compiler.init();
 
 
-module.exports = compiler;
+//module.exports = compiler;
+
 
