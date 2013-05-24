@@ -35,8 +35,6 @@
 
 <p><a href="http://cdc-im.github.io/atc">http://cdc-im.github.io/atc</a></p>
 
-<h1></h1>
-
 <h2>前言</h2>
 
 <p>随着 HTML5 时代到来，前端技术在不断的发展壮大，我们为此欣喜若狂。但作为一名前端开发者，我们也不无时无刻的感受到很多看似平常的技术因为浏览器制约难以在前端中实现，其中之一便是模板技术。</p>
@@ -110,10 +108,11 @@
 <h4>[options] 配置参数</h4>
 
 <ul>
-<li>  <code>-w</code>或<code>--watch</code>实时监控模板修改</li>
-<li>  <code>-d</code>或<code>--define-syntax</code>使用简单模板语法编译模板（自动加载语法扩展）</li>
-<li>  <code>-c</code>或<code>--charset</code>设置模板编码，默认<code>utf-8</code>
+<li>  <code>-w</code>或<code>--watch</code>设置实时监控模板修改</li>
+<li>  <code>-d</code>或<code>--define-syntax</code>设置使用简单模板语法编译模板（自动加载语法扩展）</li>
+<li>  <code>-c charset</code>或<code>--charset charset</code>定义模板编码，默认<code>utf-8</code>
 </li>
+<li>  <code>-o path</code>或<code>--output path</code>定义输出目录，默认输出到模板目录</li>
 <li>  <code>--clone-helpers</code>设置辅助方法克隆到编译后的函数，默认外置($helpers.js)</li>
 <li>  <code>--version</code>显示 atc 版本号</li>
 <li>  <code>--help</code>显示帮助信息</li>
@@ -163,11 +162,33 @@
 <li> <code>&lt;%include('./index.html')%&gt;</code>路径不能带后缀名</li>
 <li> <code>&lt;%include('.' + '/idnex')%&gt;</code>路径不能够进行字符串运算</li>
 <li> <code>&lt;%include(value)%&gt;</code>路径不能使用变量</li>
-</ol><h1></h1>
+</ol><h2>更新日志</h2>
 
-<h2>atc 用户</h2>
+<h3>v1.0.2</h3>
 
-<p>正在完善中.. <a href="https://github.com/cdc-im/atc/issues/1">+加入</a></p>
+<p>NodeJS版本：</p>
+
+<ul>
+<li>  增加<code>-o path</code>或<code>--output path</code>定义输出目录</li>
+<li>  修复<code>-d</code>或<code>--define-syntax</code>可能失效的问题</li>
+<li>  修改<code>-w</code>或<code>--watch</code>参数启动后的规则：只监控模板修改，而不再编译所有模板</li>
+<li>  增强调试特性：模板语法错误将在控制台输出调试源码，并停止进程</li>
+</ul><h3>v1.0.1</h3>
+
+<p>NodeJS版本：</p>
+
+<ul>
+<li>  支持监控目录，即时编译</li>
+<li>  使用命令行传递参数</li>
+<li>  使用 npm 管理包</li>
+<li>  支持设置简洁语法</li>
+</ul><h3>v1.0.0</h3>
+
+<ul>
+<li>  发布支持 NodeJS 与 Windows 批处理版本</li>
+</ul><h2>atc 用户</h2>
+
+<p>正在完善中.. <a href="https://github.com/cdc-im/atc/issues/1">atc 用户+1</a></p>
 
 <p>© cdc.tencent.com</p>
         </section>
