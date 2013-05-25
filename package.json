@@ -1,7 +1,7 @@
 {
   "name": "grunt-atc",
-  "description": "The best Grunt plugin ever.",
-  "version": "0.1.0",
+  "description": "grunt plugin for artTemplate atc",
+  "version": "1.0.0",
   "homepage": "https://github.com/jiawulu/atc",
   "author": {
     "name": "jiawulu",
