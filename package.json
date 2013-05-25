@@ -20,7 +20,7 @@
       "url": "https://github.com/jiawulu/atc/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "Gruntfile.js",
+  "main": "main.js",
   "engines": {
     "node": ">= 0.8.0"
   },

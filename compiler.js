@@ -692,6 +692,14 @@ var compiler = {
         ;
 
 
+        this.execute();
+    },
+
+    execute: function () {
+
+        var options = this.options;
+        console.log(options);
+
         options['path'] = options['path'].replace(/[\/\\]$/, '');
         options['output'] = (options['output'] || options['path']).replace(/[\/\\]$/, '');
 
@@ -720,9 +728,8 @@ var compiler = {
             this.compileAll();
 
         }
-
-
     }
+
 
 };
 

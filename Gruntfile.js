@@ -25,33 +25,39 @@ module.exports = function(grunt) {
 
     // Before generating any new files, remove any previously-created files.
     clean: {
-      tests: ['tmp'],
+      tests: ['tmp']
     },
 
     // Configuration to be run (and then tested).
-    atc: {
-      default_options: {
-        options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!',
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
-    },
+     atc: {
+         demo: {
+             src: ['demo/templates'],
+             dest: 'jiawulu'
+         }
+     }
+//    atc: {
+//      default_options: {
+//        options: {
+//        },
+//        files: {
+//          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
+//        },
+//      },
+//      custom_options: {
+//        options: {
+//          separator: ': ',
+//          punctuation: ' !!!',
+//        },
+//        files: {
+//          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
+//        },
+//      },
+//    },
 
     // Unit tests.
-    nodeunit: {
-      tests: ['test/*_test.js'],
-    },
+//    nodeunit: {
+//      tests: ['test/*_test.js'],
+//    },
 
   });
 
@@ -65,9 +71,9 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'atc', 'nodeunit']);
+//  grunt.registerTask('test', ['clean', 'atc', 'nodeunit']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('default', ['jshint', 'test']);
+  grunt.registerTask('default', ['clean', 'atc']);
 
 };
