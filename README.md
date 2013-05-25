@@ -1,8 +1,4 @@
-# grunt-atc
-
-> The best Grunt plugin ever.
-
-#	atc-前端模板预编译器
+# grunt-atc-前端模板预编译器
 
 <http://cdc-im.github.io/atc>
 
@@ -49,14 +45,12 @@ In your project's Gruntfile, add a section named `atc` to the data object passed
 
 ```js
 grunt.initConfig({
-  atc: {
-    options: {
-      // Task-specific options go here.
-    },
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
-  },
+   atc: {
+       demo: {
+           src: ['demo/templates'],
+           dest: 'jiawulu'
+       }
+   }
 })
 ```
 
