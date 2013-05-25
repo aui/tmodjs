@@ -1,6 +1,9 @@
+node_modules
+npm-debug.log
+tmp
+
 .DS_Store
 dist/*.js
-node_modules
 demo/templates/*.js
 demo/templates/public/*.js
 
