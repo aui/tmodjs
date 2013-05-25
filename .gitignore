@@ -3,3 +3,6 @@ dist/*.js
 node_modules
 demo/templates/*.js
 demo/templates/public/*.js
+
+.idea
+.idea/*

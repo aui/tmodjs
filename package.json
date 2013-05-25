@@ -1,9 +1,9 @@
 {
-  "name": "template-compiler",
-  "version": "1.0.9",
+  "name": "template-compiler-tb",
+  "version": "1.0.0",
   "readmeFilename": "README.md",
   "description": "Template Compiler Tools",
-  "homepage": "https://github.com/cdc-im/atc",
+  "homepage": "https://github.com/jiawulu/atc",
   "keywords": [
     "template",
     "artTemplate",
@@ -12,10 +12,10 @@
     "AMD",
     "CMD"
   ],
-  "author": "cdc frontend team",
+  "author": "jiawu.lu@gmail.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cdc-im/atc.git"
+    "url": "https://github.com/jiawulu/atc.git"
   },
   "main": "./compiler.js",
   "bin": {
@@ -24,7 +24,6 @@
   "dependencies": {},
   "devDependencies": {},
   "optionalDependencies": {},
-  "gitHead": "f591a7ede19d81c86db7eee2326ca33ecf036f32",
   "license": "BSD"
 }
 
