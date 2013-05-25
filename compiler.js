@@ -698,8 +698,7 @@ var compiler = {
     execute: function () {
 
         var options = this.options;
-        console.log(options);
-
+        
         options['path'] = options['path'].replace(/[\/\\]$/, '');
         options['output'] = (options['output'] || options['path']).replace(/[\/\\]$/, '');
 
