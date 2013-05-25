@@ -727,9 +727,9 @@ var compiler = {
 };
 
 
-compiler.init();
+//compiler.init();
 
 
-//module.exports = compiler;
+module.exports = compiler;
 
 

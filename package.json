@@ -17,9 +17,9 @@
     "type": "git",
     "url": "https://github.com/jiawulu/atc.git"
   },
-  "main": "./compiler.js",
+  "main": "./main.js",
   "bin": {
-    "atc": "./compiler.js"
+    "atc": "./main.js"
   },
   "dependencies": {},
   "devDependencies": {},
