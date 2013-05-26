@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
 /*!
-:: -----------------------------------------------------------------------------
-:: atc - Template Compiler
-:: https://github.com/cdc-im/atc
-:: Released under the MIT, BSD, and GPL Licenses
-:: -----------------------------------------------------------------------------
-*/
+ * atc - Template Compiler
+ * https://github.com/cdc-im/atc
+ * Released under the MIT, BSD, and GPL Licenses
+ */
 
 'use strict';
 
@@ -85,7 +83,6 @@ var compiler = {
 
 
         // 提取include模板
-        // @see https://github.com/seajs/seajs/blob/master/src/util-deps.js
         var REQUIRE_RE = /"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|\/\*[\S\s]*?\*\/|\/(?:\\\/|[^/\r\n])+\/(?=[^\/])|\/\/.*|\.\s*include|(?:^|[^$])\binclude\s*\(\s*(["'])(.+?)\1\s*(,\s*(.+?)\s*)?\)/g; //"
         var SLASH_RE = /\\\\/g
 
@@ -113,7 +110,9 @@ var compiler = {
                 throw e;
             };
 
-            var render = template.compile(code); // 使用artTemplate编译模板
+
+            // 使用artTemplate编译模板
+            var render = template.compile(code);
             var prototype = render.prototype;
             
 
@@ -170,7 +169,7 @@ var compiler = {
 
 
             code =
-            'define(function(require) {'
+            'define(function(require){'
             +   (isDependencies ? 'var dependencies=' + dependencies + ';' : '')
             +   'var helpers = ' + helpers + ';'
             +   (isDependencies ? 'var $render=function(id,data){'
@@ -182,7 +181,7 @@ var compiler = {
             +       (isDependencies ? 'helpers.$render=$render;' : '')
             +       'return new Render(data) + \'\';'
             +   '}'
-            + '});';
+            + '})';
             
             
             return code;
@@ -221,11 +220,11 @@ var compiler = {
     },
 
 
-    /** 输出外置公用辅助方法 */
+    /** 外置辅助方法 */
     writeHelpers: function () {
 
         var helpers = [];
-        var fullname = this.options['path'] + '/' + this.HELPERSNAME;
+        var fullname = this._output  + '/' + this.HELPERSNAME;
         var prototype = template.prototype;
 
         for (var name in prototype) {
@@ -233,7 +232,8 @@ var compiler = {
                 helpers.push('\'' + name + '\': ' + prototype[name].toString());
             }
         }
-        helpers = '{\r\n' + helpers.join(',\r\n') + '}';
+
+        helpers = '{\n' + helpers.join(',\n') + '}';
 
         var module = 'define(function () {'
         +    'return ' + helpers
@@ -390,7 +390,8 @@ var compiler = {
 
     // 定义模板语法
     _defineSyntax: function () {
-        var code = fs.readFileSync('./lib/template-syntax.js', 'utf-8');
+        var file = __dirname + '/lib/template-syntax.js';
+        var code = fs.readFileSync(file, 'utf-8');
         eval(code);
     },
 
@@ -404,7 +405,6 @@ var compiler = {
     // 模板文件写入
     _fsWrite: function (file, data) {
 
-        file = file.replace(this.options['path'], this.options['output']);
         this._fsMkdir(path.dirname(file));
 
         return fs.writeFileSync(file, data, this.options['charset']);
@@ -437,7 +437,7 @@ var compiler = {
 
     // 删除模板文件
     _fsUnlink: function (file) {
-        file = file.replace(this.options['path'], this.options['output']);
+        file = file.replace(this._path , this._output);
         return fs.existsSync(file) && fs.unlink(file);
     },
 
@@ -448,7 +448,7 @@ var compiler = {
         var that = this;
 
         // 监控模板目录
-        this._onwatch(this.options['path'], function (event) {
+        this._onwatch(this._path , function (event) {
             var type = event.type;
             var fstype = event.fstype;
             var target = event.target;
@@ -459,7 +459,8 @@ var compiler = {
                 //console.log(type + ': ' + fullname);
 
                 if (type === 'delete') {
-                    var js = fullname.replace(that.EXTNAME_RE, '.js');
+                    var js = fullname.replace(that.EXTNAME_RE, '.js')
+                    .replace(that._path , that._output);
                     that._fsUnlink(js);
                 } else
                 if (type === 'updated' || type === 'create') {
@@ -468,7 +469,7 @@ var compiler = {
             }
         });
 
-        this.log('\n[grey]watch..[/grey]\n');
+        this.log('\n[inverse]Watch..[/inverse]\n\n');
     },
 
 
@@ -487,16 +488,19 @@ var compiler = {
         if (!this.options['cloneHelpers']) {
             name = this.HELPERSNAME;
             var dirname = path.dirname(file);
-            var join = path.join(this.options['path'], name);
+            var join = path.join(this._path , name);
             name = path.relative(dirname, join);
         }
 
 
-        var target = file.replace(this.EXTNAME_RE, '.js');
         var source = this._fsRead(file);
+        var target = file
+        .replace(this.EXTNAME_RE, '.js')
+        .replace(this._path , this._output);
 
-        var info_source = '.' + file.replace(this.options['path'], '');
-        var info_out = info_source.replace(this.EXTNAME_RE, '.js');
+        var info = file.replace(this._path, '');
+        var info_source = this.options['path'] + info;
+        var info_output = this.options['output'] + info.replace(this.EXTNAME_RE, '.js');
 
         this.log('Compile: [green]' + info_source + '[/green]');
 
@@ -505,11 +509,11 @@ var compiler = {
             var code = this.engine(source, name);
             code = this.format(code);
             this._fsWrite(target, code);
-            this.log('[grey] > ' + info_out + '[/grey]\n');
+            this.log('[grey] > ' + info_output + '[/grey]\n');
 
         } catch (e) {
 
-            this.log('[red] ' + e.name + '[/red]\n');
+            this.log(' [inverse][red]' + e.name + '[/red][/inverse]\n');
             success = false;
             this._debug(e.temp);
             process.exit(1);
@@ -523,12 +527,13 @@ var compiler = {
     _debug: function (code) {
         
         var code = this.format(code);
-        var debugFile = this.options['path'] + '/.debug.js';
+        var debugFile = this._output + '/.debug.js';
         
         try {
             this._fsWrite(debugFile, code);
             require(debugFile);
         } catch (e) {
+            console.log(code);
             this._fsUnlink(debugFile);
         }
     },
@@ -553,7 +558,7 @@ var compiler = {
 
         };
 
-        walk(this.options['path']);
+        walk(this._path );
     },
 
 
@@ -628,17 +633,18 @@ var compiler = {
 
         if (!fs.existsSync(options['path'])) {
             console.log('Error: directory does not exist');
+            this.help();
             return process.exit(1);
         };
 
 
+        options['path'] = options['path'].replace(/[\/\\]$/, '');
+        options['output'] = (options['output'] || options['path']).replace(/[\/\\]$/, '');
+
+
         // 转换成绝对路径
-        options['path'] = path.resolve(options['path']).replace(/[\/\\]$/, '');
-        if (options['output']) {
-            options['output'] = path.resolve(options['output']).replace(/[\/\\]$/, '');
-        } else {
-            options['output'] = options['path'];
-        }
+        this._path = path.resolve(options['path']).replace(/[\/\\]$/, '');
+        this._output = path.resolve(options['output']).replace(/[\/\\]$/, '');
 
 
         // 加载引擎语法扩展
@@ -649,16 +655,17 @@ var compiler = {
         !options['cloneHelpers'] && this.writeHelpers();
 
 
-        this.log('[inverse]Template path: [green]'
-        + options['path']
-        + '[/green][/inverse]\n\n');
+        if (options['watch']) {
 
+            // 监控模板修改进行即时编译
+            this.watch();
 
-        // 编译所有模板
-        this.compileAll();
+        } else {
 
-        // 监控模板修改进行即时编译
-        options['watch'] && this.watch();
+            // 编译目录中所有模板
+            this.compileAll();
+
+        }
 
 
     }
@@ -670,4 +677,5 @@ compiler.init();
 
 
 //module.exports = compiler;
+
 
