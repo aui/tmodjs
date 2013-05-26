@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
 /*!
-:: -----------------------------------------------------------------------------
-:: atc - Template Compiler
-:: https://github.com/cdc-im/atc
-:: Released under the MIT, BSD, and GPL Licenses
-:: -----------------------------------------------------------------------------
-*/
+ * atc - Template Compiler
+ * https://github.com/cdc-im/atc
+ * Released under the MIT, BSD, and GPL Licenses
+ */
 
 'use strict';
 
@@ -171,7 +169,7 @@ var compiler = {
 
 
             code =
-            'define(function(require) {'
+            'define(function(require){'
             +   (isDependencies ? 'var dependencies=' + dependencies + ';' : '')
             +   'var helpers = ' + helpers + ';'
             +   (isDependencies ? 'var $render=function(id,data){'
@@ -183,7 +181,7 @@ var compiler = {
             +       (isDependencies ? 'helpers.$render=$render;' : '')
             +       'return new Render(data) + \'\';'
             +   '}'
-            + '});';
+            + '})';
             
             
             return code;
@@ -226,7 +224,7 @@ var compiler = {
     writeHelpers: function () {
 
         var helpers = [];
-        var fullname = this._path  + '/' + this.HELPERSNAME;
+        var fullname = this._output  + '/' + this.HELPERSNAME;
         var prototype = template.prototype;
 
         for (var name in prototype) {
@@ -461,7 +459,8 @@ var compiler = {
                 //console.log(type + ': ' + fullname);
 
                 if (type === 'delete') {
-                    var js = fullname.replace(that.EXTNAME_RE, '.js');
+                    var js = fullname.replace(that.EXTNAME_RE, '.js')
+                    .replace(that._path , that._output);
                     that._fsUnlink(js);
                 } else
                 if (type === 'updated' || type === 'create') {
@@ -634,6 +633,7 @@ var compiler = {
 
         if (!fs.existsSync(options['path'])) {
             console.log('Error: directory does not exist');
+            this.help();
             return process.exit(1);
         };
 
