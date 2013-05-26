@@ -31,8 +31,10 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
      atc: {
          demo: {
-             src: ['demo/templates'],
-             dest: 'jiawulu'
+             src: 'demo/templates',
+             output : 'test/templates',
+             namespace: 'jiawulu',
+             cloneHelpers : true
          }
      }
 //    atc: {

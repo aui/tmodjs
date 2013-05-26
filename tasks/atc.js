@@ -10,7 +10,8 @@
 
 module.exports = function(grunt) {
 
-  var compiler = require('../compiler');
+  var compiler = require('../compiler'),
+    _ = require('underscore')._;
 
   grunt.registerMultiTask('atc', 'using atc ( artTemplate ) to convert templates to javascripts ', function() {
 
@@ -23,8 +24,15 @@ module.exports = function(grunt) {
              return false;
          }
 
-          compiler.options['path'] = filepath;
-          compiler.options['namespace'] = f.dest;
+//          grunt.log.writeln(JSON.stringify(f));
+
+          var options = f;
+          options['path'] = filepath;
+
+          _.extend(compiler.options, options);
+
+//          grunt.log.writeln(JSON.stringify(compiler.options));
+
           compiler.execute();
 
       });
