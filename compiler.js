@@ -224,11 +224,7 @@ var compiler = {
     writeHelpers: function () {
 
         var helpers = [];
-<<<<<<< HEAD
         var fullname = this._output  + '/' + this.HELPERSNAME;
-=======
-        var fullname = this._path  + '/' + this.HELPERSNAME;
->>>>>>> 81b54d7c9aae011d8fd922dd275e3e4905ea49dd
         var prototype = template.prototype;
 
         for (var name in prototype) {
@@ -463,12 +459,10 @@ var compiler = {
                 //console.log(type + ': ' + fullname);
 
                 if (type === 'delete') {
-<<<<<<< HEAD
+
                     var js = fullname.replace(that.EXTNAME_RE, '.js')
                     .replace(that._path , that._output);
-=======
-                    var js = fullname.replace(that.EXTNAME_RE, '.js');
->>>>>>> 81b54d7c9aae011d8fd922dd275e3e4905ea49dd
+
                     that._fsUnlink(js);
                 } else
                 if (type === 'updated' || type === 'create') {
