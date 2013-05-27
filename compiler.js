@@ -257,7 +257,7 @@ var compiler = {
     writeHelpers: function () {
 
         var helpers = [];
-        var fullname = this._path + '/' + this.HELPERSNAME;
+        var fullname = this._output + '/' + this.HELPERSNAME;
         var prototype = template.prototype;
 
         for (var name in prototype) {
