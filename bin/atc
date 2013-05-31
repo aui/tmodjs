@@ -1,0 +1,159 @@
+#!/usr/bin/env node
+
+var atc = require('../atc.js');
+var path = require('path');
+var fs = require('fs');
+
+var options = {
+
+    // 模板目录
+    path: null,
+
+    // 编译输出目录(前端模板)
+    output: null,
+
+    // 编译后的模块类型，可选：CMD | AMD | CommonJS
+    // CMD 模块支持RequireJS与SeaJS这两种模块加载器
+    type: 'CMD',
+
+    // 模板编码
+    charset: 'utf-8',
+
+    // 是否监控模板目录即时编编译
+    watch: false,
+
+    // 是否克隆辅助方法到编译后的模板中
+    cloneHelpers: false,
+
+    // 是否使用简洁的模板语法进行编译
+    defineSyntax: true
+};
+
+
+var help = function () {
+    console.log('Usage:');
+    console.log(
+        '    atc [options] <path>'
+    );
+    console.log('Options:');
+    console.log([
+        '    -w, --watch',
+        '\x1B[90m    use atc in watch mode (auto compile when file changed)\x1B[39m',
+
+        '    -d, --define-syntax',
+        '\x1B[90m    use this if the template files are using simplified template syntax\x1B[39m',
+
+        '    -c value, --charset value',
+        '\x1B[90m    charset, utf-8 by default\x1B[39m',
+
+        '    -o value, --output value',
+        '\x1B[90m    defining an output directory\x1B[39m',
+
+        '    -t value, --type value',
+        '\x1B[90m    module type, CMD by default\x1B[39m',
+
+        '    --clone-helpers',
+        '\x1B[90m    clone the helper functions to the compiled files, by default, they are seprated\x1B[39m',
+
+        '    --version',
+        '\x1B[90m    display the version of atc\x1B[39m',
+
+        '    --help',
+        '\x1B[90m    show this help infomation\x1B[39m'
+    ].join('\n') + '\n');
+
+    console.log('\x1B[90m' + 'Documentation can be found at http://cdc-im.github.io/atc/' + '\x1B[39m');
+};
+
+
+
+
+var v;
+var args = process.argv.slice(2);
+while (args.length > 0) {
+    v = args.shift();
+    switch (v) {
+
+        // 监控修改
+        case '-w':
+        case '--watch':
+            options.watch = true;
+            break;
+
+        // 让每个输出的模块内嵌辅助方法
+        case '--clone-helpers':
+            options.cloneHelpers = true;
+            break;
+
+        // 加载模板语法设置
+        case '--no-define-syntax':
+            options.defineSyntax = false;
+            break;
+
+        // 模板输出目录
+        case '-o':
+        case '--output':
+            options.output = args.shift();
+            break;
+
+        // 模块类型，默认 CMD
+        case '-t':
+        case '--type':
+            options.type = args.shift();
+            break;
+
+        // 模板编码
+        case '-c':
+        case '--charset':
+            options.charset = args.shift();
+            break;
+
+        // 版本号
+        case '--version':
+            console.log(atc.version);
+            process.exit();
+            break;
+
+        // 显示帮助
+        case '--help':
+            help();
+            process.exit();
+            break;
+
+        // 模板目录
+        default:
+
+            if (v) {
+                options.path = v;
+            }
+
+            break;
+    }
+}
+
+
+if (!options['path']) {
+    help();
+    process.exit(1);
+}
+
+
+if (!fs.existsSync(options['path'])) {
+    console.log('Error: directory does not exist');
+    help();
+    process.exit(1);
+};
+
+
+atc.init(options);
+
+
+if (!options['watch']) {
+
+    try {
+        atc.compile();
+    } catch (e) {}
+
+}
+
+

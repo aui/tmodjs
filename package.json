@@ -17,9 +17,9 @@
     "type": "git",
     "url": "https://github.com/cdc-im/atc.git"
   },
-  "main": "./compiler.js",
+  "main": "./atc.js",
   "bin": {
-    "atc": "./compiler.js"
+    "atc": "./bin/atc"
   },
   "dependencies": {},
   "devDependencies": {},
