@@ -7,11 +7,11 @@
 
 atc 即 artTemplate compiler，基于 [artTemplate](https://github.com/aui/artTemplate) 实现的前端模板预编译器，使用它可以让前端模版不再受浏览器的限制，支持如后端模版一样按文件放置、include 语句等特性：模板使用者无需关心模板内部的依赖顺序，依赖会自动处理。
 
-编译后的模板不再依赖模板引擎，模板可以通过 [SeaJS](http://seajs.org) 或 [RequireJS](http://requirejs.org) 等加载器进行异步加载，亦能利用它们成熟的打包合并工具进行上线前的优化，如合并与压缩。
+编译后的模板不再依赖前端模板引擎与后端，模板可以通过 [SeaJS](http://seajs.org) 或 [RequireJS](http://requirejs.org) 等加载器进行异步加载，亦能利用它们成熟的打包合并工具进行上线前的优化，如合并与压缩。
 
 ##	安装
 
-先安装 NodeJS 与 npm (NodeJS已经附带)，执行：
+先安装 NodeJS 与 npm (新版NodeJS已经附带 npm)，安装 atc：
 
 	npm install template-compiler -g
 
@@ -31,6 +31,14 @@ atc 即 artTemplate compiler，基于 [artTemplate](https://github.com/aui/artTe
 *	``--no-define-syntax``设置原生模板语法编译模板（v1.0.3默认使用简洁语法）
 *	``--version``显示 atc 版本号
 *	``--help``显示帮助信息
+
+## 运行示例
+
+源码中 ./demo 是一个演示项目，./demo/templates 是项目的模板目录。你可以拷贝 demo 目录到本机，使用``cd``命令切换到 demo/templates 目录后，运行：
+
+	atc ./
+
+atc 会编译模板目录所有模板，你可以打开演示项目首页：[./demo/index.html](http://cdc-im.github.io/atc/demo/) 查看调用模板的演示。
 
 ## 接口
 
