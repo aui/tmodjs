@@ -9,15 +9,15 @@
 
 ### 输出表达式
 
-对内容编码输出：
+输出模板变量：
 
 
     {{content}}
 
 
-编码可以防止数据中含有 HTML 字符串，避免引起 XSS 攻击。
+默认会对变量中 HTML 字符编码输出，避免 XSS 漏洞。
 
-不编码输出：
+输出原始模板变量 - 不编码：
 
 
     {{echo content}}
@@ -57,54 +57,22 @@
 
 ### 模板包含表达式
 
-用于嵌入子模板。
+例如嵌入一个 inc 目录下名为 demo 的模板：
 
 
-    {{include './demo'}}
+    {{include './inc/demo'}}
 
-还可以传入指定的数据到字模板：
+还可以传入指定的数据到子模板：
 
-    {{include './demo' data}}
-    
-为了让编译工具能够进行静态分析，需要如下约定：
+    {{include './inc/demo' data}}
+
+
+####	规范约定
 
 1.	路径无需带后缀名
 2.	路径不能够进行字符串运算
-3.	路径不能使用变量
-
-**以下三种写法都是错误的：**
-
-1.	``{{include './index.html'}}``路径不能带后缀名
-2.	``{{include '.' + '/idnex'}}``路径不能够进行字符串运算
-3.	``{{include value}}``路径不能使用变量
-
-
-## 辅助方法
-
-修改 ./lib/template-syntax.js 可设置辅助方法，例如添加 UBB 替换方法：
-
-
-    template.helper('$ubb2html', function (content) {
-        return content
-        .replace(/\[b\]([^\[]*?)\[\/b\]/igm, '<b>$1</b>')
-        .replace(/\[i\]([^\[]*?)\[\/i\]/igm, '<i>$1</i>')
-        .replace(/\[u\]([^\[]*?)\[\/u\]/igm, '<u>$1</u>')
-        .replace(/\[url=([^\]]*)\]([^\[]*?)\[\/url\]/igm, '<a href="$1">$2</a>')
-        .replace(/\[img\]([^\[]*?)\[\/img\]/igm, '<img src="$1" />');
-    });
-
-
-模板中使用的方式：
-
-
-    {{$ubb2html content}}
-
-
-若辅助方法有多个参数使用一个空格分隔即可：
-
-
-    {{helperName args1 args2 args3}}
+3.	路径不能使用变量代替
     
 
->	1. 编译器会对定义的辅助方法以类似 toString() 方法输出
->	2. 语法定义文件在 ./lib/template-syntax.js 中，可自行修改
+>	*	语法定义文件在 ./lib/template-syntax.js 中，可自行修改
+>	*	atc v1.0.3 默认使用了简洁语法代替 js 原生语法，使用``--no-define-syntax``参数可以恢复使用原生 js 语法

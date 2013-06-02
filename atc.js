@@ -684,7 +684,7 @@ var atc = {
             }
         });
 
-        this._log('\n[inverse]Watch..[/inverse]\n\n');
+        this._log('\n[inverse]Waiting..[/inverse]\n\n');
 
     },
 
