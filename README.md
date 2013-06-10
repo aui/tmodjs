@@ -84,8 +84,9 @@ atc 会编译模板目录所有模板，你可以打开演示项目首页：[./d
 
 ###	v1.0.3
 
-*	默认使用简洁语法，取消``--define-syntax``，增加``--no-define-syntax``参数用来启用原生语法
+*	默认使用简洁语法，取消``--define-syntax``，增加``--no-define-syntax``参数恢复原生语法
 *	增加``-t, --type``设置输出的模块类型，默认 CMD ，可选：CMD | AMD | CommonJS。让模板可以前后端共用
+*	优化无逻辑语句的模板编译后的函数体积
 *	因 Windows 批处理无法模拟 NodeJS 的高级特性，atc 不再包含 Windows 批处理脚本，若需要可用批处理调用 NodeJS
 *	模板语法的界定符有变更，请参考：[模板语法](https://github.com/cdc-im/atc/wiki/模板语法)
 

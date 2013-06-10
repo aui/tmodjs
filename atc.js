@@ -112,13 +112,13 @@ var atc = {
             });
         };
 
-        var Module = function (code, helpersPath) {
+        var Module = function (source, helpersPath) {
 
             template.onerror = function (e) {
                 throw e;
             };
 
-            var render = template.compile(code);
+            var render = template.compile(source);
             var helpers = render.prototype;
             var renderCode = render.toString()
             .replace(/^function\s+anonymous/, 'function');
@@ -128,6 +128,7 @@ var atc = {
             this.dependencies = parseDependencies(renderCode);
             this.helpersPath = helpersPath;
             this.renderCode = renderCode;
+            this.source = source;
 
         };
 
@@ -204,10 +205,10 @@ var atc = {
             };
 
 
-            return function (isAsyn, helpers) {
+            return function (isAsync, helpers) {
                 helpers = helpers || template.prototype;
 
-                if (isAsyn) {
+                if (isAsync) {
                     
                     helpers['$create'] = function () {
                         function F() {};
@@ -229,7 +230,25 @@ var atc = {
             },
 
 
-            toCommonJS: function (isAsyn) {
+            toCommonJS: function (isAsync) {
+
+
+                if (this.source.indexOf(template.openTag) === -1) {
+
+                    var modMain = 'function(){'
+                    +   "return '" + this.source
+                        .replace(/[\n\r\t\s]+/g, ' ')
+                        .replace(/('|\\)/g, '\\$1') + "';"
+                    +'}';
+
+                    if (isAsync) {
+                        return 'define(function(){'
+                        +   'return ' + modMain
+                        + '})';
+                    } else {
+                        return 'module.exports=' + modMain;
+                    }
+                }
 
                 var dependencies = this.dependencies;
                 var renderCode = this.renderCode;
@@ -240,9 +259,9 @@ var atc = {
 
                 if (helpersPath) {
                     data['helpers'] = 'require(' + JSON.stringify(helpersPath) + ')';
-                    data['helpers'] += (isAsyn ? ".$create()" : "");
+                    data['helpers'] += (isAsync ? ".$create()" : "");
                 } else {
-                    data['helpers'] = Module.helpersToSource(isAsyn, helpers);
+                    data['helpers'] = Module.helpersToSource(isAsync, helpers);
                 }
 
     
@@ -269,7 +288,7 @@ var atc = {
 
                 data['main'] = renderCode;
                 
-                if (isAsyn) {
+                if (isAsync) {
                     data['exports'] = 'return ';
                     data['package_open'] = 'define(function(require){';
                     data['package_close'] = '})';
@@ -281,6 +300,16 @@ var atc = {
             },
 
             toAMD: function () {
+
+                if (this.source.indexOf(template.openTag) === -1) {
+                    return 'define(function(){'
+                    +   'return function(){'
+                    +       "return '" + this.source
+                            .replace(/[\n\r\t\s]+/g, ' ')
+                            .replace(/('|\\)/g, '\\$1') + "';"
+                    +   '}'
+                    + '})';
+                }
 
                 var dependencies = this.dependencies;
                 var renderCode = this.renderCode;
@@ -387,10 +416,10 @@ var atc = {
     /** 输出辅助方法 */
     _writeHelpers: function () {
 
-        var isAsyn = !/^CommonJS$/i.test(this.options['type']);
-        var helpers = this.Module.helpersToSource(isAsyn);
+        var isAsync = !/^CommonJS$/i.test(this.options['type']);
+        var helpers = this.Module.helpersToSource(isAsync);
 
-        if (isAsyn) {
+        if (isAsync) {
             helpers = 'define(' + helpers + ')';
         } else {
             helpers = 'module.exports=' + helpers; 
