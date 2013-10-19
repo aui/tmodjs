@@ -17,7 +17,7 @@
     "author": "aui",
     "repository": {
         "type": "git",
-        "url": "https://github.com/tmodjs/tmodjs.git"
+        "url": "https://github.com/aui/tmodjs.git"
     },
     "main": "./tmod.js",
     "bin": {
