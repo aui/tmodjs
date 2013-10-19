@@ -3,8 +3,8 @@
 切换到当前目录，执行 tmod 命令
 
 ```
-$ cd tmodjs/test
-$ tmod templates
+$ cd tmodjs/test/tpl
+$ tmod
 ```
 如果终端返回如下信息，表示模板已经编译完成
 
