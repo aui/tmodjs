@@ -57,9 +57,9 @@
 <h3>
 <a name="%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E8%BE%93%E5%87%BA%E4%B8%BA-js-%E6%A8%A1%E5%9D%97" class="anchor" href="#%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E8%BE%93%E5%87%BA%E4%B8%BA-js-%E6%A8%A1%E5%9D%97"><span class="octicon octicon-link"></span></a>模板编译输出为 js 模块</h3>
 
-<p>它会将模板编译成 js 文件，编译后的代码体积非常小，不包含模板引擎也无需依赖脚本加载器。因为客户端直接运行 js 代码，省去前端模板客户端动态编译过程，能够在移动设备中节省一定的系统资源。</p>
+<p>它会将模板编译成 js 文件，编译后的代码体积非常小，不包含模板引擎也无需依赖脚本加载器。因为是预编译，省去前端模板客户端动态编译过程，也能够在移动设备中节省一定的系统资源。</p>
 
-<p>模板的跨域加载、模块化、异步、压缩、依赖管理、XSS防范、请求数优化等问题等细节将会被编译过程解决掉。</p>
+<p>模板的跨域加载、模块化、异步、压缩、依赖管理、XSS 防范、请求数优化等问题等细节将会被编译过程解决掉。</p>
 
 <h3>
 <a name="%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7%E6%94%AF%E6%8C%81" class="anchor" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7%E6%94%AF%E6%8C%81"><span class="octicon octicon-link"></span></a>自动化部署工具支持</h3>
@@ -94,27 +94,37 @@
 </blockquote>
 
 <h2>
-<a name="%E8%BF%90%E8%A1%8C%E6%BC%94%E7%A4%BA%E4%BE%8B%E5%AD%90" class="anchor" href="#%E8%BF%90%E8%A1%8C%E6%BC%94%E7%A4%BA%E4%BE%8B%E5%AD%90"><span class="octicon octicon-link"></span></a>运行演示例子</h2>
+<a name="%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8" class="anchor" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="octicon octicon-link"></span></a>快速入门</h2>
 
-<p>源码包中 ./test 是一个演示项目，./test/tpl 是项目的模板目录，包含了若干模板。你可以通过这个演示项目快速了解 TmodJS 用法以及模板语法、模板加载方式。</p>
+<p>前提是你能通过上面介绍的安装方式成功安装，按照这个顺序阅读文档大概 7 分钟可上手：</p>
 
-<p>首先，使用 cd 命令切换到 TmodJS 目录后，你可以编译这个目录模板：</p>
+<ol>
+<li>建立模板目录：TmodJS 是基于目录编译，你至少要给项目建立一个专用的前端模板目录</li>
+<li>编写模板：你需要了解 TmodJS 的模板语句，如输出变量、条件判断、循环等</li>
+<li>编译模板：编译模板你需要知道如何使用命令，以及一些可能会用到的参数配置</li>
+<li>调用模板：如何在项目中加载模板</li>
+</ol><h3>
+<a name="%E4%B8%80%E5%BB%BA%E7%AB%8B%E6%A8%A1%E6%9D%BF%E7%9B%AE%E5%BD%95" class="anchor" href="#%E4%B8%80%E5%BB%BA%E7%AB%8B%E6%A8%A1%E6%9D%BF%E7%9B%AE%E5%BD%95"><span class="octicon octicon-link"></span></a>一、建立模板目录</h3>
 
-<pre><code>$ tmod test/tpl
-</code></pre>
+<p>TmodJS 的前端模板不再耦合在业务页面中，而是和后端模板一样有专门的目录管理。目录名称支持英文、数字、下划线。</p>
 
-<p>然后，编译完毕后你可以在浏览器中打开 ./test/index.html 查看如何加载模板。</p>
+<h3>
+<a name="%E4%BA%8C%E7%BC%96%E5%86%99%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E4%BA%8C%E7%BC%96%E5%86%99%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>二、编写模板</h3>
 
-<h2>
-<a name="%E8%B0%83%E7%94%A8%E7%BC%96%E8%AF%91%E5%99%A8" class="anchor" href="#%E8%B0%83%E7%94%A8%E7%BC%96%E8%AF%91%E5%99%A8"><span class="octicon octicon-link"></span></a>调用编译器</h2>
+<p>一个模板对应一个文件，模板后缀可以是<code>.html</code>、<code>.htm</code>、<code>.tpl</code>。</p>
+
+<p>模板支持输出变量、条件判断、循环、包含子模板，请查看：<a href="https://github.com/aui/tmodjs/wiki/%E6%A8%A1%E6%9D%BF%E8%AF%AD%E6%B3%95">模板语法参考</a></p>
+
+<h3>
+<a name="%E4%B8%89%E7%BC%96%E8%AF%91%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E4%B8%89%E7%BC%96%E8%AF%91%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>三、编译模板</h3>
 
 <pre><code>$ tmod [path] [options]
 </code></pre>
 
 <p>其中 path 是模板目录。TmodJS 基于目录进行处理。</p>
 
-<h3>
-<a name="options---%E9%80%89%E9%A1%B9" class="anchor" href="#options---%E9%80%89%E9%A1%B9"><span class="octicon octicon-link"></span></a>options - 选项</h3>
+<h4>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>options</h4>
 
 <ul>
 <li>  <code>-w</code>或<code>--watch</code>设置实时监控模板修改</li>
@@ -127,40 +137,49 @@
 </li>
 <li>  <code>--version</code>显示 TmodJS 版本号</li>
 <li>  <code>--help</code>显示帮助信息</li>
-</ul><blockquote>
+</ul><p>通常<code>-w</code>与<code>-d</code>参数是经常用到的。</p>
+
+<blockquote>
 <p>首次运行后，会对模板根目录进行初始化，生成 package.json，也可以编辑它进行更多配置，包括语法、公用辅助方法、压缩选项等，参考<a href="#%E9%85%8D%E7%BD%AE">配置</a>
   当模板目录初始化后，下次编译模板可以无需输入配置参数，将沿用上一次的参数进行编译（-w 与 -d 除外）</p>
 </blockquote>
 
-<h2>
-<a name="%E6%A8%A1%E6%9D%BF%E8%AF%AD%E6%B3%95" class="anchor" href="#%E6%A8%A1%E6%9D%BF%E8%AF%AD%E6%B3%95"><span class="octicon octicon-link"></span></a>模板语法</h2>
+<h3>
+<a name="%E5%9B%9B%E8%B0%83%E7%94%A8%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E5%9B%9B%E8%B0%83%E7%94%A8%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>四、调用模板</h3>
 
-<p>请查看：<a href="https://github.com/aui/tmodjs/wiki/%E6%A8%A1%E6%9D%BF%E8%AF%AD%E6%B3%95">模板语法参考</a></p>
-
-<h2>
-<a name="%E5%8A%A0%E8%BD%BD%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E5%8A%A0%E8%BD%BD%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>加载模板</h2>
-
-<p>模板编译后，模板目录会生成 build 目录，里面包含了所有的模板编译版本。其中 build/template.js 是压缩后的模板包，通常情况下你只需要在页面中引入它就好。例如：</p>
+<p>模板编译后，模板目录会生成 build 子目录，里面包含了所有的模板编译版本。其中 build/template.js 是压缩后的模板包，通常情况下你只需要在页面中引入它就好。例如：</p>
 
 <pre><code>&lt;script src="tpl/build/template.js"&gt;&lt;/script&gt;
 </code></pre>
 
-<p>这是默认的加载方式，除此之外还支持 RequireJS、SeaJS、NodeJS加载。<a href="./test/index.html">示例</a></p>
+<p>这是默认的加载方式，除此之外还支持 RequireJS、SeaJS、NodeJS 加载。<a href="./test/index.html">示例</a></p>
 
-<h3>
-<a name="%E6%A8%A1%E6%9D%BF%E6%8E%A5%E5%8F%A3" class="anchor" href="#%E6%A8%A1%E6%9D%BF%E6%8E%A5%E5%8F%A3"><span class="octicon octicon-link"></span></a>模板接口</h3>
+<h4>
+<a name="%E6%A8%A1%E6%9D%BF%E6%8E%A5%E5%8F%A3" class="anchor" href="#%E6%A8%A1%E6%9D%BF%E6%8E%A5%E5%8F%A3"><span class="octicon octicon-link"></span></a>模板接口</h4>
 
 <pre><code>template(path, data)
 </code></pre>
 
 <p>path 参数是<strong>模板目录相对路径</strong>，并且<strong>不带后缀名</strong>，例如 ：</p>
 
-<pre><code>var html = template('./news/list', {hot: [...]});
+<pre><code>var html = template('news/list', {hot: [...]});
 document.getElementById('list').innerHTML = html;
 </code></pre>
 
 <h2>
-<a name="%E6%8E%A5%E5%8F%A3" class="anchor" href="#%E6%8E%A5%E5%8F%A3"><span class="octicon octicon-link"></span></a>接口</h2>
+<a name="%E7%BC%96%E8%AF%91%E6%BC%94%E7%A4%BA%E9%A1%B9%E7%9B%AE" class="anchor" href="#%E7%BC%96%E8%AF%91%E6%BC%94%E7%A4%BA%E9%A1%B9%E7%9B%AE"><span class="octicon octicon-link"></span></a>编译演示项目</h2>
+
+<p>源码包中 ./test 是一个演示项目，./test/tpl 是项目的模板目录，包含了若干模板。你可以通过这个演示项目快速了解 TmodJS 用法以及模板语法、模板加载方式。</p>
+
+<p>首先，使用 cd 命令切换到 TmodJS 目录后，你可以编译这个目录模板：</p>
+
+<pre><code>$ tmod test/tpl
+</code></pre>
+
+<p>编译完毕后你可以在浏览器中打开 <a href="./test/index.html">./test/index.html</a> 查看如何加载模板。</p>
+
+<h2>
+<a name="%E5%AF%B9%E5%A4%96%E6%8E%A5%E5%8F%A3" class="anchor" href="#%E5%AF%B9%E5%A4%96%E6%8E%A5%E5%8F%A3"><span class="octicon octicon-link"></span></a>对外接口</h2>
 
 <p>若想作为一个库调用（例如在基于 NodeJS 的自动化工具中），TmodJS 提供如下接口：</p>
 
@@ -196,7 +215,7 @@ TmodJS.saveUserConfig();
 <h2>
 <a name="%E9%85%8D%E7%BD%AE" class="anchor" href="#%E9%85%8D%E7%BD%AE"><span class="octicon octicon-link"></span></a>配置</h2>
 
-<p>模板目录的 package.json 文件<code>tmodjs-config</code>字段详解：</p>
+<p>配置最终会保存在模板目录的 package.json 文件中，可以对它直接修改。</p>
 
 <pre><code>{
     // 编译输出目录设置
@@ -206,13 +225,16 @@ TmodJS.saveUserConfig();
     charset: 'utf-8',
 
     // 模板合并规则
-    // 注意：type 参数的值为 TemplateJS 才会生效
+    // 注意：type 参数的值为 templatejs 才会生效
     combo: ['*'],
 
     // 定义模板采用哪种语法，可选：
     // simple: 默认语法，易于读写。可参看语法文档
     // native: 功能丰富，灵活多变。语法类似微型模板引擎 tmpl
     syntax: 'simple',
+
+    // 运行时模块别名。仅用于 type 不等于 templatejs 的情况
+    //runtime: null,
 
     // 自定义辅助方法路径
     helpers: null,
@@ -222,7 +244,7 @@ TmodJS.saveUserConfig();
 
     // 是否内嵌异步加载插件（beta）
     // 可以支持 template.async(path, function (render) {}) 方式异步载入模板
-    // 注意：type 参数是 TemplateJS 的时候才生效
+    // 注意：type 参数是 templatejs 的时候才生效
     async: false,
 
     // 是否嵌入模板引擎，否则编译为不依赖引擎的纯 js 代码
@@ -235,12 +257,16 @@ TmodJS.saveUserConfig();
     // cmd:         这是一种兼容 RequireJS/SeaJS 的模块（类似 atc v1版本编译结果）
     // amd:         支持 RequireJS 等流行加载器
     // commonjs:    编译为 NodeJS 模块
-    type: 'templatejs'      
+    type: 'templatejs'     
 }
 </code></pre>
 
 <h2>
 <a name="%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98" class="anchor" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="octicon octicon-link"></span></a>常见问题</h2>
+
+<p><strong>问</strong>：TmodJS 需要部署到服务器中吗？</p>
+
+<p><strong>答</strong>：不需要，这是本地工具，基于 NodeJS 编写是为了实现跨平台。</p>
 
 <p><strong>问</strong>：如何将每个模板都编译成单独的 amd/cmd 模块输出？</p>
 
@@ -264,19 +290,19 @@ TmodJS.saveUserConfig();
 
 <p><strong>问</strong>：如何让模板访问全局变量？</p>
 
-<p><strong>答</strong>：请参考：链接（未完成）。</p>
+<p><strong>答</strong>：<del>请参考：链接</del>（未完成）。</p>
 
 <p><strong>问</strong>：如何使用 js 原生语法作为模板语法？</p>
 
-<p><strong>答</strong>：请参考：链接（未完成）。</p>
+<p><strong>答</strong>：<del>请参考：链接</del>（未完成）。</p>
 
 <p><strong>问</strong>：如何兼容 atc？</p>
 
-<p><strong>答</strong>：请参考：链接（未完成）。</p>
+<p><strong>答</strong>：<del>请参考：链接</del>（未完成）。</p>
 
 <p><strong>问</strong>：如何迁移原来写在页面中的 artTemplage 模板？</p>
 
-<p><strong>答</strong>：请参考：链接（未完成）。</p>
+<p><strong>答</strong>：<del>请参考：链接</del>（未完成）。</p>
 
 <h2>
 <a name="%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97" class="anchor" href="#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97"><span class="octicon octicon-link"></span></a>更新日志</h2>
@@ -284,10 +310,10 @@ TmodJS.saveUserConfig();
 <h3>
 <a name="tmodjs-v001" class="anchor" href="#tmodjs-v001"><span class="octicon octicon-link"></span></a>TmodJS v0.0.1</h3>
 
-<p>注：atc 项目更名为 TmodJS。</p>
+<p>这是一个革命性的版本！同时项目更名为 <strong>TmodJS</strong>，内部版本号收归到 0.0.1，这是一个新的开始，未来将稳步更新。</p>
 
 <ul>
-<li>  这是一个革命性的版本，吸收了来自业务线的一些建议，编译方案的大调整，内部无数次优化，编译后的代码更小！同时项目更名为 <strong>TmodJS</strong>，内部版本号收归到 0.0.1，这是一个新的开始，稳妥前行。</li>
+<li>  吸收了来自业务的一些建议，编译方案的大调整，内部进行无数次优化，编译后的代码更小。</li>
 <li>  编译后的脚本使用统一的接口：<code>template(path, data)</code> 其中 path 相对于 template.js 所在目录</li>
 <li>  自动打包目录与子目录的模板</li>
 <li>  可选支持异步载入模板功能</li>
@@ -314,7 +340,7 @@ TmodJS.saveUserConfig();
 </ul><h3>
 <a name="atc-v102" class="anchor" href="#atc-v102"><span class="octicon octicon-link"></span></a>atc v1.0.2</h3>
 
-<p>NodeJS版本：</p>
+<p>NodeJS 版本：</p>
 
 <ul>
 <li>  增加<code>-o path</code>或<code>--output path</code>定义输出目录</li>
@@ -324,7 +350,7 @@ TmodJS.saveUserConfig();
 </ul><h3>
 <a name="atc-v101" class="anchor" href="#atc-v101"><span class="octicon octicon-link"></span></a>atc v1.0.1</h3>
 
-<p>NodeJS版本：</p>
+<p>NodeJS 版本：</p>
 
 <ul>
 <li>  支持监控目录，即时编译</li>
@@ -339,7 +365,7 @@ TmodJS.saveUserConfig();
 <li>  NodeJS 与 Windows 批处理版本同时发布</li>
 </ul><h1></h1>
 
-<p>如果你也认同 TmodJS 的理念、让你研发工作得到效率上的提升，那么我希望你参与到 TmodJS 这个开源项目中来，无论是贡献代码、完善文档（目前文档还比较笼统）或者撰写博文推广它等。</p>
+<p>如果你也认同 TmodJS 的理念、它能让你在开发中体会到书写模板的快乐，那么我希望你也能参与到 TmodJS 这个开源项目中来，无论是贡献代码、完善文档（目前文档还比较笼统）或者撰写博文推广它等。</p>
         </section>
 
         <footer>
