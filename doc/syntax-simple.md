@@ -1,7 +1,8 @@
-# TmodJS 模板语法
+# 模板语法（simple）
 
 ===========
 
+TmodJS 默认采用 simple 语法，它非常易于读写。
 
 ## 表达式
 
@@ -78,5 +79,4 @@
 
 ## 辅助方法
 
-待补充..
-
+这属于插件的范畴，请参考：<https://github.com/aui/tmodjs/wiki/辅助方法>

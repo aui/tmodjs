@@ -43,8 +43,10 @@ TmodJS 是一款前端模板管理工具，它使用预编译手段可以让前�
 
 先安装 [NodeJS](http://nodejs.org) 与 npm (最新版 NodeJS 已经附带 npm)，执行：
 
-	$ npm install tmodjs -g
-	
+```
+$ npm install tmodjs -g
+```	
+
 > Mac OSX 可能需要管理员权限运行： ``$ sudo npm install tmodjs -g``
 
 
@@ -69,7 +71,9 @@ TmodJS 的前端模板不再耦合在业务页面中，而是和后端模板一�
 
 ###	三、编译模板
 
-	$ tmod [path] [options]
+```
+$ tmod [path] [options]
+```
 
 其中 path 是模板目录。TmodJS 基于目录进行处理。
 
@@ -92,18 +96,24 @@ TmodJS 的前端模板不再耦合在业务页面中，而是和后端模板一�
 
 模板编译后，模板目录会生成 build 子目录，里面包含了所有的模板编译版本。其中 build/template.js 是压缩后的模板包，通常情况下你只需要在页面中引入它就好。例如：
 
-	<script src="tpl/build/template.js"></script>
-	
+```
+<script src="tpl/build/template.js"></script>
+```
+
 这是默认的加载方式，除此之外还支持 RequireJS、SeaJS、NodeJS 加载。[示例](http://aui.github.io/tmodjs/test/index.html)
 	
 ####	模板接口
 
-	template(path, data)
-	
+```
+template(path, data)
+```
+
 path 参数是**模板目录相对路径**，并且**不带后缀名**，例如 ：
-	
-	var html = template('news/list', {hot: [...]});
-	document.getElementById('list').innerHTML = html;
+
+```	
+var html = template('news/list', {hot: [...]});
+document.getElementById('list').innerHTML = html;
+```
 
 ##	编译演示项目
 
@@ -111,7 +121,9 @@ path 参数是**模板目录相对路径**，并且**不带后缀名**，例如 
 
 首先，使用 cd 命令切换到 TmodJS 目录后，你可以编译这个目录模板：
 
-	$ tmod test/tpl
+```
+$ tmod ./test/tpl
+```
 
 编译完毕后你可以在浏览器中打开 [test/index.html](http://aui.github.io/tmodjs/test/index.html) 查看如何加载模板。
 
@@ -119,81 +131,85 @@ path 参数是**模板目录相对路径**，并且**不带后缀名**，例如 
 
 若想作为一个库调用（例如在基于 NodeJS 的自动化工具中），TmodJS 提供如下接口：
 
-	var TmodJS = require('tmod.js');
-	
-	// 模板目录
-	var path = './demo/templates';
-	
-	// 配置
-	var options = {
-		output: './build',
-		charset: 'utf-8',
-		debug: false
-	};
-	
-	// 初始化 TmodJS
-	// path {String}	模板目录
-	// options {Object} 选项
-	TmodJS.init(path, options);
-	
-	// 编译模板
-	// file {String} 参数可选，无则编译整个模板目录，否则编译指定的模板文件
-	// recursion {Boolean} 若为 false 则不编译依赖的模板
-	TmodJS.compile(file, recursion);
-	
-	// 监控模板修改
-	TmodJS.watch();
-	
-	// 保存用户设置到模板目录 package.json 文件中
-	TmodJS.saveUserConfig();
-	
-	// 监听编译过程的事件
-	// 支持：change、load、compileError、combo
-	TmodJS.on('compile', function (data) {});
-	
+```
+var TmodJS = require('tmod.js');
+
+// 模板目录
+var path = './demo/templates';
+
+// 配置
+var options = {
+	output: './build',
+	charset: 'utf-8',
+	debug: false
+};
+
+// 初始化 TmodJS
+// path {String}	模板目录
+// options {Object} 选项
+TmodJS.init(path, options);
+
+// 编译模板
+// file {String} 参数可选，无则编译整个模板目录，否则编译指定的模板文件
+// recursion {Boolean} 若为 false 则不编译依赖的模板
+TmodJS.compile(file, recursion);
+
+// 监控模板修改
+TmodJS.watch();
+
+// 保存用户设置到模板目录 package.json 文件中
+TmodJS.saveUserConfig();
+
+// 监听编译过程的事件
+// 支持：change、load、compileError、combo
+TmodJS.on('compile', function (data) {});
+```	
+
 ##	配置
 
 配置最终会保存在模板目录的 package.json 文件中，可以对它直接修改。
 
-	{
-        // 编译输出目录设置
-        output: './build',
+```
+{
+    // 编译输出目录设置
+    output: './build',
 
-        // 模板使用的编码。（注意：非 utf-8 编码的模板缺乏测试）
-        charset: 'utf-8',
+    // 模板使用的编码。（注意：非 utf-8 编码的模板缺乏测试）
+    charset: 'utf-8',
 
-        // 模板合并规则
-        // 注意：type 参数的值为 templatejs 才会生效
-        combo: ['*'],
+    // 模板合并规则
+    // 注意：type 参数的值为 templatejs 才会生效
+    combo: ['*'],
 
-        // 定义模板采用哪种语法，可选：
-        // simple: 默认语法，易于读写。可参看语法文档
-        // native: 功能丰富，灵活多变。语法类似微型模板引擎 tmpl
-        syntax: 'simple',
+    // 定义模板采用哪种语法，可选：
+    // simple: 默认语法，易于读写。可参看语法文档
+    // native: 功能丰富，灵活多变。语法类似微型模板引擎 tmpl
+    syntax: 'simple',
 
-        // 自定义辅助方法路径
-        helpers: null,
+    // 自定义辅助方法路径
+    helpers: null,
 
-        // 是否输出为压缩的格式
-        minify: true,
+    // 是否输出为压缩的格式
+    minify: true,
 
-        // 是否内嵌异步加载插件（beta）
-        // 可以支持 template.async(path, function (render) {}) 方式异步载入模板
-        // 注意：type 参数是 templatejs 的时候才生效
-        async: false,
+    // 是否内嵌异步加载插件（beta）
+    // 可以支持 template.async(path, function (render) {}) 方式异步载入模板
+    // 注意：type 参数是 templatejs 的时候才生效
+    async: false,
 
-        // 是否嵌入模板引擎，否则编译为不依赖引擎的纯 js 代码
-        // 通常来说，模板不多的情况下，编译为原生的 js 打包后体积更小，因为不必嵌入引擎
-        // 当模板很多的时候，内置模板引擎，模板使用字符串存储的方案会更能节省空间
-        engine: false,
+    // 是否嵌入模板引擎，否则编译为不依赖引擎的纯 js 代码
+    // 通常来说，模板不多的情况下，编译为原生的 js 打包后体积更小，因为不必嵌入引擎
+    // 当模板很多的时候，内置模板引擎，模板使用字符串存储的方案会更能节省空间
+    engine: false,
 
-        // 输出的模块类型（不区分大小写），可选：
-        // templatejs:  模板目录将会打包后输出，可使用 script 标签直接引入，也支持 NodeJS/RequireJS/SeaJS。
-        // cmd:         这是一种兼容 RequireJS/SeaJS 的模块（类似 atc v1版本编译结果）
-        // amd:         支持 RequireJS 等流行加载器
-        // commonjs:    编译为 NodeJS 模块
-        type: 'templatejs'     
-	}
+    // 输出的模块类型（不区分大小写），可选：
+    // templatejs:  模板目录将会打包后输出，可使用 script 标签直接引入，也支持 NodeJS/RequireJS/SeaJS。
+    // cmd:         这是一种兼容 RequireJS/SeaJS 的模块（类似 atc v1版本编译结果）
+    // amd:         支持 RequireJS 等流行加载器
+    // commonjs:    编译为 NodeJS 模块
+    type: 'templatejs'     
+}
+```
 	
 ##	常见问题
 
@@ -215,7 +231,7 @@ path 参数是**模板目录相对路径**，并且**不带后缀名**，例如 
 
 **问**：如何不压缩输出 js？
 
-**答**：编辑配置文件，设置``minify:false``。
+**答**：编辑配置文件，设置``"minify": false``。
 
 **问**：如何修改默认的输出目录？
 
@@ -223,19 +239,19 @@ path 参数是**模板目录相对路径**，并且**不带后缀名**，例如 
 
 **问**：如何让模板访问全局变量？
 
-**答**：~~请参考：链接~~（待更新）。
+**答**：请参考：[辅助方法](https://github.com/aui/tmodjs/wiki/辅助方法)。
 
-**问**：如何使用 js 原生语法作为模板语法？
+**问**：可以使用使用类似 tmpl 那种的 js 原生语法作为模板语法吗？
 
-**答**：~~请参考：链接~~（待更新）。
+**答**：可以。编辑配置文件，设置``"syntax": "native"``即可，这也是模板引擎 artTemplate 的默认语法，目前 TmodJS 默认使用的是 simple 语法。
 
-**问**：如何升级 atc 的项目？
+**问**：如何兼容旧版本 atc 的项目？
 
-**答**：~~请参考：链接~~（待更新）。
+**答**：编辑配置文件，分别设置``"type": "cmd"``、``"syntax": "native"``、``"output": "./"``
 
-**问**：如何迁移原来写在页面中的 artTemplage 模板，改为 TmodJS 的方式？
+**问**：如何迁移原来写在页面中的 artTemplate 模板，改为 TmodJS 这种按按文件存放的方式？
 
-**答**：~~请参考：链接~~（待更新）。
+**答**：请参考：[页面中的模板迁移指南](https://github.com/aui/tmodjs/wiki/页面中的模板迁移指南)。
 
 
 ##	更新日志
