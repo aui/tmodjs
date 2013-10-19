@@ -76,9 +76,6 @@ module.exports = {
         // native: 功能丰富，灵活多变。语法类似微型模板引擎 tmpl
         syntax: 'simple',
 
-        // 运行时模块别名。仅用于 type 不等于 templatejs 的情况
-        //runtime: null,
-
         // 自定义辅助方法路径
         helpers: null,
 
