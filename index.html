@@ -96,12 +96,12 @@
 <h2>
 <a name="%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8" class="anchor" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="octicon octicon-link"></span></a>快速入门</h2>
 
-<p>前提是你能通过上面介绍的安装方式成功安装，按照这个顺序阅读文档大概 7 分钟可上手：</p>
+<p>学习 TmodJS 只需要理解这四个关键点就好，7分钟可入门：</p>
 
 <ol>
 <li>建立模板目录：TmodJS 是基于目录编译，你至少要给项目建立一个专用的前端模板目录</li>
 <li>编写模板：你需要了解 TmodJS 的模板语句，如输出变量、条件判断、循环等</li>
-<li>编译模板：编译模板你需要知道如何使用命令，以及一些可能会用到的参数配置</li>
+<li>编译模板：编译模板你需要知道如何使用命令参数</li>
 <li>调用模板：如何在项目中加载模板</li>
 </ol><h3>
 <a name="%E4%B8%80%E5%BB%BA%E7%AB%8B%E6%A8%A1%E6%9D%BF%E7%9B%AE%E5%BD%95" class="anchor" href="#%E4%B8%80%E5%BB%BA%E7%AB%8B%E6%A8%A1%E6%9D%BF%E7%9B%AE%E5%BD%95"><span class="octicon octicon-link"></span></a>一、建立模板目录</h3>
@@ -152,7 +152,7 @@
 <pre><code>&lt;script src="tpl/build/template.js"&gt;&lt;/script&gt;
 </code></pre>
 
-<p>这是默认的加载方式，除此之外还支持 RequireJS、SeaJS、NodeJS 加载。<a href="./test/index.html">示例</a></p>
+<p>这是默认的加载方式，除此之外还支持 RequireJS、SeaJS、NodeJS 加载。<a href="http://aui.github.io/tmodjs/test/index.html">示例</a></p>
 
 <h4>
 <a name="%E6%A8%A1%E6%9D%BF%E6%8E%A5%E5%8F%A3" class="anchor" href="#%E6%A8%A1%E6%9D%BF%E6%8E%A5%E5%8F%A3"><span class="octicon octicon-link"></span></a>模板接口</h4>
@@ -173,10 +173,10 @@ document.getElementById('list').innerHTML = html;
 
 <p>首先，使用 cd 命令切换到 TmodJS 目录后，你可以编译这个目录模板：</p>
 
-<pre><code>$ tmod test/tpl
+<pre><code>$ tmod ./test/tpl
 </code></pre>
 
-<p>编译完毕后你可以在浏览器中打开 <a href="./test/index.html">./test/index.html</a> 查看如何加载模板。</p>
+<p>编译完毕后你可以在浏览器中打开 <a href="http://aui.github.io/tmodjs/test/index.html">test/index.html</a> 查看如何加载模板。</p>
 
 <h2>
 <a name="%E5%AF%B9%E5%A4%96%E6%8E%A5%E5%8F%A3" class="anchor" href="#%E5%AF%B9%E5%A4%96%E6%8E%A5%E5%8F%A3"><span class="octicon octicon-link"></span></a>对外接口</h2>
@@ -283,7 +283,7 @@ TmodJS.on('compile', function (data) {});
 
 <p><strong>问</strong>：如何不压缩输出 js？</p>
 
-<p><strong>答</strong>：编辑配置文件，设置<code>minify:false</code>。</p>
+<p><strong>答</strong>：编辑配置文件，设置<code>"minify": false</code>。</p>
 
 <p><strong>问</strong>：如何修改默认的输出目录？</p>
 
@@ -291,19 +291,19 @@ TmodJS.on('compile', function (data) {});
 
 <p><strong>问</strong>：如何让模板访问全局变量？</p>
 
-<p><strong>答</strong>：<del>请参考：链接</del>（待更新）。</p>
+<p><strong>答</strong>：请参考：<a href="https://github.com/aui/tmodjs/wiki/%E8%BE%85%E5%8A%A9%E6%96%B9%E6%B3%95">辅助方法</a>。</p>
 
-<p><strong>问</strong>：如何使用 js 原生语法作为模板语法？</p>
+<p><strong>问</strong>：可以使用使用类似 tmpl 那种的 js 原生语法作为模板语法吗？</p>
 
-<p><strong>答</strong>：<del>请参考：链接</del>（待更新）。</p>
+<p><strong>答</strong>：可以。编辑配置文件，设置<code>"syntax": "native"</code>即可，这也是模板引擎 artTemplate 的默认语法，目前 TmodJS 默认使用的是 simple 语法。</p>
 
-<p><strong>问</strong>：如何升级 atc 的项目？</p>
+<p><strong>问</strong>：如何兼容旧版本 atc 的项目？</p>
 
-<p><strong>答</strong>：<del>请参考：链接</del>（待更新）。</p>
+<p><strong>答</strong>：编辑配置文件，分别设置<code>"type": "cmd"</code>、<code>"syntax": "native"</code>、<code>"output": "./"</code></p>
 
-<p><strong>问</strong>：如何迁移原来写在页面中的 artTemplage 模板，改为 TmodJS 的方式？</p>
+<p><strong>问</strong>：如何迁移原来写在页面中的 artTemplate 模板，改为 TmodJS 这种按按文件存放的方式？</p>
 
-<p><strong>答</strong>：<del>请参考：链接</del>（待更新）。</p>
+<p><strong>答</strong>：请参考：<a href="https://github.com/aui/tmodjs/wiki/%E9%A1%B5%E9%9D%A2%E4%B8%AD%E7%9A%84%E6%A8%A1%E6%9D%BF%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97">页面中的模板迁移指南</a>。</p>
 
 <h2>
 <a name="%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97" class="anchor" href="#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97"><span class="octicon octicon-link"></span></a>更新日志</h2>
