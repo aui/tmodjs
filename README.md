@@ -297,4 +297,4 @@ NodeJS 版本：
 
 如果你也认同 TmodJS 的理念、它能让你在开发中体会到书写模板的快乐，那么我希望你也能参与到 TmodJS 这个开源项目中来，无论是贡献代码、完善文档（目前文档还比较笼统）或者撰写博文推广它等。
 
-特别感谢 [@TooBug](https://github.com/TooBug) 的建议，以及 NodeJS 代码迁移支持，以及 [@warmhug](https://github.com/warmhug) 同学在编译器雏形阶段的热心的测试与反馈，正是因为你们的支持 TmodJS 才能逐步健壮。
+特别感谢 [@TooBug](https://github.com/TooBug) 的建议，以及 NodeJS 代码迁移支持；还有 [@warmhug](https://github.com/warmhug) 同学在编译器雏形阶段的热心的测试与反馈，正是因为你们的支持 TmodJS 才能逐步健壮。
