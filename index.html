@@ -3,35 +3,32 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+
     <title>TmodJS by aui</title>
   </head>
 
   <body>
-    <div id="container">
-      <div class="inner">
 
-        <header>
-          <h1>TmodJS</h1>
-          <h2>Template Compiler Tools</h2>
-        </header>
+    <header>
+      <div class="container">
+        <h1>TmodJS</h1>
+        <h2>Template Compiler Tools</h2>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/aui/tmodjs/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/aui/tmodjs/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/aui/tmodjs" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        <section id="downloads">
+          <a href="https://github.com/aui/tmodjs/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/aui/tmodjs/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/aui/tmodjs" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
         </section>
+      </div>
+    </header>
 
-        <hr>
-
-        <section id="main_content">
-          <h1>
+    <div class="container">
+      <section id="main_content">
+        <h1>
 <a name="tmodjs-%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7" class="anchor" href="#tmodjs-%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="octicon octicon-link"></span></a>TmodJS-前端模板管理工具</h1>
 
 <h6>
@@ -55,16 +52,16 @@
 </ol><p>通过 TmodJS 预编译技术让前端模板突破浏览器的文本文件加载限制，支持模板按文件存放，并且支持多层目录组织模板，并且模板之间可通过<code>include</code>语句进行复用。</p>
 
 <h3>
-<a name="%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E8%BE%93%E5%87%BA%E4%B8%BA-js-%E6%A8%A1%E5%9D%97" class="anchor" href="#%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E8%BE%93%E5%87%BA%E4%B8%BA-js-%E6%A8%A1%E5%9D%97"><span class="octicon octicon-link"></span></a>模板编译输出为 js 模块</h3>
+<a name="%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E8%BE%93%E5%87%BA%E4%B8%BA-js-%E6%96%87%E4%BB%B6" class="anchor" href="#%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E8%BE%93%E5%87%BA%E4%B8%BA-js-%E6%96%87%E4%BB%B6"><span class="octicon octicon-link"></span></a>模板编译输出为 js 文件</h3>
 
 <p>它会将模板编译成 js 文件，编译后的代码体积非常小，不包含模板引擎也无需依赖脚本加载器。因为是预编译，省去前端模板客户端动态编译过程，也能够在移动设备中节省一定的系统资源。</p>
 
-<p>模板的跨域加载、模块化、异步、压缩、依赖管理、XSS 防范、请求数优化等问题等细节将会被编译过程解决掉。</p>
+<p>编译成 js 后，原来字符串模板遇到的跨域加载、异步按需加载已经不是问题，甚至可以接入 GruntJS 等自动化工具进行部署。</p>
 
 <h3>
-<a name="%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7%E6%94%AF%E6%8C%81" class="anchor" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7%E6%94%AF%E6%8C%81"><span class="octicon octicon-link"></span></a>自动化部署工具支持</h3>
+<a name="%E6%94%AF%E6%8C%81%E6%8E%A5%E5%85%A5-amd-%E6%88%96%E8%80%85-cmd-%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7" class="anchor" href="#%E6%94%AF%E6%8C%81%E6%8E%A5%E5%85%A5-amd-%E6%88%96%E8%80%85-cmd-%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7"><span class="octicon octicon-link"></span></a>支持接入 AMD 或者 CMD 部署工具</h3>
 
-<p>默认情况下，模板目录将会被打包成 js, 可以直接在页面中使用传统 Script 标签加载，简单且有效，同时还可以设置将每个模板文件输出为兼容 RequireJS、SeaJS 的异步模块，以便接入它们自动化部署工具进行深度定制化的优化，这样可以实现按需加载、合并等高级的优化手段。</p>
+<p>默认情况下，模板目录将会被打包成 js, 可以直接在页面中使用传统 Script 标签加载，简单且有效。除此之外还可以设置将单个模板文件输出为单个的 AMD 、CMD 异步模块，以便接入它们自动化部署工具进行深度定制化的优化，这样可以实现按需加载、合并等高级的优化手段。</p>
 
 <h3>
 <a name="%E6%A8%AA%E8%B7%A8%E5%89%8D%E5%90%8E%E7%AB%AF%E8%BF%90%E8%A1%8C" class="anchor" href="#%E6%A8%AA%E8%B7%A8%E5%89%8D%E5%90%8E%E7%AB%AF%E8%BF%90%E8%A1%8C"><span class="octicon octicon-link"></span></a>横跨前后端运行</h3>
@@ -82,7 +79,7 @@
 <p>支持设置检测模板的修改进行即时编译，这样几乎可以忽略编译过程的存在，模板编写只需要这两个步骤：1、修改模板并保存 2、刷新浏览器预览效果</p>
 
 <h2>
-<a name="%E5%AE%89%E8%A3%85%E7%BC%96%E8%AF%91%E5%99%A8" class="anchor" href="#%E5%AE%89%E8%A3%85%E7%BC%96%E8%AF%91%E5%99%A8"><span class="octicon octicon-link"></span></a>安装编译器</h2>
+<a name="%E5%AE%89%E8%A3%85" class="anchor" href="#%E5%AE%89%E8%A3%85"><span class="octicon octicon-link"></span></a>安装</h2>
 
 <p>先安装 <a href="http://nodejs.org">NodeJS</a> 与 npm (最新版 NodeJS 已经附带 npm)，执行：</p>
 
@@ -137,11 +134,11 @@
 </li>
 <li>  <code>--version</code>显示 TmodJS 版本号</li>
 <li>  <code>--help</code>显示帮助信息</li>
-</ul><p>通常<code>-w</code>与<code>-d</code>参数是经常用到的。</p>
+</ul><p>运行完成后，程序会将模板编译成 js 文件。如果你经常需要修改模板，可以开启<code>-w</code>参数，让它检测修改自动编译。</p>
 
 <blockquote>
-<p>首次运行后，会对模板根目录进行初始化，生成 package.json，也可以编辑它进行更多配置，包括语法、公用辅助方法、压缩选项等，参考<a href="#%E9%85%8D%E7%BD%AE">配置</a>
-  当模板目录初始化后，下次编译模板可以无需输入配置参数，将沿用上一次的参数进行编译（-w 与 -d 除外）</p>
+<p>首次运行后，会对模板根目录进行初始化，生成 package.json，也可以编辑它进行更多配置，包括语法、公用辅助方法、压缩选项等，参考<a href="#%E9%85%8D%E7%BD%AE">配置</a>。
+  当模板目录初始化后，下次编译模板可以无需输入配置参数，将沿用上一次的参数进行编译（-w 与 -d 除外）。</p>
 </blockquote>
 
 <h3>
@@ -210,6 +207,10 @@ TmodJS.watch();
 
 // 保存用户设置到模板目录 package.json 文件中
 TmodJS.saveUserConfig();
+
+// 监听编译过程的事件
+// 支持：change、load、compileError、combo
+TmodJS.on('compile', function (data) {});
 </code></pre>
 
 <h2>
@@ -232,9 +233,6 @@ TmodJS.saveUserConfig();
     // simple: 默认语法，易于读写。可参看语法文档
     // native: 功能丰富，灵活多变。语法类似微型模板引擎 tmpl
     syntax: 'simple',
-
-    // 运行时模块别名。仅用于 type 不等于 templatejs 的情况
-    //runtime: null,
 
     // 自定义辅助方法路径
     helpers: null,
@@ -290,19 +288,19 @@ TmodJS.saveUserConfig();
 
 <p><strong>问</strong>：如何让模板访问全局变量？</p>
 
-<p><strong>答</strong>：<del>请参考：链接</del>（未完成）。</p>
+<p><strong>答</strong>：<del>请参考：链接</del>（待更新）。</p>
 
 <p><strong>问</strong>：如何使用 js 原生语法作为模板语法？</p>
 
-<p><strong>答</strong>：<del>请参考：链接</del>（未完成）。</p>
+<p><strong>答</strong>：<del>请参考：链接</del>（待更新）。</p>
 
-<p><strong>问</strong>：如何兼容 atc？</p>
+<p><strong>问</strong>：如何升级 atc 的项目？</p>
 
-<p><strong>答</strong>：<del>请参考：链接</del>（未完成）。</p>
+<p><strong>答</strong>：<del>请参考：链接</del>（待更新）。</p>
 
-<p><strong>问</strong>：如何迁移原来写在页面中的 artTemplage 模板？</p>
+<p><strong>问</strong>：如何迁移原来写在页面中的 artTemplage 模板，改为 TmodJS 的方式？</p>
 
-<p><strong>答</strong>：<del>请参考：链接</del>（未完成）。</p>
+<p><strong>答</strong>：<del>请参考：链接</del>（待更新）。</p>
 
 <h2>
 <a name="%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97" class="anchor" href="#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97"><span class="octicon octicon-link"></span></a>更新日志</h2>
@@ -366,15 +364,11 @@ TmodJS.saveUserConfig();
 </ul><h1></h1>
 
 <p>如果你也认同 TmodJS 的理念、它能让你在开发中体会到书写模板的快乐，那么我希望你也能参与到 TmodJS 这个开源项目中来，无论是贡献代码、完善文档（目前文档还比较笼统）或者撰写博文推广它等。</p>
-        </section>
 
-        <footer>
-          TmodJS is maintained by <a href="https://github.com/aui">aui</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-
-        
-      </div>
+<p>特别感谢 <a href="https://github.com/TooBug">@TooBug</a> 的建议，以及 NodeJS 代码迁移支持；还有 <a href="https://github.com/warmhug">@warmhug</a> 同学在编译器雏形阶段的热心的测试与反馈，正是因为你们的支持 TmodJS 才能逐步健壮。</p>
+      </section>
     </div>
+
+    
   </body>
 </html>
