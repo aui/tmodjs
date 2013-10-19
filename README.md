@@ -94,7 +94,7 @@ TmodJS 的前端模板不再耦合在业务页面中，而是和后端模板一�
 
 	<script src="tpl/build/template.js"></script>
 	
-这是默认的加载方式，除此之外还支持 RequireJS、SeaJS、NodeJS 加载。[示例](./test/index.html)
+这是默认的加载方式，除此之外还支持 RequireJS、SeaJS、NodeJS 加载。[示例](http://aui.github.io/tmodjs/test/index.html)
 	
 ####	模板接口
 
@@ -113,7 +113,7 @@ path 参数是**模板目录相对路径**，并且**不带后缀名**，例如 
 
 	$ tmod test/tpl
 
-编译完毕后你可以在浏览器中打开 [./test/index.html](./test/index.html) 查看如何加载模板。
+编译完毕后你可以在浏览器中打开 [test/index.html](http://aui.github.io/tmodjs/test/index.html) 查看如何加载模板。
 
 ## 对外接口
 
