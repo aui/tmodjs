@@ -1,0 +1,2 @@
+/*! <TmodJS> <MD5:0d00ebc105bcce76b78a461a5c178a89>*/
+template("./index",function(i,e){var t=this,include=function(n,l){l=l||i;var a=t.$include(n,l,e);return void 0!==a?(u+=a,a):void 0},n=t.$escape,l=i.title,a=t.$each,r=i.list,u=(i.$value,i.$index,"");return include("./public/header"),u+=' <div id="main"> <h3>',u+=n(l),u+="</h3> <ul> ",a(r,function(i){u+=' <li><a href="',u+=n(i.url),u+='">',u+=n(i.title),u+="</a></li> "}),u+=" </ul> </div> ",include("./public/footer"),new String(u)});

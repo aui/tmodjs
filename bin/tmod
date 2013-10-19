@@ -1,0 +1,159 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var TmodJS = require('../tmod.js');
+var fs = require('fs');
+
+var options = {};
+
+
+var help = function () {
+    var message = [
+        '\x1B[7mTmodJS - Template Compiler\x1B[27m',
+        '',
+        'Usage:',
+        '    tmod <path> [options]',
+        'Options:',
+        [
+            '    -w, --watch',
+            '\x1B[90m    use tmod in watch mode (auto compile when file changed)\x1B[39m',
+
+            '    -d, --debug',
+            '\x1B[90m    debugging Template\x1B[39m',
+
+            '    --type',
+            '\x1B[90m    optional: templatejs (default) | cmd (RequireJS/SeaJS) | amd (RequireJS) | commonjs (NodeJS)\x1B[39m',
+
+            '    --output value',
+            '\x1B[90m    defining an output directory\x1B[39m',
+
+            '    --charset value',
+            '\x1B[90m    charset, utf-8 by default\x1B[39m',
+
+            '    --version',
+            '\x1B[90m    display the version of TmodJS\x1B[39m',
+
+            '    --help',
+            '\x1B[90m    show this help infomation\x1B[39m'
+        ].join('\n'),
+        '',
+        '\x1B[90m' + 'Documentation can be found at http://aui.github.io/tmodjs/' + '\x1B[39m'
+    ];
+
+    message = message.join('\n');
+    process.stdout.write(message + '\n');
+};
+
+
+
+var dir;
+var value;
+var isWatch = false;
+var args = process.argv.slice(2);
+
+
+if (args[0] && /^[^-]|\//.test(args[0])) {
+    dir = args.shift();
+}
+
+
+while (args.length > 0) {
+    value = args.shift();
+    switch (value) {
+
+        // 监控修改
+        case '-w':
+        case '--watch':
+            isWatch = true;
+            break;
+
+        // 调试模式
+        case '-d':
+        case '--debug':
+            options.debug = true;
+            break;
+
+        // 输出目录
+        case '--output':
+            options.output = args.shift();
+            break;
+
+        // 嵌入引擎
+        case '--engine':
+            options.engine = true;
+            break;
+
+        // 模板输出类型
+        case '--type':
+            options.type = args.shift();
+            break;
+
+        // 模板编码
+        case '--charset':
+            options.charset = args.shift();
+            break;
+
+         // 模板语法
+        case '--syntax':
+            options.syntax = args.shift();
+            break;
+
+        // 辅助方法路径
+        case '--helpers':
+            options.helpers = args.shift();
+            break;
+
+        // 显示帮助
+        case '-h':
+        case '--help':
+            help();
+            process.exit();
+            break;
+
+        // 版本号
+        case '-v':
+        case '--version':
+            var version = require('../package.json').version;
+            process.stdout.write(version + '\n');
+            process.exit();
+            break;
+
+        default:
+
+            if (!dir) {
+                dir = value;
+            }
+    }
+}
+
+
+if (!dir) {
+    dir = './';
+}
+
+
+if (!fs.existsSync(dir)) {
+    process.stdout.write('Error: directory does not exist\n');
+    help();
+    process.exit(1);
+};
+
+
+TmodJS.init(dir, options);
+
+TmodJS.on('error', function (data) {
+    if (!isWatch) {
+        process.exit(1);
+    }
+});
+
+TmodJS.saveUserConfig();
+
+TmodJS.compile();
+
+if (isWatch) {
+    TmodJS.watch();
+}
+
+

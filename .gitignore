@@ -1,5 +1,3 @@
 .DS_Store
 dist/*.js
 node_modules
-demo/templates/*.js
-demo/templates/public/*.js
