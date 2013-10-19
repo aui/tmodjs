@@ -6,7 +6,7 @@
 
 ##	一、新建一个辅助方法文件配置
 
-在模板目录新建一个 ./config/template-helper.js 文件，然后编辑 ./package.json 中的``helpers``字段改为``"./config/template-helper.js"``。
+在模板目录新建一个 ./config/template-helper.js 文件，然后编辑 ./package.json 设置``"helpers": "./config/template-helper.js"``。
 
 ##	二、编写辅助方法
 
@@ -36,8 +36,10 @@ template.helper('$ubb2html', function (content) {
 ##	三、在模板中使用辅助方法
 	
 在模板中的使用方式：
-	
-	{{Math.min(1000, a, b)}}
-	{{$ubb2html content}}
-	
+
+```
+{{Math.min(1000, a, b)}}
+{{$ubb2html content}}
+```	
+
 > 注意：引擎不会对辅助方法输出的 HTML 字符进行转义。
