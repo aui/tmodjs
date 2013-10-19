@@ -1,0 +1,20 @@
+{
+    "name": "template",
+    "version": "1.0.0",
+    "dependencies": {
+        "tmodjs": "~0.0.1"
+    },
+    "tmodjs-config": {
+        "output": "./build",
+        "charset": "utf-8",
+        "combo": [
+            "*"
+        ],
+        "syntax": "simple",
+        "helpers": null,
+        "minify": true,
+        "async": false,
+        "engine": false,
+        "type": "templatejs"
+    }
+}
