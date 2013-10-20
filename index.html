@@ -1,38 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="TmodJS : Template Compiler Tools" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>TmodJS by aui</title>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-    <title>TmodJS</title>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-
   <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/aui/tmodjs">View on GitHub</a>
-
-          <h1 id="project_title">TmodJS</h1>
-          <h2 id="project_tagline">Template Compiler Tools</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/aui/tmodjs/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/aui/tmodjs/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+    <div class="wrapper">
+      <header>
+        <h1>TmodJS</h1>
+        <p>Template Compiler Tools</p>
+        <p class="view"><a href="https://github.com/aui/tmodjs">View the Project on GitHub <small>aui/tmodjs</small></a></p>
+        <ul>
+          <li><a href="https://github.com/aui/tmodjs/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/aui/tmodjs/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/aui/tmodjs">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
         <h1>
-<a name="tmodjs-%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7" class="anchor" href="#tmodjs-%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="octicon octicon-link"></span></a>TmodJS-前端模板管理工具</h1>
+<a name="tmodjs-%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7" class="anchor" href="#tmodjs-%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7"><span class="octicon octicon-link"></span></a>TmodJS-前端模板编译工具</h1>
 
 <h6>
 <a name="%E5%83%8F%E5%90%8E%E7%AB%AF%E4%B8%80%E6%A0%B7%E4%B9%A6%E5%86%99%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E5%83%8F%E5%90%8E%E7%AB%AF%E4%B8%80%E6%A0%B7%E4%B9%A6%E5%86%99%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>像后端一样书写前端模板</h6>
@@ -40,9 +36,7 @@
 <h2>
 <a name="%E5%85%B3%E4%BA%8E-tmodjs" class="anchor" href="#%E5%85%B3%E4%BA%8E-tmodjs"><span class="octicon octicon-link"></span></a>关于 TmodJS</h2>
 
-<p>（原名 atc）</p>
-
-<p>TmodJS 是一款前端模板管理工具，它使用预编译手段可以让前端模板外置、实现类似后端模板一样按文件与目录组织前端模板，并且模板之间可以使用<code>include</code>语句相互包含。</p>
+<p>TmodJS（原名 atc）是一款前端模板编译工具，它可以让前端模板外置、实现类似后端模板一样按文件与目录组织前端模板，并且模板之间可以使用<code>include</code>语句相互包含。</p>
 
 <h3>
 <a name="%E5%83%8F%E5%90%8E%E7%AB%AF%E4%B8%80%E6%A0%B7%E4%B9%A6%E5%86%99%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF-1" class="anchor" href="#%E5%83%8F%E5%90%8E%E7%AB%AF%E4%B8%80%E6%A0%B7%E4%B9%A6%E5%86%99%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF-1"><span class="octicon octicon-link"></span></a>像后端一样书写前端模板</h3>
@@ -127,7 +121,7 @@
 <a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>options</h4>
 
 <ul>
-<li>  <code>-w</code>或<code>--watch</code>设置实时监控模板修改</li>
+<li>  <code>-w</code>或<code>--watch</code>设置监控模板修改触发编译</li>
 <li>  <code>-d</code>或<code>--debug</code>输出调试版本</li>
 <li>  <code>--charset value</code>定义模板编码，默认<code>utf-8</code>
 </li>
@@ -181,9 +175,9 @@ document.getElementById('list').innerHTML = html;
 <h2>
 <a name="%E5%AF%B9%E5%A4%96%E6%8E%A5%E5%8F%A3" class="anchor" href="#%E5%AF%B9%E5%A4%96%E6%8E%A5%E5%8F%A3"><span class="octicon octicon-link"></span></a>对外接口</h2>
 
-<p>若想作为一个库调用（例如在基于 NodeJS 的自动化工具中），TmodJS 提供如下接口：</p>
+<p>若想集成 TModJS 到其它自动化工具中（如 GruntJS），可以使用 TModJS 提供的 API：</p>
 
-<pre><code>var TmodJS = require('tmod.js');
+<pre><code>var TmodJS = require('tmodjs');
 
 // 模板目录
 var path = './demo/templates';
@@ -192,7 +186,7 @@ var path = './demo/templates';
 var options = {
     output: './build',
     charset: 'utf-8',
-    debug: false
+    debug: false // 此字段不会保存在配置中
 };
 
 // 初始化 TmodJS
@@ -267,43 +261,63 @@ TmodJS.on('compile', function (data) {});
 
 <p><strong>问</strong>：TmodJS 需要部署到服务器中吗？</p>
 
-<p><strong>答</strong>：不需要，这是本地工具，基于 NodeJS 编写是为了实现跨平台。</p>
+<blockquote>
+<p>不需要，这是本地工具，基于 NodeJS 编写是为了实现跨平台。</p>
+</blockquote>
 
 <p><strong>问</strong>：如何将每个模板都编译成单独的 amd/cmd 模块输出？</p>
 
-<p><strong>答</strong>：指定 type 参数即可，如<code>--type cmd</code>则可以让每个模板都支持 RequireJS/SeaJS 调用。</p>
+<blockquote>
+<p>指定 type 参数即可，如<code>--type cmd</code>则可以让每个模板都支持 RequireJS/SeaJS 调用。</p>
+</blockquote>
 
 <p><strong>问</strong>：如何将模板编译成 NodeJS 的模块？</p>
 
-<p><strong>答</strong>：指定 type 参数即可，如<code>--type commonjs</code>。</p>
+<blockquote>
+<p>指定 type 参数即可，如<code>--type commonjs</code>。</p>
+</blockquote>
 
 <p><strong>问</strong>：线上运行的模板报错了如何调试？</p>
 
-<p><strong>答</strong>：开启 debug 模式编译，如<code>-d</code>，这样会输出调试版本，可以让你快速找到模板运行错误的语句以及数据。</p>
+<blockquote>
+<p>开启 debug 模式编译，如<code>-d</code>，这样会输出调试版本，可以让你快速找到模板运行错误的语句以及数据。</p>
+</blockquote>
 
 <p><strong>问</strong>：如何不压缩输出 js？</p>
 
-<p><strong>答</strong>：编辑配置文件，设置<code>"minify": false</code>。</p>
+<blockquote>
+<p>编辑配置文件，设置<code>"minify": false</code>。</p>
+</blockquote>
 
 <p><strong>问</strong>：如何修改默认的输出目录？</p>
 
-<p><strong>答</strong>：指定 output 参数即可，如<code>--output ../../build</code>。</p>
+<blockquote>
+<p>指定 output 参数即可，如<code>--output ../../build</code>。</p>
+</blockquote>
 
 <p><strong>问</strong>：如何让模板访问全局变量？</p>
 
-<p><strong>答</strong>：请参考：<a href="https://github.com/aui/tmodjs/wiki/%E8%BE%85%E5%8A%A9%E6%96%B9%E6%B3%95">辅助方法</a>。</p>
+<blockquote>
+<p>请参考：<a href="https://github.com/aui/tmodjs/wiki/%E8%BE%85%E5%8A%A9%E6%96%B9%E6%B3%95">辅助方法</a>。</p>
+</blockquote>
 
 <p><strong>问</strong>：可以使用使用类似 tmpl 那种的 js 原生语法作为模板语法吗？</p>
 
-<p><strong>答</strong>：可以。编辑配置文件，设置<code>"syntax": "native"</code>即可，这也是模板引擎 artTemplate 的默认语法，目前 TmodJS 默认使用的是 simple 语法。</p>
+<blockquote>
+<p>可以。编辑配置文件，设置<code>"syntax": "native"</code>即可，这也是模板引擎 artTemplate 的默认语法，目前 TmodJS 默认使用的是 simple 语法。</p>
+</blockquote>
 
 <p><strong>问</strong>：如何兼容旧版本 atc 的项目？</p>
 
-<p><strong>答</strong>：编辑配置文件，分别设置<code>"type": "cmd"</code>、<code>"syntax": "native"</code>、<code>"output": "./"</code></p>
+<blockquote>
+<p>编辑配置文件，分别设置<code>"type": "cmd"</code>、<code>"syntax": "native"</code>、<code>"output": "./"</code></p>
+</blockquote>
 
 <p><strong>问</strong>：如何迁移原来写在页面中的 artTemplate 模板，改为 TmodJS 这种按按文件存放的方式？</p>
 
-<p><strong>答</strong>：请参考：<a href="https://github.com/aui/tmodjs/wiki/%E9%A1%B5%E9%9D%A2%E4%B8%AD%E7%9A%84%E6%A8%A1%E6%9D%BF%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97">页面中的模板迁移指南</a>。</p>
+<blockquote>
+<p>请参考：<a href="https://github.com/aui/tmodjs/wiki/%E9%A1%B5%E9%9D%A2%E4%B8%AD%E7%9A%84%E6%A8%A1%E6%9D%BF%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97">页面中的模板迁移指南</a>。</p>
+</blockquote>
 
 <h2>
 <a name="%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97" class="anchor" href="#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97"><span class="octicon octicon-link"></span></a>更新日志</h2>
@@ -312,6 +326,10 @@ TmodJS.on('compile', function (data) {});
 <a name="tmodjs-v001" class="anchor" href="#tmodjs-v001"><span class="octicon octicon-link"></span></a>TmodJS v0.0.1</h3>
 
 <p>这是一个革命性的版本！同时项目更名为 <strong>TmodJS</strong>，内部版本号收归到 0.0.1，这是一个新的开始，未来将稳步更新。</p>
+
+<p>使用 TemplageJS 格式的模块作为默认输出的类型：它包含模板目录中所有模板，除了支持页面 Script 直接引入之外还支持 RequireJS、SeaJS、NodeJS 加载，并且接口统一，跨架构与前后端运行！</p>
+
+<p>详细更新列表：</p>
 
 <ul>
 <li>  吸收了来自业务的一些建议，编译方案的大调整，内部进行无数次优化，编译后的代码更小。</li>
@@ -371,16 +389,11 @@ TmodJS.on('compile', function (data) {});
 <p>特别感谢 <a href="https://github.com/TooBug">@TooBug</a> 的建议，以及 NodeJS 代码迁移支持；还有 <a href="https://github.com/warmhug">@warmhug</a> 同学在编译器雏形阶段的热心的测试与反馈，正是因为你们的支持 TmodJS 才能逐步健壮。</p>
       </section>
     </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">TmodJS maintained by <a href="https://github.com/aui">aui</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
+    <footer>
+      <p>Project maintained by <a href="https://github.com/aui">aui</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     
-
   </body>
 </html>
