@@ -23,9 +23,12 @@
     "bin": {
         "tmod": "./bin/tmod"
     },
-    "dependencies": {},
-    "devDependencies": {},
-    "optionalDependencies": {},
-    "gitHead": "f591a7ede19d81c86db7eee2326ca33ecf036f32",
+    "scripts": {
+        "test": "tmod ./test/tpl"
+    },
+    "dependencies": {
+        "uglify-js": "~2.4.0",
+        "async": "~0.2.6"
+    },
     "license": "BSD"
 }

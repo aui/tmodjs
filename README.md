@@ -4,9 +4,7 @@
 
 ##	关于 TmodJS
 
-（原名 atc）
-
-TmodJS 是一款前端模板管理工具，它使用预编译手段可以让前端模板外置、实现类似后端模板一样按文件与目录组织前端模板，并且模板之间可以使用``include``语句相互包含。
+TmodJS（原名 atc）是一款前端模板管理工具，它使用预编译手段可以让前端模板外置、实现类似后端模板一样按文件与目录组织前端模板，并且模板之间可以使用``include``语句相互包含。
 
 ###	像后端一样书写前端模板
 
@@ -79,7 +77,7 @@ $ tmod [path] [options]
 
 ####	options
             
-*	``-w``或``--watch``设置实时监控模板修改
+*	``-w``或``--watch``设置监控模板修改触发编译
 *	``-d``或``--debug``输出调试版本
 *	``--charset value``定义模板编码，默认``utf-8``
 *	``--output value``定义输出目录，默认``./build``
@@ -129,10 +127,10 @@ $ tmod ./test/tpl
 
 ## 对外接口
 
-若想作为一个库调用（例如在基于 NodeJS 的自动化工具中），TmodJS 提供如下接口：
+若想集成 TModJS 到其它自动化工具中（如 GruntJS），可以使用 TModJS 提供的 API：
 
 ```
-var TmodJS = require('tmod.js');
+var TmodJS = require('tmodjs');
 
 // 模板目录
 var path = './demo/templates';
@@ -141,7 +139,7 @@ var path = './demo/templates';
 var options = {
 	output: './build',
 	charset: 'utf-8',
-	debug: false
+	debug: false // 此字段不会保存在配置中
 };
 
 // 初始化 TmodJS
