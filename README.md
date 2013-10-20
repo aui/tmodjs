@@ -213,43 +213,43 @@ TmodJS.on('compile', function (data) {});
 
 **问**：TmodJS 需要部署到服务器中吗？
 
-**答**：不需要，这是本地工具，基于 NodeJS 编写是为了实现跨平台。
+> 不需要，这是本地工具，基于 NodeJS 编写是为了实现跨平台。
 
 **问**：如何将每个模板都编译成单独的 amd/cmd 模块输出？
 
-**答**：指定 type 参数即可，如``--type cmd``则可以让每个模板都支持 RequireJS/SeaJS 调用。
+> 指定 type 参数即可，如``--type cmd``则可以让每个模板都支持 RequireJS/SeaJS 调用。
 
 **问**：如何将模板编译成 NodeJS 的模块？
 
-**答**：指定 type 参数即可，如``--type commonjs``。
+> 指定 type 参数即可，如``--type commonjs``。
 
 **问**：线上运行的模板报错了如何调试？
 
-**答**：开启 debug 模式编译，如``-d``，这样会输出调试版本，可以让你快速找到模板运行错误的语句以及数据。
+> 开启 debug 模式编译，如``-d``，这样会输出调试版本，可以让你快速找到模板运行错误的语句以及数据。
 
 **问**：如何不压缩输出 js？
 
-**答**：编辑配置文件，设置``"minify": false``。
+> 编辑配置文件，设置``"minify": false``。
 
 **问**：如何修改默认的输出目录？
 
-**答**：指定 output 参数即可，如``--output ../../build``。
+> 指定 output 参数即可，如``--output ../../build``。
 
 **问**：如何让模板访问全局变量？
 
-**答**：请参考：[辅助方法](https://github.com/aui/tmodjs/wiki/辅助方法)。
+> 请参考：[辅助方法](https://github.com/aui/tmodjs/wiki/辅助方法)。
 
 **问**：可以使用使用类似 tmpl 那种的 js 原生语法作为模板语法吗？
 
-**答**：可以。编辑配置文件，设置``"syntax": "native"``即可，这也是模板引擎 artTemplate 的默认语法，目前 TmodJS 默认使用的是 simple 语法。
+> 可以。编辑配置文件，设置``"syntax": "native"``即可，这也是模板引擎 artTemplate 的默认语法，目前 TmodJS 默认使用的是 simple 语法。
 
 **问**：如何兼容旧版本 atc 的项目？
 
-**答**：编辑配置文件，分别设置``"type": "cmd"``、``"syntax": "native"``、``"output": "./"``
+> 编辑配置文件，分别设置``"type": "cmd"``、``"syntax": "native"``、``"output": "./"``
 
 **问**：如何迁移原来写在页面中的 artTemplate 模板，改为 TmodJS 这种按按文件存放的方式？
 
-**答**：请参考：[页面中的模板迁移指南](https://github.com/aui/tmodjs/wiki/页面中的模板迁移指南)。
+> 请参考：[页面中的模板迁移指南](https://github.com/aui/tmodjs/wiki/页面中的模板迁移指南)。
 
 
 ##	更新日志
