@@ -10,11 +10,11 @@
         "combo": [
             "*"
         ],
-        "syntax": "simple",
+        "syntax": "native",
         "helpers": null,
-        "minify": true,
+        "minify": false,
         "async": false,
         "engine": false,
-        "type": "templatejs"
+        "type": "amd"
     }
 }

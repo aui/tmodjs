@@ -6,6 +6,7 @@
 
 'use strict';
 
+var version = require('./package.json').version;
 var template = require('./lib/template-AOTcompile.js');
 var uglifyjs = require("./lib/uglify.js");
 
@@ -128,12 +129,14 @@ module.exports = {
                 "name": 'template',
                 "version": '1.0.0',
                 "dependencies": {
-                    "tmodjs": "~0.0.1"
+                    "tmodjs": ""
                 },
                 "tmodjs-config": {}
             }
 
         }
+
+        json.dependencies.tmodjs = '~' + version;
         
         // 默认配置 优先级：0
         for (name in defaults) {
@@ -674,7 +677,7 @@ module.exports = {
             
             if (isChange) {
                 modObject = template.AOTcompile(id, source, {
-                    runtime: RUNTIME,
+                    runtime: this.options.runtime,
                     engine: this.options.engine,
                     type: this.options.type,
                     debug: isDebug

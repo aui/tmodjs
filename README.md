@@ -1,6 +1,6 @@
 #	TmodJS-前端模板编译工具
 
-######	像后端一样书写前端模板
+######	基于文件系统组织维护前端模板
 
 ##	关于 TmodJS
 
@@ -127,7 +127,7 @@ $ tmod ./test/tpl
 
 ## 对外接口
 
-若想集成 TModJS 到其它自动化工具中（如 GruntJS），可以使用 TModJS 提供的 API：
+若想集成 TmodJS 到其它自动化工具中（如 GruntJS），可以使用 TmodJS 提供的 API：
 
 ```
 var TmodJS = require('tmodjs');
@@ -254,6 +254,10 @@ TmodJS.on('compile', function (data) {});
 
 ##	更新日志
 
+###	TmodJS v0.0.2
+
+修复极其特殊情况下 TmodJS 无法为 AMD/CMD 模块正确声明依赖的问题[#14](https://github.com/aui/tmodjs/issues/14)
+
 ###	TmodJS v0.0.1
 
 这是一个革命性的版本！同时项目更名为 **TmodJS**，内部版本号收归到 0.0.1，这是一个新的开始，未来将稳步更新。
@@ -308,8 +312,20 @@ NodeJS 版本：
 *	支持前端模板按文件与目录组织，自动处理 include 依赖
 *	NodeJS 与 Windows 批处理版本同时发布
 
-=========
+##	加入我们
 
-如果你也认同 TmodJS 的理念、它能让你在开发中体会到书写模板的快乐，那么我希望你也能参与到 TmodJS 这个开源项目中来，无论是贡献代码、完善文档（目前文档还比较笼统）或者撰写博文推广它等。
+如果你也认同 TmodJS 的理念、它能让你在开发中体会到书写模板的快乐，那么我希望你也能参与到 TmodJS 这个开源项目中来，无论是贡献代码或者撰写博文推广它等。
 
-特别感谢 [@TooBug](https://github.com/TooBug) 的建议，以及 NodeJS 代码迁移支持；还有 [@warmhug](https://github.com/warmhug) 同学在编译器雏形阶段的热心的测试与反馈，正是因为你们的支持 TmodJS 才能逐步健壮。
+###	使用 TmodJS 的项目
+
+*	Spa（迅雷）
+*	MicroTrend（腾讯）
+*	Tracker（腾讯）
+*	Qzone（腾讯）
+
+[提交项目](https://github.com/aui/tmodjs/issues/1)
+
+###	贡献者
+
+*	[@TooBug](https://github.com/TooBug)
+*	[@warmhug](https://github.com/warmhug)（在工具雏形阶段的热心的测试与反馈）

@@ -1,2 +1,2 @@
-/*! <TmodJS> <MD5:5d920ba346b160f7e726a7b526cc7026>*/
+/*! <TmodJS> <MD5:520b3d7c298426b133c305de001abdf4>*/
 template("./public/logo",' <h1 id="logo"> <a href="http://www.qq.com"> <img width=\'134\' height=\'44\' src="http://mat1.gtimg.com/www/images/qq2012/qqlogo_1x.png" alt="\u817e\u8baf\u7f51" /> </a> </h1> ');
