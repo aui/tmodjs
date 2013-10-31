@@ -35,7 +35,7 @@
 <a name="tmodjs-%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7" class="anchor" href="#tmodjs-%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7"><span class="octicon octicon-link"></span></a>TmodJS-前端模板编译工具</h1>
 
 <h6>
-<a name="%E5%83%8F%E5%90%8E%E7%AB%AF%E4%B8%80%E6%A0%B7%E4%B9%A6%E5%86%99%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E5%83%8F%E5%90%8E%E7%AB%AF%E4%B8%80%E6%A0%B7%E4%B9%A6%E5%86%99%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>像后端一样书写前端模板</h6>
+<a name="%E5%9F%BA%E4%BA%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%84%E7%BB%87%E7%BB%B4%E6%8A%A4%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E5%9F%BA%E4%BA%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%84%E7%BB%87%E7%BB%B4%E6%8A%A4%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>基于文件系统组织维护前端模板</h6>
 
 <h2>
 <a name="%E5%85%B3%E4%BA%8E-tmodjs" class="anchor" href="#%E5%85%B3%E4%BA%8E-tmodjs"><span class="octicon octicon-link"></span></a>关于 TmodJS</h2>
@@ -43,7 +43,7 @@
 <p>TmodJS（原名 atc）是一款前端模板编译工具，它可以让前端模板外置、实现类似后端模板一样按文件与目录组织前端模板，并且模板之间可以使用<code>include</code>语句相互包含。</p>
 
 <h3>
-<a name="%E5%83%8F%E5%90%8E%E7%AB%AF%E4%B8%80%E6%A0%B7%E4%B9%A6%E5%86%99%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF-1" class="anchor" href="#%E5%83%8F%E5%90%8E%E7%AB%AF%E4%B8%80%E6%A0%B7%E4%B9%A6%E5%86%99%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF-1"><span class="octicon octicon-link"></span></a>像后端一样书写前端模板</h3>
+<a name="%E5%83%8F%E5%90%8E%E7%AB%AF%E4%B8%80%E6%A0%B7%E4%B9%A6%E5%86%99%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E5%83%8F%E5%90%8E%E7%AB%AF%E4%B8%80%E6%A0%B7%E4%B9%A6%E5%86%99%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>像后端一样书写前端模板</h3>
 
 <p>相对与前端模板，后端模板有两个优秀的特征：</p>
 
@@ -179,7 +179,7 @@ document.getElementById('list').innerHTML = html;
 <h2>
 <a name="%E5%AF%B9%E5%A4%96%E6%8E%A5%E5%8F%A3" class="anchor" href="#%E5%AF%B9%E5%A4%96%E6%8E%A5%E5%8F%A3"><span class="octicon octicon-link"></span></a>对外接口</h2>
 
-<p>若想集成 TModJS 到其它自动化工具中（如 GruntJS），可以使用 TModJS 提供的 API：</p>
+<p>若想集成 TmodJS 到其它自动化工具中（如 GruntJS），可以使用 TmodJS 提供的 API：</p>
 
 <pre><code>var TmodJS = require('tmodjs');
 
@@ -327,6 +327,11 @@ TmodJS.on('compile', function (data) {});
 <a name="%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97" class="anchor" href="#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97"><span class="octicon octicon-link"></span></a>更新日志</h2>
 
 <h3>
+<a name="tmodjs-v002" class="anchor" href="#tmodjs-v002"><span class="octicon octicon-link"></span></a>TmodJS v0.0.2</h3>
+
+<p>修复极其特殊情况下 TmodJS 无法为 AMD/CMD 模块正确声明依赖的问题<a href="https://github.com/aui/tmodjs/issues/14">#14</a></p>
+
+<h3>
 <a name="tmodjs-v001" class="anchor" href="#tmodjs-v001"><span class="octicon octicon-link"></span></a>TmodJS v0.0.1</h3>
 
 <p>这是一个革命性的版本！同时项目更名为 <strong>TmodJS</strong>，内部版本号收归到 0.0.1，这是一个新的开始，未来将稳步更新。</p>
@@ -386,11 +391,29 @@ TmodJS.on('compile', function (data) {});
 <ul>
 <li>  支持前端模板按文件与目录组织，自动处理 include 依赖</li>
 <li>  NodeJS 与 Windows 批处理版本同时发布</li>
-</ul><h1></h1>
+</ul><h2>
+<a name="%E5%8A%A0%E5%85%A5%E6%88%91%E4%BB%AC" class="anchor" href="#%E5%8A%A0%E5%85%A5%E6%88%91%E4%BB%AC"><span class="octicon octicon-link"></span></a>加入我们</h2>
 
-<p>如果你也认同 TmodJS 的理念、它能让你在开发中体会到书写模板的快乐，那么我希望你也能参与到 TmodJS 这个开源项目中来，无论是贡献代码、完善文档（目前文档还比较笼统）或者撰写博文推广它等。</p>
+<p>如果你也认同 TmodJS 的理念、它能让你在开发中体会到书写模板的快乐，那么我希望你也能参与到 TmodJS 这个开源项目中来，无论是贡献代码或者撰写博文推广它等。</p>
 
-<p>特别感谢 <a href="https://github.com/TooBug">@TooBug</a> 的建议，以及 NodeJS 代码迁移支持；还有 <a href="https://github.com/warmhug">@warmhug</a> 同学在编译器雏形阶段的热心的测试与反馈，正是因为你们的支持 TmodJS 才能逐步健壮。</p>
+<h3>
+<a name="%E4%BD%BF%E7%94%A8-tmodjs-%E7%9A%84%E9%A1%B9%E7%9B%AE" class="anchor" href="#%E4%BD%BF%E7%94%A8-tmodjs-%E7%9A%84%E9%A1%B9%E7%9B%AE"><span class="octicon octicon-link"></span></a>使用 TmodJS 的项目</h3>
+
+<ul>
+<li>  Spa（迅雷）</li>
+<li>  MicroTrend（腾讯）</li>
+<li>  Tracker（腾讯）</li>
+<li>  Qzone（腾讯）</li>
+</ul><p><a href="https://github.com/aui/tmodjs/issues/1">提交项目</a></p>
+
+<h3>
+<a name="%E8%B4%A1%E7%8C%AE%E8%80%85" class="anchor" href="#%E8%B4%A1%E7%8C%AE%E8%80%85"><span class="octicon octicon-link"></span></a>贡献者</h3>
+
+<ul>
+<li>  <a href="https://github.com/TooBug">@TooBug</a>
+</li>
+<li>  <a href="https://github.com/warmhug">@warmhug</a>（在工具雏形阶段的热心的测试与反馈）</li>
+</ul>
       </section>
     </div>
 
