@@ -23,7 +23,7 @@ var help = function () {
             '\x1B[90m    debugging Template\x1B[39m',
 
             '    --type',
-            '\x1B[90m    optional: templatejs (default) | cmd (RequireJS/SeaJS) | amd (RequireJS) | commonjs (NodeJS)\x1B[39m',
+            '\x1B[90m    optional: templatejs (Default) | cmd (RequireJS/SeaJS) | amd (RequireJS) | commonjs (NodeJS)\x1B[39m',
 
             '    --output value',
             '\x1B[90m    defining an output directory\x1B[39m',

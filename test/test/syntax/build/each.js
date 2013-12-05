@@ -1,0 +1,2 @@
+/*! <TmodJS> <MD5:a998822872e65a78daff456fa15bb0f3>*/
+template("./each",function(e){var t=this,n=t.$each,r=e.normsName,a=(e.feature,e.index,t.$escape),u=(e.$value,e.$index,t.$string),s="";return n(r.user_feature,function(e,t){s+=' <tr> <td class="attribute" colspan="3">',s+=a(r.user_feature_name[t]),s+="</td> </tr> ",n(r["user_norm_"+e],function(){s+=" "}),s+=" ",s+=u(n()),s+=" "}),new String(s)});
