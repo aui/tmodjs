@@ -39,7 +39,7 @@ TmodJS（原名 atc）是一款前端模板编译工具，它可以让前端模�
 
 ##	安装
 
-先安装 [NodeJS](http://nodejs.org) 与 npm (最新版 NodeJS 已经附带 npm)，执行：
+先安装 [NodeJS](http://nodejs.org) 与 Npm (最新版 NodeJS 已经附带 Npm)，执行：
 
 ```
 $ npm install tmodjs -g
@@ -50,7 +50,7 @@ $ npm install tmodjs -g
 
 ##	快速入门
 
-学习 TmodJS 只需要理解这四个关键点就好，7分钟可入门：
+学习 TmodJS 只需要理解这四个关键点就好，5分钟可入门：
 
 1. 建立模板目录：TmodJS 是基于目录编译，你至少要给项目建立一个专用的前端模板目录
 2. 编写模板：你需要了解 TmodJS 的模板语句，如输出变量、条件判断、循环等
@@ -318,12 +318,14 @@ NodeJS 版本：
 
 ###	使用 TmodJS 的项目
 
-*	Spa（迅雷）
-*	MicroTrend（腾讯）
-*	Tracker（腾讯）
-*	Qzone（腾讯）
+*	[Qzone](http://qzone.qq.com)（[腾讯](http://qq.com)）
+*	Spa（[迅雷](http://xunlei.com)）
+*	[爱拍原创](http://m.aipai.com)（[爱拍网络](http://www.aipai.com)）
+*	MicroTrend（[腾讯](http://qq.com)）
+*	Tracker（[腾讯](http://qq.com)）
+*	……
 
-[提交项目](https://github.com/aui/tmodjs/issues/1)
+[提交项目展示到 TmodJS 主页](https://github.com/aui/tmodjs/issues/1)
 
 ###	贡献者
 
