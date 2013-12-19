@@ -41,7 +41,7 @@ var vm = require("vm");
         if (typeof oldPath[name] === 'function') {
             newPath[name] = proxy(name);
         }
-    };
+    }
 
     path = newPath;
 })();
@@ -492,7 +492,7 @@ module.exports = {
 
                     templates.push(id);
 
-                    if (!that.combo.test(id)) {
+                    if (!that.combo || !that.combo.test(id)) {
                         ignores.push(id);
                         return;
                     }
@@ -734,7 +734,7 @@ module.exports = {
                 };
                 for (var name in compileInfo) {
                     e[name] = compileInfo[name];
-                };
+                }
 
                 // 模板编译错误事件
                 this.emit('compileError', e);
@@ -911,7 +911,7 @@ module.exports = {
 
         // 监听模板加载事件
         this.on('load', function (data) {
-            this._log(data.id + '[grey].' + data.extname + '[/grey]');
+            this._log(data.id.replace(/^\.\//, '') + '[grey].' + data.extname + '[/grey]');
         });
 
 

@@ -92,11 +92,9 @@ $ tmod [path] [options]
 
 ###	四、调用模板
 
-模板编译后，模板目录会生成 build 子目录，里面包含了所有的模板编译版本。其中 build/template.js 是压缩后的模板包，通常情况下你只需要在页面中引入它就好。例如：
+模板编译后，模板目录会生成 build 子目录，里面包含了所有的模板编译版本。其中 build/template.js 是压缩后的模板包，通常情况下你只需要在页面中引入它就好（其余的文件可以暂时忽略）。例如：
 
-```
-<script src="tpl/build/template.js"></script>
-```
+	<script src="tpl/build/template.js"></script>
 
 这是默认的加载方式，除此之外还支持 RequireJS、SeaJS、NodeJS 加载。[示例](http://aui.github.io/tmodjs/test/index.html)
 	
@@ -115,7 +113,7 @@ document.getElementById('list').innerHTML = html;
 
 ##	编译演示项目
 
-源码包中 ./test 是一个演示项目，./test/tpl 是项目的模板目录，包含了若干模板。你可以通过这个演示项目快速了解 TmodJS 用法以及模板语法、模板加载方式。
+源码包中``./test``是一个演示项目，``./test/tpl``是项目的模板目录，包含了若干模板。你可以通过这个演示项目快速了解 TmodJS 用法以及模板语法、模板加载方式。
 
 首先，使用 cd 命令切换到 TmodJS 目录后，你可以编译这个目录模板：
 
@@ -254,6 +252,11 @@ TmodJS.on('compile', function (data) {});
 
 ##	更新日志
 
+###	TmodJS v0.0.3
+
+*	修复``combo``配置不能为空数组的 BUG
+*	进一步精简模块 ID
+
 ###	TmodJS v0.0.2
 
 修复极其特殊情况下 TmodJS 无法为 AMD/CMD 模块正确声明依赖的问题[#14](https://github.com/aui/tmodjs/issues/14)
@@ -329,5 +332,10 @@ NodeJS 版本：
 
 ###	贡献者
 
+*	[@aui](https://github.com/aui)
+*	[@Jsonzhang](https://github.com/Jsonzhang)
 *	[@TooBug](https://github.com/TooBug)
+
+**特别感谢**
+
 *	[@warmhug](https://github.com/warmhug)（在工具雏形阶段的热心的测试与反馈）
