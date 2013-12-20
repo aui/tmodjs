@@ -470,7 +470,7 @@ module.exports = {
         var ignores = [];
         var isDebug = this.options.debug;
         var isWrappings = this.options.type !== 'templatejs';
-        var runtime = this.options.engine ? '/lib/template-full.js' : '/lib/template-runtime.js';
+        var runtime = this.options.engine ? '/lib/runtime/full.js' : '/lib/runtime/basic.js';
         
         var template = fs.readFileSync(__dirname + runtime, 'utf-8');
 
