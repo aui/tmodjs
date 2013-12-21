@@ -255,7 +255,7 @@ TmodJS.on('compile', function (data) {});
 ###	TmodJS v0.0.3
 
 *	修复``combo``配置不能为空数组的 BUG
-*	进一步精简模块 ID
+*	支持页面内嵌动态编译与预编译两种方案共存（请设置``engine:true``）
 *	运行时性能优化
 
 ###	TmodJS v0.0.2
