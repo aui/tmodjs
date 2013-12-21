@@ -807,6 +807,11 @@ module.exports = {
 
 
             var walk = function (dir) {
+                
+                if (dir === that.output) {
+                    return;
+                }
+
                 var dirList = fs.readdirSync(dir);
                 
                 dirList.forEach(function (item) {

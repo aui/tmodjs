@@ -256,6 +256,7 @@ TmodJS.on('compile', function (data) {});
 
 *	修复``combo``配置不能为空数组的 BUG
 *	进一步精简模块 ID
+*	运行时性能优化
 
 ###	TmodJS v0.0.2
 
