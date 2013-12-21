@@ -1,6 +1,6 @@
 {
     "name": "tmodjs",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "readmeFilename": "README.md",
     "description": "Template Compiler",
     "homepage": "https://github.com/aui/tmodjs",
@@ -25,7 +25,7 @@
     },
     "scripts": {
         "test": "tmod ./test/tpl",
-        "test2": "tmod ./test/test/include"
+        "test2": "tmod ./test/test-all/*"
     },
     "dependencies": {
         "uglify-js": "~2.4.0",

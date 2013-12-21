@@ -1,2 +1,2 @@
-/*! <TmodJS> <MD5:9b834ed1292a0f9839f81d0ccda2d6cd>*/
-template("./index",function(i,e){var t=this,include=function(l,n){n=n||i;var r=t.$include(l,n,e);return void 0!==r?(a+=r,r):void 0},l=t.$escape,n=i.title,r=t.$each,u=i.list,a=(i.$value,i.$index,"");return include("./public/header"),a+=' <div id="main"> <h3>',a+=l(n),a+="</h3> <ul> ",r(u,function(i){a+=' <li><a href="',a+=l(i.url),a+='">',a+=l(i.title),a+="</a></li> "}),a+=" </ul> </div> ",include("./public/footer"),new String(a)});
+/*! <TmodJS> <MD5:cf97ebe34de98cbcd7174f61772eb18f>*/
+template("index",function(i,e){var t=this,include=function(l,n){n=n||i;var r=t.$include(l,n,e);return void 0!==r?(a+=r,r):void 0},l=t.$escape,n=i.title,r=t.$each,u=i.list,a=(i.$value,i.$index,"");return include("./public/header"),a+=' <div id="main"> <h3>',a+=l(n),a+="</h3> <ul> ",r(u,function(i){a+=' <li><a href="',a+=l(i.url),a+='">',a+=l(i.title),a+="</a></li> "}),a+=" </ul> </div> ",include("./public/footer"),new String(a)});
