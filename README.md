@@ -1,7 +1,5 @@
 #	TmodJS-前端模板编译工具
 
-> 导语：阅读本文档之前，建议先阅读[《进击！前端模板之工程化》](http://aui.github.io/tmodjs/)
-
 ##	关于 TmodJS
 
 TmodJS（原名 atc）是一款前端模板编译工具，它可以让前端模板外置、实现类似后端模板一样按文件与目录组织前端模板，并且模板之间可以使用``include``语句相互包含。
@@ -249,6 +247,9 @@ TmodJS.on('compile', function (data) {});
 
 > 请参考：[页面中的模板迁移指南](https://github.com/aui/tmodjs/wiki/页面中的模板迁移指南)。
 
+**问**：如何不合并输出？
+
+> 编辑配置文件，设置``combo:[]``。
 
 ##	更新日志
 
@@ -257,6 +258,7 @@ TmodJS.on('compile', function (data) {});
 *	修复``combo``配置不能为空数组的 BUG
 *	支持页面内嵌动态编译与预编译两种方案共存（请设置``engine:true``，并在页面中中引入 TmodJS 输出的 template.js。如果想让 template.js 不内置合并的模板，可以设置``combo:[]``）
 *	运行时性能优化
+*	增加``alias``配置字段，在 AMD 与 CMD 模式下可以指定运行时依赖 ID
 
 ###	TmodJS v0.0.2
 
@@ -322,21 +324,26 @@ NodeJS 版本：
 
 ###	使用 TmodJS 的项目
 
-*	[Qzone](http://qzone.qq.com)（[腾讯](http://qq.com)）
-*	Spa（[迅雷](http://xunlei.com)）
-*	[爱拍原创](http://m.aipai.com)（[爱拍网络](http://www.aipai.com)）
-*	MicroTrend（[腾讯](http://qq.com)）
-*	Tracker（[腾讯](http://qq.com)）
+*	QQ空间
+*	腾讯视频
+*	爱拍原创
+*	Spa（迅雷）
+*	MicroTrend（腾讯）
+*	Tracker（腾讯）
 *	……
 
 [提交项目展示到 TmodJS 主页](https://github.com/aui/tmodjs/issues/1)
 
-###	贡献者
+###	贡献名单
 
 *	[@aui](https://github.com/aui)
-*	[@Jsonzhang](https://github.com/Jsonzhang)
 *	[@TooBug](https://github.com/TooBug)
+*	[@Jsonzhang](https://github.com/Jsonzhang)（GruntJS 插件开发者）
 
-**特别感谢**
+###	特别感谢
 
 *	[@warmhug](https://github.com/warmhug)（在工具雏形阶段的热心的测试与反馈）
+
+--------------------
+
+附：为何要创造 TmodJS？请阅读[《进击！前端模板之工程化》](http://aui.github.io/tmodjs/)

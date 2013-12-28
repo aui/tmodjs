@@ -80,6 +80,9 @@ module.exports = {
         // 自定义辅助方法路径
         helpers: null,
 
+        // 运行时别名
+        alias: null,
+
         // 是否输出为压缩的格式
         minify: true,
 
@@ -554,7 +557,7 @@ module.exports = {
         });
 
 
-        var target = path.join(this.output, (this.options.runtime || RUNTIME) + '.js');
+        var target = path.join(this.output, RUNTIME + '.js');
         
 
         this._fsWrite(target, template);
@@ -677,7 +680,7 @@ module.exports = {
             
             if (isChange) {
                 modObject = template.AOTcompile(id, source, {
-                    runtime: this.options.runtime,
+                    alias: this.options.alias,
                     engine: this.options.engine,
                     type: this.options.type,
                     debug: isDebug

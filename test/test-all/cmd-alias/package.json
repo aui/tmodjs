@@ -7,13 +7,15 @@
     "tmodjs-config": {
         "output": "./build",
         "charset": "utf-8",
-        "combo": [],
+        "combo": [
+            "*"
+        ],
         "syntax": "simple",
         "helpers": null,
-        "alias": null,
+        "alias": "template",
         "minify": false,
         "async": false,
-        "engine": true,
+        "engine": false,
         "type": "cmd"
     }
 }

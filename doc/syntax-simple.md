@@ -16,13 +16,12 @@ TmodJS 默认采用 simple 语法，它非常易于读写。
 {{content}}
 ```
 
-
 默认会对变量中 HTML 字符编码输出，避免 XSS 漏洞。
 
 输出原始模板变量 - 不编码：
 
 ```
-{{echo content}}
+{{#content}}
 ```
 
 ### 条件表达式

@@ -1,6 +1,6 @@
 {
     "name": "tmodjs",
-    "version": "0.0.3",
+    "version": "0.0.3-rc1",
     "readmeFilename": "README.md",
     "description": "Template Compiler",
     "homepage": "https://github.com/aui/tmodjs",
@@ -33,3 +33,5 @@
     },
     "license": "BSD"
 }
+        
+        
