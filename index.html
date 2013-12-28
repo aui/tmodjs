@@ -34,7 +34,7 @@
           <h2>
 <a name="%E5%89%8D%E8%A8%80" class="anchor" href="#%E5%89%8D%E8%A8%80"><span class="octicon octicon-link"></span></a>前言</h2>
 
-<p>现在，越来越多的前端项目采用了单页或者混合式的架构，在这种架构中后端只负责吐出 JSON 数据，前端异步来渲染 HTML，前端模板被大量使用，与此同时也将引发开发维护与发布优化的问题。为了解决这些问题，我们曾经开发了工具 TmodJS（原名 atc），试图通过本地自动化工具让端模板走上工程化之路。很高兴这个工具经过长达 8 个月的磨砺后，它从一个简陋的工具变成如今健壮的前端开发“利器”，并且已经有多个大型项目在使用它。现在我将对前端模板工程化的一些思考与总结分享出来，希望能够帮助到大家。在主题开始之前，先简单总结下前端模板技术的发展。</p>
+<p>现在，越来越多的前端项目采用了单页或者混合式的架构，在这种架构中后端只负责吐出 JSON 数据，前端异步来渲染 HTML，前端模板被大量使用，与此同时也将引发开发维护与发布优化的问题。为了解决这些问题，我们曾经开发了工具 TmodJS（原名 atc），试图通过本地自动化工具让端模板走上工程化之路。很高兴这个工具经过长达 8 个月的磨砺后，它从一个简陋的工具变成如今健壮的前端开发“利器”，并且已经有多个大型项目在使用它。现在我将对前端模板工程化的一些思考与总结分享出来，希望能够让大家更好的理解 TmodJS 的意义所在。在主题开始之前，先简单总结下前端模板技术的发展。</p>
 
 <h2>
 <a name="%E6%89%8B%E5%B7%A5%E6%8B%BC%E6%8E%A5%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%97%B6%E4%BB%A3" class="anchor" href="#%E6%89%8B%E5%B7%A5%E6%8B%BC%E6%8E%A5%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%97%B6%E4%BB%A3"><span class="octicon octicon-link"></span></a>手工拼接字符串时代</h2>
@@ -76,7 +76,7 @@ document.getElementById('content').innerHTML = html;
 
 <p><a href="http://aui.github.io/artTemplate/demo/simple-syntax/basic.html">在线示例</a></p>
 
-<p>通过前端模板引擎将 UI 分离后，模板的书写与修改就变得简单多了，多人协作的问题已经得到解决，因此前端模板引擎它也成了前端技术体系中中一个十分基础的类库。但是，这种方式规模化后其弊端也随之而来：</p>
+<p>通过前端模板引擎将 UI 分离后，模板的书写与修改就变得简单多了，多人协作的问题已经得到解决，因此前端模板引擎它也成了前端技术体系中中一个十分基础的类库。但是，这种方式规模化后其弊端也随之而来。</p>
 
 <h3>
 <a name="%E9%A1%B5%E9%9D%A2%E5%86%85%E5%B5%8C%E6%A8%A1%E6%9D%BF%E4%B9%8B%E5%BC%8A%E7%AB%AF" class="anchor" href="#%E9%A1%B5%E9%9D%A2%E5%86%85%E5%B5%8C%E6%A8%A1%E6%9D%BF%E4%B9%8B%E5%BC%8A%E7%AB%AF"><span class="octicon octicon-link"></span></a>页面内嵌模板之弊端</h3>
@@ -96,7 +96,7 @@ document.getElementById('content').innerHTML = html;
 
 <p>比如类似“好友选择器”这样的公用模块，页面内嵌模板满足不了模板复用的需求。</p>
 
-<p>以上问题本质都是因为模板堆砌在一个文件中造成的，于是越来越的项目开始将前端模板从页面中迁移出来，目前主要有两种方式：</p>
+<p>以上三个问题本质都是因为模板堆砌在一个文件中造成的，于是越来越的项目开始将前端模板从页面中迁移出来，目前主要有两种方式：</p>
 
 <h3>
 <a name="%E4%BC%98%E5%8C%96%E5%A4%96%E7%BD%AE%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E4%BC%98%E5%8C%96%E5%A4%96%E7%BD%AE%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>优化：外置模板</h3>
@@ -168,7 +168,7 @@ document.getElementById('content').innerHTML = html;
 </tbody>
 </table><p>在实践中我们发现：方便优化的模式不利于开发；利于开发的模式不利于优化。</p>
 
-<p>为了解决上述问题，业界一些半自动化工具出现了。已知开源引擎 handlebars.js 与 Twitter 的 Hogan.js 采用预编译实现，以 handlebars.js 使用为例，先使用 NodeJS 安装它：</p>
+<p>为了解决上述问题，业界出现了一些工具。已知开源引擎 handlebars.js 与 Twitter 的 Hogan.js 采用了预编译技术来完成模板到 js 的转换，以 handlebars.js 使用为例，先使用 NodeJS 安装它：</p>
 
 <pre><code>$ npm install -g handlebars
 </code></pre>
@@ -189,26 +189,28 @@ document.getElementById('content').innerHTML = html;
 var html = template(data);
 </code></pre>
 
-<p>预编译工具已经支持了模板转换，在一定程度上解决了我们的问题。但由于操作实在是太繁琐，实际使用起来也是非常不顺畅。例如一个 web app 单页应用，几百条前端模板是常有的事儿，开发阶段我们会不断的添加、修改模板，如果每次都需要重新编译这简直会令人抓狂，与此同时大量零散的模板脚本也会引发新的问题，编译后的模板没有提供显式的依赖声明，自动化工具依然难以介入。</p>
+<p>于是，预编译工具在一定程度上解决了我们的问题。但由于操作实在是太繁琐，实际使用起来也是非常不顺畅，它们也并没有流行起来。例如一个 web app 单页应用，几百条前端模板是常有的事儿，开发阶段我们会不断的添加、修改模板，如果每次都需要重新编译这简直会令人抓狂，与此同时大量零散的模板脚本也会引发新的问题，编译后的模板没有提供显式的依赖声明，对于大型项目来说，自动化工具依然难以介入。</p>
 
 <p>总之，预编译方案点燃了前端模板工程化希望之火，使得我们不必局限于浏览器的技术限制，从而让我们更多的想法通过本地工具执行。经过无数次实践、在各种方案权衡后，我们研发了全新的预编译工具 —— TmodJS。</p>
 
 <h2>
 <a name="%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>工程化前端模板</h2>
 
-<p>TmodJS 它的模板基于文件系统，完全可以像后端模板一样理解它，开发者无需考虑前端各种繁杂的优化问题。</p>
+<p>TmodJS 采用一系列集成方案来最大化提升前端工程效率与质量。</p>
 
 <h3>
 <a name="1-%E5%9F%BA%E4%BA%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F" class="anchor" href="#1-%E5%9F%BA%E4%BA%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="octicon octicon-link"></span></a>1. 基于文件系统</h3>
 
-<p>在 TmodJS 的规范中，前端模板不再内嵌到页面中，而是使用专门的目录进行组织维护。使用路径作为模板的 ID，这样与源文件保持一一对应，有利于快速检索。例如页面头部底部的公用模板可以放在 tpl/public 目录下，新闻栏目的模板可以放在 tpl/news 下面。</p>
+<p>在 TmodJS 的规范中，前端模板不再内嵌到页面中，而是使用专门的目录进行组织维护；使用路径作为模板的 ID，这样与源文件保持对应关系 —— 这样好处就是极大的增加了可维护性。例如：页面头部底部的公用模板可以放在 tpl/public 目录下，新闻栏目的模板可以放在 tpl/news 下面。</p>
 
-<p>模板内部也支持<code>include</code>语句来引入子模板，例如：</p>
+<p>同时，模板内部也支持<code>include</code>语句来引入子模板，实现模块复用。例如：</p>
 
 <pre><code>{{include './public/header'}}
 </code></pre>
 
 <p>每个模板就是一个 HTML 片段文件，前端开发工程师可直接将设计师的静态页面的 HTML 拷贝过来，无需对换行符转义，这样开发过程更加便利。</p>
+
+<p>总之，使用文件系统来管理模板已经在服务器端模板中得到广泛的验证，而在前端也同样适用，无论项目规模是多么轻量或者庞大。</p>
 
 <h3>
 <a name="2-%E5%90%8C%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%8E%A5%E5%8F%A3" class="anchor" href="#2-%E5%90%8C%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%8E%A5%E5%8F%A3"><span class="octicon octicon-link"></span></a>2. 同步加载接口</h3>
@@ -236,9 +238,9 @@ var html = tpl(data);
 //...
 </code></pre>
 
-<p>这种情况下模板内部的<code>include</code>语句会编译成<code>requier('xxx/xxx')</code>形式声明依赖，接入 RequireJS 优化工具 r.js 或者 SeaJS 的 spm 可以完成精准的按需合并。</p>
+<p>这种情况下模板内部的<code>include</code>语句会编译成<code>requier('xxx/xxx')</code>形式声明依赖，接入 RequireJS 优化工具 r.js 或者 SeaJS 的 spm 可以完成精准依赖合并。</p>
 
-<p>总之，模板转换为 js 后可优化空间将进一步扩大。案例：</p>
+<p>总之，模板转换为 js 后不但解决了跨域部署的烦恼，其优化空间也更加灵活多样。案例：</p>
 
 <ol>
 <li> 腾讯视频前端团队的实践：关闭 TmodJS 的打包合并，按照网站栏目建立模板子目录，通过 GruntJS 按栏目进行合压缩，然后让栏目页面单独引入合并后的栏目模板。</li>
@@ -246,12 +248,34 @@ var html = tpl(data);
 <li> MicroTrend 是腾讯内部的一个移动端单页 WebApp 项目，包含较多的模板片段，发布前每次都需要手工进行模板抽离与压缩，极其耗时。采用 TmodJS 进行模板管理，模板被打包压缩到一个 js 文件中，开发阶段输出的模板包直接作为发布后的文件，节省了发布阶段繁琐的优化环节。<a href="http://microtrend.cdc.tencent.com/tpl/dist/template.js">查看编译后的模板</a>
 </li>
 </ol><h3>
-<a name="4-%E5%AE%9E%E6%97%B6%E7%BC%96%E8%AF%91" class="anchor" href="#4-%E5%AE%9E%E6%97%B6%E7%BC%96%E8%AF%91"><span class="octicon octicon-link"></span></a>4. 实时编译</h3>
+<a name="4-%E6%9C%AC%E5%9C%B0%E8%B0%83%E8%AF%95" class="anchor" href="#4-%E6%9C%AC%E5%9C%B0%E8%B0%83%E8%AF%95"><span class="octicon octicon-link"></span></a>4. 本地调试</h3>
 
-<p>通常开发阶段模板会经常被修改，所以 TmodJS 支持监听模板目录的修改，当模板发生修改则会进行增量编译。时间久了甚至可以让人忘记编译过程的存在，完全忘记这是在写前端模板。</p>
+<p>通常开发阶段模板会经常被修改，所以 TmodJS 支持监听模板目录的修改，当模板发生修改则会进行增量编译，时间久了甚至可以让人忘记编译过程的存在，完全忘记这是在写前端模板。</p>
+
+<p>无论如何模板最终都会转换成 js，亦可使用 Fiddler 将线上模板映射到本地进行开发调试；如果开启实时编译，开发阶段模板修改后只需要刷新浏览器即可预览到效果。</p>
+
+<p>通常在模板开发阶段会经常遇到数据与预期不符合的情况，TmodJS 编译后的模板还支持运行时调试，可以在控制台输出报错信息，并且可精确到模板所在行：</p>
+
+<pre><code>Template Error
+
+&lt;id&gt;
+public/header
+
+&lt;name&gt;
+Render Error
+
+&lt;message&gt;
+Cannot read property '0' of undefined
+
+&lt;line&gt;
+5
+
+&lt;source&gt;
+{{users[0].name}}
+</code></pre>
 
 <h3>
-<a name="5-%E5%A4%9A%E6%9E%B6%E6%9E%84%E5%85%BC%E5%AE%B9" class="anchor" href="#5-%E5%A4%9A%E6%9E%B6%E6%9E%84%E5%85%BC%E5%AE%B9"><span class="octicon octicon-link"></span></a>5. 多架构兼容</h3>
+<a name="5-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%A4%8D%E7%94%A8" class="anchor" href="#5-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%A4%8D%E7%94%A8"><span class="octicon octicon-link"></span></a>5. 前后端复用</h3>
 
 <p>一般项目，我们直接采用<code>&lt;script&gt;</code>标签载入编译后模板包即可，但是对于使用 RequireJS 或 SeaJS 模块化的项目、甚至是 NodeJS 的项目这将如何处理？</p>
 
@@ -273,15 +297,12 @@ if (typeof define === 'function') {
 }
 </code></pre>
 
-<p>模板包通过运行时判断后，会对不同的环境暴露 API，并且模板加载接口保持不变！可以想象：后端直出 HTML 与前端异步加载的混合架构将变得更加容易。</p>
-
-<h3>
-<a name="6-%E6%9C%AC%E5%9C%B0%E8%B0%83%E8%AF%95" class="anchor" href="#6-%E6%9C%AC%E5%9C%B0%E8%B0%83%E8%AF%95"><span class="octicon octicon-link"></span></a>6. 本地调试</h3>
-
-<p>无论如何模板最终都会转换成 js，亦可使用 Fiddler 将线上模板映射到本地进行开发调试；如果开启实时编译，开发阶段模板修改后只需要刷新浏览器即可预览到效果。</p>
+<p>模板包通过运行时判断后，会对不同的环境暴露对应 API，并且模板加载接口保持不变！可以想象：后端直出 HTML 与前端异步加载的混合架构将变得更加容易。</p>
 
 <h2>
 <a name="%E5%85%B3%E4%BA%8E-tmodjs" class="anchor" href="#%E5%85%B3%E4%BA%8E-tmodjs"><span class="octicon octicon-link"></span></a>关于 TmodJS</h2>
+
+<p>起源于腾讯内部公用组件平台的开源项目，开发团队来自 QQ 空间与 CDC。</p>
 
 <h3>
 <a name="%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98" class="anchor" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="octicon octicon-link"></span></a>常见问题</h3>
