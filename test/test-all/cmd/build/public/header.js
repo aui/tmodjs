@@ -1,14 +1,12 @@
-/*! <TmodJS> <MD5:90d678e674d3ee0ebe39db001e02bf2b>*/
+/*<TMODJS> <MD5:4133dfddff28b346bc30eccd3fcfd170>*/
 define(function(require) {
     require("./logo");
     return require("../template")("public/header", function($data, $id) {
         var $helpers = this, include = function(id, data) {
             data = data || $data;
-            var content = $helpers.$include(id, data, $id);
-            if (content !== undefined) {
-                $out += content;
-                return content;
-            }
+            var $text = $helpers.$include(id, data, $id);
+            $out += $text;
+            return $text;
         }, $out = "";
         $out += ' <div id="header"> ';
         include("./logo");

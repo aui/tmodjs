@@ -3,7 +3,12 @@
 'use strict';
 
 var TmodJS = require('../tmod.js');
+var version = require('../package.json').version;
+
 var fs = require('fs');
+var path = require('path');
+var exec = require('child_process').exec;
+var os = require('os');
 
 var options = {};
 
@@ -49,7 +54,9 @@ var help = function () {
 
 var dir;
 var value;
+var userConfig;
 var isWatch = false;
+var isEditConfig = false;
 var args = process.argv.slice(2);
 
 
@@ -104,6 +111,10 @@ while (args.length > 0) {
             options.helpers = args.shift();
             break;
 
+        case '--config':
+            isEditConfig = true;
+            break;
+
         // 显示帮助
         case '-h':
         case '--help':
@@ -114,7 +125,6 @@ while (args.length > 0) {
         // 版本号
         case '-v':
         case '--version':
-            var version = require('../package.json').version;
             process.stdout.write(version + '\n');
             process.exit();
             break;
@@ -140,6 +150,12 @@ if (!fs.existsSync(dir)) {
 };
 
 
+// 转换成相对于模板目录的路径
+if (options.output) {
+    options.output = path.relative(dir, path.resolve(options.output));
+}
+
+
 TmodJS.init(dir, options);
 
 TmodJS.on('error', function (data) {
@@ -148,12 +164,22 @@ TmodJS.on('error', function (data) {
     }
 });
 
-TmodJS.saveUserConfig();
+userConfig = TmodJS.saveUserConfig();
 
-TmodJS.compile();
 
-if (isWatch) {
-    TmodJS.watch();
+if (isEditConfig) {
+    
+    process.stdout.write('open: ' + userConfig + '\n');
+
+    exec(
+        (/windows/i.test(os.type()) ? 'start' : 'open')
+        + ' ' + userConfig, {timeout: 0}, function () {}
+    );
+
+} else {
+    TmodJS.compile();
+
+    if (isWatch) {
+        TmodJS.watch();
+    }
 }
-
-

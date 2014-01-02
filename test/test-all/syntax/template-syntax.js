@@ -19,6 +19,11 @@
 
         switch (key) {
 
+            case 'var':
+
+                code = 'var ' + args + ';';
+                break;
+
             case 'if':
 
                 code = 'if(' + args + '){';

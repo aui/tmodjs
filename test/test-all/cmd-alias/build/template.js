@@ -1,4 +1,4 @@
-/*! <TmodJS> <build:1387867106101> */
+/*<TMODJS> <BUILD:1388679171113> */
 !function(global) {
     var template = function(path, content) {
         return template[/string|function/.test(typeof content) ? "compile" : "render"].apply(template, arguments);

@@ -7,19 +7,22 @@
 'use strict';
 
 var version = require('./package.json').version;
-var template = require('./lib/template-AOTcompile.js');
-var uglifyjs = require("./lib/uglify.js");
+var template = require('./lib/AOTcompile.js');
+var uglifyjs = require('./lib/uglify.js');
 
 var fs = require('fs');
 var path = require('path');
 var events = require('events');
 var crypto = require('crypto');
-var vm = require("vm");
+var vm = require('vm');
+var exec = require('child_process').exec;
+var os = require('os');
 
+var engineDirname = path.dirname(require.resolve('art-template'));
 
 // 跨平台 path 接口，统一 windows 与 linux 的路径分隔符，
 // 避免不同平台模板编译后其 id 不一致
-(function () {
+;(function () {
 
     if (!/\\/.test(path.resolve())) {
         return path;
@@ -68,40 +71,41 @@ module.exports = {
         // 模板使用的编码。（注意：非 utf-8 编码的模板缺乏测试）
         charset: 'utf-8',
 
-        // 模板合并规则
-        // 注意：type 参数的值为 templatejs 才会生效
-        combo: ['*'],
-
-        // 定义模板采用哪种语法，可选：
+        // 定义模板采用哪种语法，内置可选：
         // simple: 默认语法，易于读写。可参看语法文档
         // native: 功能丰富，灵活多变。语法类似微型模板引擎 tmpl
+        // 或者指定语法解析器路径，参考：
+        // https://github.com/aui/artTemplate/blob/master/src/template-syntax.js
         syntax: 'simple',
 
         // 自定义辅助方法路径
         helpers: null,
 
-        // 运行时别名
-        alias: null,
-
-        // 是否输出为压缩的格式
-        minify: true,
-
-        // 是否内嵌异步加载插件（beta）
-        // 可以支持 template.async(path, function (render) {}) 方式异步载入模板
-        // 注意：type 参数是 templatejs 的时候才生效
-        async: false,
+        // 是否过滤 XSS
+        // 如果后台给出的数据已经进行了 XSS 过滤，就可以关闭模板的过滤以提升模板渲染效率
+        escape: true,
 
         // 是否嵌入模板引擎，否则编译为不依赖引擎的纯 js 代码
-        // 通常来说，模板不多的情况下，编译为原生的 js 打包后体积更小，因为不必嵌入引擎
-        // 当模板很多的时候，内置模板引擎，模板使用字符串存储的方案会更能节省空间
+        // 选择嵌入模板引擎后，模板以字符串存储并浏览器中执行编译
         engine: false,
 
-        // 输出的模块类型（不区分大小写），可选：
+        // 输出的模块类型，可选：
         // templatejs:  模板目录将会打包后输出，可使用 script 标签直接引入，也支持 NodeJS/RequireJS/SeaJS。
         // cmd:         这是一种兼容 RequireJS/SeaJS 的模块（类似 atc v1版本编译结果）
         // amd:         支持 RequireJS 等流行加载器
         // commonjs:    编译为 NodeJS 模块
-        type: 'templatejs'
+        type: 'templatejs',
+
+        // 运行时别名
+        // 仅针对于非 templatejs 的类型模块
+        alias: null,
+
+        // 是否合并模板
+        // 仅针对于 templatejs 类型的模块
+        combo: true,
+
+        // 是否输出为压缩的格式
+        minify: true
 
     },
 
@@ -148,8 +152,8 @@ module.exports = {
 
 
         // 项目配置 优先级：1
-        for (name in json["tmodjs-config"]) {
-            config[name] = json["tmodjs-config"][name];
+        for (name in json['tmodjs-config']) {
+            config[name] = json['tmodjs-config'][name];
         }
         
 
@@ -159,18 +163,38 @@ module.exports = {
         }
 
 
-        json["tmodjs-config"] = config;
+        json['tmodjs-config'] = config;
         this['package.json'] = json;
 
+
         // 忽略大小写
-        config['type'] = config['type'].toLowerCase();
-        config['syntax'] = config['syntax'].toLowerCase();
+        config.type = config.type.toLowerCase();
+
+
+        // 模板合并规则
+        // 兼容 0.0.3-rc3 之前的配置
+        if (Array.isArray(config.combo) && !config.combo.length) {
+            config.combo = false;
+        } else {
+            config.combo = !!config.combo;
+        }
+
+
+        // 根据生成模块的类型删除不支持的配置字段
+        if (config.type === 'templatejs') {
+            delete config.alias;
+        } else {
+            delete config.combo;
+        }
 
         return config;
     },
 
 
-    /** 保存用户配置 */
+    /**
+     * 保存用户配置
+     * @return  {String}    用户配置文件路径
+     */
     saveUserConfig: function () {
 
         var file = this.path + '/package.json';
@@ -179,11 +203,6 @@ module.exports = {
 
         var options = json[configName];
         var userConfigList = Object.keys(this.defaults);
-
-
-        //if (options.output.indexOf('.') === 0) {
-        //    json.main = options.output + '/' + (options.runtime || RUNTIME) + '.js';
-        //}
 
 
         // 只保存指定的字段
@@ -196,6 +215,8 @@ module.exports = {
 
         
         fs.writeFileSync(file, text, 'utf-8');
+
+        return file;
     },
 
 
@@ -287,7 +308,7 @@ module.exports = {
                 };
 
                 
-                if (/windows/i.test(require('os').type())) {
+                if (/windows/i.test(os.type())) {
                     // window 下 nodejs fs.watch 方法尚未稳定
                     clearTimeout(timer[fullname]);
                     timer[fullname] = setTimeout(function() {
@@ -408,7 +429,7 @@ module.exports = {
         this._fsWrite(debugFile, code);
         
         // 启动子进程进行调试，从根本上避免影响当前进程
-        var exec = require('child_process').exec; 
+        
         exec('node ' + debugFile, {timeout: 0}, function (error, stdout, stderr) {
             var message = error ? error.message : '';
             message = message
@@ -470,10 +491,10 @@ module.exports = {
 
         var that = this;
         var templates = [];
-        var ignores = [];
-        var isDebug = this.options.debug;
-        var isWrappings = this.options.type !== 'templatejs';
-        var runtime = this.options.engine ? '/lib/runtime/full.js' : '/lib/runtime/basic.js';
+        var options = this.options;
+        var isDebug = options.debug;
+        var isWrappings = options.type !== 'templatejs';
+        var runtime = options.engine ? '/lib/runtime/full.js' : '/lib/runtime/basic.js';
         
         var template = fs.readFileSync(__dirname + runtime, 'utf-8');
 
@@ -494,11 +515,6 @@ module.exports = {
                     .replace(that.path + '/', '');
 
                     templates.push(id);
-
-                    if (!that.combo || !that.combo.test(id)) {
-                        ignores.push(id);
-                        return;
-                    }
                     
                     var target = that.output + '/' + id + '.js';
 
@@ -519,7 +535,7 @@ module.exports = {
             });
         };
 
-        if (!isWrappings) {
+        if (!isWrappings && options.combo) {
             walk(this.path);
         }
 
@@ -532,23 +548,16 @@ module.exports = {
             build: build,
             templates: combo,
             debug: debug,
-            plugins: '',
             syntax: '',
             engine: '',
             helpers: this.helpers
         };
 
 
-        // 嵌入异步加载插件
-        if (this.options.async) {
-            data.plugins = fs.readFileSync(__dirname + '/lib/template-async.js', 'utf-8');
-        }
-
-
         // 嵌入引擎
         if (this.options.engine) {
-            data.engine = fs.readFileSync(__dirname + '/lib/template.js', 'utf-8');
-            data.syntax = fs.readFileSync(__dirname + '/lib/template-syntax.js', 'utf-8');
+            data.engine = fs.readFileSync(engineDirname + '/template.js', 'utf-8');
+            data.syntax = this.syntax;
         }
 
 
@@ -569,9 +578,11 @@ module.exports = {
 
         this.emit('combo', {
             output: target,
+            name: RUNTIME,
+            fullname: RUNTIME + '.js',
+            extname: '.js',
             isDebug: isDebug,
             templates: templates,
-            ignores: ignores,
             build: build
         });
     },
@@ -699,9 +710,7 @@ module.exports = {
         if (!error && isChange) {
 
             var md5 = this._md5(source + JSON.stringify(this['package.json']));
-            mod = '/*! <TmodJS> <MD5:' + md5 + '>'
-            + (isDebug ? ' <DEBUG>' : '')
-            + '*/\n' + mod;
+            mod = '/*<TMODJS> <MD5:' + md5 + '>' + (isDebug ? ' <DEBUG>' : '') + '*/\n' + mod;
 
             this._fsWrite(target, mod);
             uglifyjs[isDebug || !this.options.minify ? 'beautify' : 'minify'](target);
@@ -858,10 +867,10 @@ module.exports = {
 
         // 加载辅助方法
         if (options['helpers']) {
-            var helpersPath = path.join(this.path, options['helpers']);
+            var helpersFile = path.join(this.path, options['helpers']);
 
-            if (fs.existsSync(helpersPath)) {
-                this.helpers = fs.readFileSync(helpersPath, 'utf-8');
+            if (fs.existsSync(helpersFile)) {
+                this.helpers = fs.readFileSync(helpersFile, 'utf-8');
                 vm.runInNewContext(this.helpers, {
                     template: template
                 });
@@ -871,30 +880,21 @@ module.exports = {
 
         // 加载模板语法设置
         if (options['syntax'] && options['syntax'] !== 'native') {
-            var syntaxPath = options['syntax']  === 'simple'
-            ? __dirname + '/lib/template-syntax.js'
+            var syntaxFile = options['syntax']  === 'simple'
+            ? engineDirname + '/template-syntax.js'
             : path.join(this.path, options['syntax']);
 
-            if (fs.existsSync(syntaxPath)) {
-                vm.runInNewContext(fs.readFileSync(syntaxPath, 'utf-8'), {
+            if (fs.existsSync(syntaxFile)) {
+                this.syntax = fs.readFileSync(syntaxFile, 'utf-8');
+                vm.runInNewContext(this.syntax, {
                     template: template
                 });
             }
         }
 
 
-        // 模板合并规则
-        if (options.combo.length) {
-            var reg = [];
-            options.combo.forEach(function (combo) {
-                combo = combo
-                .replace(/([\$\.])/g, '\\$1')
-                .replace(/\*/g, '(.*?)');
-
-                reg.push('^' + combo + '$');
-            });
-            this.combo = new RegExp(reg.join('|'));
-        }
+        // 是否过滤 XSS 的开关
+        template.isEscape = options.escape;
 
 
         // 初始化 watch 事件
@@ -919,17 +919,19 @@ module.exports = {
 
         // 监听模板加载事件
         this.on('load', function (data) {
+            if (data.isChange) {
+                this._log('[green]⊙[/green] ');
+            } else {
+                this._log('[grey]⊙[/grey] ');
+            }
+            
             this._log(data.id.replace(/^\.\//, '') + '[grey].' + data.extname + '[/grey]');
         });
 
 
         // 监听模板编译事件
         this.on('compile', function (data) {
-            if (data.isChange) {
-                this._log(' [green]√[/green]\n');
-            } else {
-                this._log(' [grey]√[/grey]\n');
-            }
+            this._log('\n');
         });
 
 
@@ -943,22 +945,18 @@ module.exports = {
 
         // 监听模板合并事件
         this.on('combo', function (data) {
+            var output = options.type === 'templatejs'
+                ? options.output + '/' + data.fullname
+                : options.output + '/';
 
+            output = output.replace(/^\.\//, '');
+
+            this._log('[grey]> [/grey]');
+            this._log(this.options.debug ? '[inverse]<DEBUG>[/inverse] ' : '');
+            this._log(output);
             this._log('\n');
 
-            var iLength = data.ignores.length;
-            var tLengtn = data.templates.length;
-
-            if (data.ignores.length) {
-                this._log('[grey]Ignore(' + iLength + '/' + tLengtn + '): '
-                    + data.ignores.join(', ')  + '[/grey]\n');
-            }
-
-            this._log('[grey]>>> [/grey][green]' + data.output + '[/green]');
-            this._log(this.options.debug ? ' [red]<DEBUG>[/red]\n' : '\n');
-
         });
-
 
     }
 

@@ -1,4 +1,4 @@
-/*! <TmodJS> <MD5:835f38de0ec45f4bbcc10a89f9f0e7b0>*/
+/*<TMODJS> <MD5:381fc7118844df05d89ffe7821c4c087>*/
 define(function(require) {
     return require("template")("copyright", "(c) 2013");
 });

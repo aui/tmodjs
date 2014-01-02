@@ -2,19 +2,17 @@
     "name": "template",
     "version": "1.0.0",
     "dependencies": {
-        "tmodjs": "~0.0.2"
+        "tmodjs": "~0.0.4"
     },
     "tmodjs-config": {
         "output": "./build",
         "charset": "utf-8",
-        "combo": [
-            "*"
-        ],
         "syntax": "simple",
         "helpers": null,
-        "minify": false,
-        "async": false,
+        "escape": true,
         "engine": false,
-        "type": "amd"
+        "type": "amd",
+        "alias": null,
+        "minify": false
     }
 }

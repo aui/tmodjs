@@ -1,4 +1,16 @@
-var template = require('./tpl/build/template');
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TemplateJS - 调用模板演示</title>
+</head>
+
+<body>
+
+<div id="doc">loading..</div>
+
+<script src="./syntax-native/build/template.js"></script>
+<script>
 // 演示JSON数据
 var data = {
 	title: '国内要闻',
@@ -27,6 +39,11 @@ var data = {
 	]
 };
 
+// 加载index模板
+document.getElementById('doc').innerHTML = template('index', data);
+</script>
+</body>
+</html>
 
-var html = template('index', data);
-console.log(html)
+
+

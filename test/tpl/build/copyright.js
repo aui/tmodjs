@@ -1,2 +1,2 @@
-/*! <TmodJS> <MD5:27f2b222b3b5d405a579cb1d49956832>*/
-template("copyright","(c) 2013");
+/*<TMODJS> <MD5:b93ae4ee01ca3de8d5c6a12075113f57> <DEBUG>*/
+template("copyright", "(c) 2013");

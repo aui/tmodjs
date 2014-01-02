@@ -1,10 +1,10 @@
-/*! <TmodJS> <build:1387474292463> */
+/*<TMODJS> <build:1388679236060> */
 (function(global) {
     "use strict";
     var template = function(id, content) {
         return template[typeof content === "string" ? "compile" : "render"].apply(template, arguments);
     };
-    template.version = "2.0.2";
+    template.version = "2.0.3";
     template.openTag = "<%";
     template.closeTag = "%>";
     template.isEscape = true;
@@ -54,37 +54,36 @@
         return render;
     };
     var _cache = template.cache = {};
-    var _helpers = template.helpers = {
-        $include: template.render,
-        $string: function(value, type) {
+    var _helpers = template.helpers = function() {
+        var toString = function(value, type) {
             if (typeof value !== "string") {
                 type = typeof value;
                 if (type === "number") {
                     value += "";
                 } else if (type === "function") {
-                    value = _helpers.$string(value());
+                    value = toString(value.call(value));
                 } else {
                     value = "";
                 }
             }
             return value;
-        },
-        $escape: function(content) {
-            var m = {
-                "<": "&#60;",
-                ">": "&#62;",
-                '"': "&#34;",
-                "'": "&#39;",
-                "&": "&#38;"
-            };
-            return _helpers.$string(content).replace(/&(?![\w#]+;)|[<>"']/g, function(s) {
-                return m[s];
+        };
+        var escapeMap = {
+            "<": "&#60;",
+            ">": "&#62;",
+            '"': "&#34;",
+            "'": "&#39;",
+            "&": "&#38;"
+        };
+        var escapeHTML = function(content) {
+            return toString(content).replace(/&(?![\w#]+;)|[<>"']/g, function(s) {
+                return escapeMap[s];
             });
-        },
-        $each: function(data, callback) {
-            var isArray = Array.isArray || function(obj) {
-                return {}.toString.call(obj) === "[object Array]";
-            };
+        };
+        var isArray = Array.isArray || function(obj) {
+            return {}.toString.call(obj) === "[object Array]";
+        };
+        var each = function(data, callback) {
             if (isArray(data)) {
                 for (var i = 0, len = data.length; i < len; i++) {
                     callback.call(data, data[i], i, data);
@@ -94,8 +93,14 @@
                     callback.call(data, data[i], i);
                 }
             }
-        }
-    };
+        };
+        return {
+            $include: template.render,
+            $string: toString,
+            $escape: escapeHTML,
+            $each: each
+        };
+    }();
     template.helper = function(name, helper) {
         _helpers[name] = helper;
     };
@@ -156,10 +161,10 @@
             var variables = "var $helpers=this," + (isDebug ? "$line=0," : "");
             var isNewEngine = "".trim;
             var replaces = isNewEngine ? [ "$out='';", "$out+=", ";", "$out" ] : [ "$out=[];", "$out.push(", ");", "$out.join('')" ];
-            var concat = isNewEngine ? "if(content!==undefined){$out+=content;return content;}" : "$out.push(content);";
-            var print = "function(content){" + concat + "}";
-            var include = "function(id,data){" + "data=data||$data;" + "var content=$helpers.$include(id,data,$id);" + concat + "}";
-            forEach(code.split(openTag), function(code, i) {
+            var concat = isNewEngine ? "$out+=$text;return $text;" : "$out.push($text);";
+            var print = "function($text){" + concat + "}";
+            var include = "function(id,data){" + "data=data||$data;" + "var $text=$helpers.$include(id,data,$id);" + concat + "}";
+            forEach(code.split(openTag), function(code) {
                 code = code.split(closeTag);
                 var $0 = code[0];
                 var $1 = code[1];
@@ -206,8 +211,8 @@
                     });
                 }
                 if (code.indexOf("=") === 0) {
-                    var isEscape = code.indexOf("==") !== 0;
-                    code = code.replace(/^=*|[\s;]*$/g, "");
+                    var isEscape = !/^=[=#]/.test(code);
+                    code = code.replace(/^=[=#]?|[\s;]*$/g, "");
                     if (isEscape && template.isEscape) {
                         var name = code.replace(/\s*\([^\)]+\)/, "");
                         if (!_helpers.hasOwnProperty(name) && !/^(include|print)$/.test(name)) {
@@ -271,7 +276,7 @@
 !function(global, template) {
     var get = template.get;
     var helpers = template.helpers;
-    helpers.$resolve = function(from, to) {
+    var resolve = function(from, to) {
         var DOUBLE_DOT_RE = /(\/)[^/]+\1\.\.\1/;
         var dirname = from.replace(/^([^.])/, "./$1").replace(/[^/]+$/, "");
         var id = dirname + to;
@@ -282,7 +287,7 @@
         return id;
     };
     helpers.$include = function(path, data, from) {
-        var id = helpers.$resolve(from, path);
+        var id = resolve(from, path);
         return template.render(id, data);
     };
     template.get = function(id) {
@@ -340,7 +345,7 @@
 
               default:
                 if (exports.helpers.hasOwnProperty(key)) {
-                    code = "==" + key + "(" + split.join(",") + ");";
+                    code = "=#" + key + "(" + split.join(",") + ");";
                 } else {
                     code = code.replace(/[\s;]*$/, "");
                     code = "=" + code;

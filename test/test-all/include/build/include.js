@@ -1,13 +1,11 @@
-/*! <TmodJS> <MD5:1502bfe614907cbe7dfe457f1cc4a2ce>*/
+/*<TMODJS> <MD5:e1651f60a9026d354ed8f2fca7d2a9a5>*/
 define([ "./template", "./a", "./b", "./e", "./d" ], function(template) {
-    return template("./include", function($data, $id) {
+    return template("include", function($data, $id) {
         var $helpers = this, include = function(id, data) {
             data = data || $data;
-            var content = $helpers.$include(id, data, $id);
-            if (content !== undefined) {
-                $out += content;
-                return content;
-            }
+            var $text = $helpers.$include(id, data, $id);
+            $out += $text;
+            return $text;
         }, labe = $data.labe, xxx = $data.xxx, $out = "";
         include("./a", {
             labe: ")"

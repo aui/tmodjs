@@ -1,0 +1,2 @@
+/*<TMODJS> <MD5:6f927e88ccc00828b7007d076a030feb>*/
+template("index",function(i){var e=this,l=i.x,t=e.$escape,n=i.title,a=e.$each,r=i.list,u=(i.$value,i.$index,""),l="hello world";return u+=" ",u+=t(l),u+=' <div id="main"> <h3>',u+=t(n),u+="</h3> <ul> ",a(r,function(i){u+=' <li><a href="',u+=t(i.url),u+='">',u+=t(i.title),u+="</a></li> "}),u+=" </ul> </div>",new String(u)});

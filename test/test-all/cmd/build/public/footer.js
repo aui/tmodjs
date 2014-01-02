@@ -1,14 +1,12 @@
-/*! <TmodJS> <MD5:0cb02d9a2a3111610298d89dc77d61e9>*/
+/*<TMODJS> <MD5:da0b6712a4ba00998edf2461fc6b9b76>*/
 define(function(require) {
     require("../copyright");
     return require("../template")("public/footer", function($data, $id) {
         var $helpers = this, time = $data.time, $escape = $helpers.$escape, include = function(id, data) {
             data = data || $data;
-            var content = $helpers.$include(id, data, $id);
-            if (content !== undefined) {
-                $out += content;
-                return content;
-            }
+            var $text = $helpers.$include(id, data, $id);
+            $out += $text;
+            return $text;
         }, $out = "";
         $out += '<div id="footer"> ';
         if (time) {

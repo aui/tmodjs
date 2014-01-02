@@ -1,57 +1,66 @@
-/*! <TmodJS> <build:1387473335642> */
+/*<TMODJS> <BUILD:1388679143821> */
 !function(global) {
     var template = function(path, content) {
         return template[/string|function/.test(typeof content) ? "compile" : "render"].apply(template, arguments);
     };
     var cache = template.cache = {};
-    var helpers = template.helpers = {
-        $string: function(value) {
-            var type = typeof value;
-            if (!/string|number/.test(type)) {
-                value = type === "function" ? helpers.$string(value()) : "";
-            }
-            return value + "";
-        },
-        $escape: function(content) {
-            var m = {
-                "<": "&#60;",
-                ">": "&#62;",
-                '"': "&#34;",
-                "'": "&#39;",
-                "&": "&#38;"
-            };
-            return helpers.$string(content).replace(/&(?![\w#]+;)|[<>"']/g, function(s) {
-                return m[s];
-            });
-        },
-        $each: function(data, callback) {
-            var isArray = Array.isArray || function(obj) {
-                return {}.toString.call(obj) === "[object Array]";
-            };
-            if (isArray(data)) {
-                for (var i = 0, len = data.length; i < len; i++) {
-                    callback.call(data, data[i], i, data);
-                }
+    var toString = function(value, type) {
+        if (typeof value !== "string") {
+            type = typeof value;
+            if (type === "number") {
+                value += "";
+            } else if (type === "function") {
+                value = toString(value.call(value));
             } else {
-                for (i in data) {
-                    callback.call(data, data[i], i);
-                }
+                value = "";
             }
-        },
-        $resolve: function(from, to) {
-            var DOUBLE_DOT_RE = /(\/)[^/]+\1\.\.\1/;
-            var dirname = from.replace(/^([^.])/, "./$1").replace(/[^/]+$/, "");
-            var id = dirname + to;
-            id = id.replace(/\/\.\//g, "/");
-            while (id.match(DOUBLE_DOT_RE)) {
-                id = id.replace(DOUBLE_DOT_RE, "/");
-            }
-            return id;
-        },
-        $include: function(path, data, from) {
-            var id = helpers.$resolve(from, path);
-            return template.render(id, data);
         }
+        return value;
+    };
+    var escapeMap = {
+        "<": "&#60;",
+        ">": "&#62;",
+        '"': "&#34;",
+        "'": "&#39;",
+        "&": "&#38;"
+    };
+    var escapeHTML = function(content) {
+        return toString(content).replace(/&(?![\w#]+;)|[<>"']/g, function(s) {
+            return escapeMap[s];
+        });
+    };
+    var isArray = Array.isArray || function(obj) {
+        return {}.toString.call(obj) === "[object Array]";
+    };
+    var each = function(data, callback) {
+        if (isArray(data)) {
+            for (var i = 0, len = data.length; i < len; i++) {
+                callback.call(data, data[i], i, data);
+            }
+        } else {
+            for (i in data) {
+                callback.call(data, data[i], i);
+            }
+        }
+    };
+    var resolve = function(from, to) {
+        var DOUBLE_DOT_RE = /(\/)[^/]+\1\.\.\1/;
+        var dirname = from.replace(/^([^.])/, "./$1").replace(/[^/]+$/, "");
+        var id = dirname + to;
+        id = id.replace(/\/\.\//g, "/");
+        while (id.match(DOUBLE_DOT_RE)) {
+            id = id.replace(DOUBLE_DOT_RE, "/");
+        }
+        return id;
+    };
+    var helpers = template.helpers = {
+        $include: function(path, data, from) {
+            var id = resolve(from, path);
+            return template.render(id, data);
+        },
+        $string: toString,
+        $escape: escapeHTML,
+        $each: each
     };
     var debug = function(e) {
         var message = "";
@@ -90,7 +99,6 @@
     };
     template.get = function(id) {
         return cache[id.replace(/^\.\//, "")];
-        return cache[id];
     };
     template.helper = function(name, helper) {
         helpers[name] = helper;

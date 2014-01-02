@@ -1,13 +1,11 @@
-/*! <TmodJS> <MD5:191d212296108c752aa66af6a27577df>*/
+/*<TMODJS> <MD5:50e9e4bead47514ae5e2498aa36be1c2>*/
 define([ "./template", "./public/header", "./public/footer" ], function(template) {
     return template("index", function($data, $id) {
         var $helpers = this, include = function(id, data) {
             data = data || $data;
-            var content = $helpers.$include(id, data, $id);
-            if (content !== undefined) {
-                $out += content;
-                return content;
-            }
+            var $text = $helpers.$include(id, data, $id);
+            $out += $text;
+            return $text;
         }, $escape = $helpers.$escape, title = $data.title, $each = $helpers.$each, list = $data.list, $value = $data.$value, $index = $data.$index, $out = "";
         include("./public/header");
         $out += ' <div id="main"> <h3>';
