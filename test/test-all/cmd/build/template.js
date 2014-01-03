@@ -1,4 +1,4 @@
-/*<TMODJS> <BUILD:1388679160087> */
+/*TMODJS:{"build":1388773704118}*/
 !function(global) {
     var template = function(path, content) {
         return template[/string|function/.test(typeof content) ? "compile" : "render"].apply(template, arguments);

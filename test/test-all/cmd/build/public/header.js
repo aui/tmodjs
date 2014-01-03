@@ -1,4 +1,4 @@
-/*<TMODJS> <MD5:4133dfddff28b346bc30eccd3fcfd170>*/
+/*TMODJS:{"version":1,"md5":"13a6961d3b34f888c13557b3a8cead25"}*/
 define(function(require) {
     require("./logo");
     return require("../template")("public/header", function($data, $id) {

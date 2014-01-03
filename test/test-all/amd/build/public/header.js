@@ -1,4 +1,4 @@
-/*<TMODJS> <MD5:05d7c524ec590dc3654371df9b0aa229>*/
+/*TMODJS:{"version":1,"md5":"69b5fd873be0e48445f3c880438bdb9e"}*/
 define([ "../template", "./logo" ], function(template) {
     return template("public/header", function($data, $id) {
         var $helpers = this, include = function(id, data) {

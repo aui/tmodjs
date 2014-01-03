@@ -1,4 +1,4 @@
-/*<TMODJS> <MD5:475b0d15e5f80f550925e52ed1bc3a10>*/
+/*TMODJS:{"version":1,"md5":"c892cf70a4f8c1de7a8cc9f93c735afd"}*/
 define(function(require) {
     require("./public/header");
     require("./public/footer");

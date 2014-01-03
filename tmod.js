@@ -9,51 +9,29 @@
 var version = require('./package.json').version;
 var template = require('./lib/AOTcompile.js');
 var uglifyjs = require('./lib/uglify.js');
+var stdout = require('./lib/stdout.js');
+var watch = require('./lib/watch.js');
+var path = require('./lib/path.js');
 
 var fs = require('fs');
-var path = require('path');
+var vm = require('vm');
+var os = require('os');
 var events = require('events');
 var crypto = require('crypto');
-var vm = require('vm');
 var exec = require('child_process').exec;
-var os = require('os');
 
 var engineDirname = path.dirname(require.resolve('art-template'));
 
-// 跨平台 path 接口，统一 windows 与 linux 的路径分隔符，
-// 避免不同平台模板编译后其 id 不一致
-;(function () {
-
-    if (!/\\/.test(path.resolve())) {
-        return path;
-    }
-
-    var oldPath = path;
-    var newPath = Object.create(oldPath);
-    var proxy = function (name) {
-        return function () {
-            var value = oldPath[name].apply(oldPath, arguments);
-            if (typeof value === 'string') {
-                value = value.split(oldPath.sep).join('/');
-            }
-            return value;
-        }
-    };
-
-    for (var name in newPath) {
-        if (typeof oldPath[name] === 'function') {
-            newPath[name] = proxy(name);
-        }
-    }
-
-    path = newPath;
-})();
 
 
 var RUNTIME = 'template';
-var EXTNAME_RE = /\.(html|htm|tpl)$/i;
-var FILTER_RE = /[^\w\.\-$]/;
 var DIRNAME_RE = /[^\/]*/;
+var FILTER_RE = /[^\w\.\-$]/;
+var EXTNAME_RE = /\.(html|htm|tpl)$/i;
+
+var log = function (message) {
+    console.log(message)
+};
 
 
 module.exports = {
@@ -90,18 +68,18 @@ module.exports = {
         engine: false,
 
         // 输出的模块类型，可选：
-        // templatejs:  模板目录将会打包后输出，可使用 script 标签直接引入，也支持 NodeJS/RequireJS/SeaJS。
+        // default:  模板目录将会打包后输出，可使用 script 标签直接引入，也支持 NodeJS/RequireJS/SeaJS。
         // cmd:         这是一种兼容 RequireJS/SeaJS 的模块（类似 atc v1版本编译结果）
         // amd:         支持 RequireJS 等流行加载器
         // commonjs:    编译为 NodeJS 模块
-        type: 'templatejs',
+        type: 'default',
 
         // 运行时别名
-        // 仅针对于非 templatejs 的类型模块
+        // 仅针对于非 default 的类型模块
         alias: null,
 
         // 是否合并模板
-        // 仅针对于 templatejs 类型的模块
+        // 仅针对于 default 类型的模块
         combo: true,
 
         // 是否输出为压缩的格式
@@ -112,7 +90,8 @@ module.exports = {
 
     // 获取用户配置
     getUserConfig: function (options, dir) {
-        dir = this.path || dir;
+
+        dir = this.base || dir;
         var file = dir + '/package.json';
         var defaults = this.defaults;
         var json = null;
@@ -136,14 +115,45 @@ module.exports = {
                 "name": 'template',
                 "version": '1.0.0',
                 "dependencies": {
-                    "tmodjs": ""
+                    "tmodjs": "0"
                 },
                 "tmodjs-config": {}
             }
 
         }
 
+
+        // 模板工程依赖的的 TomdJS 版本号与当前版本对比
+        (function (a, b) {
+            a = a.replace('~', '').split('.');
+            b = b.replace('~', '').split('.');
+
+            for (var i = 0, an, bn; i < a.length; i ++) {
+                bn = Number(b[i]);
+                an = Number(a[i]);
+
+                if (bn > an) {
+                    b = 1;
+                    a = 0;
+                    break;
+                }
+
+                if (an > bn) {
+                    b = 0;
+                    a = 1;
+                    break;
+                }
+            }
+
+            if (a > b) {
+                stdout('[red]You must upgrade to the latest version of TmodJS![/red]\n');
+                process.exit(1);
+            }
+        })(json.dependencies.tmodjs, version);
+
+
         json.dependencies.tmodjs = '~' + version;
+
         
         // 默认配置 优先级：0
         for (name in defaults) {
@@ -166,26 +176,8 @@ module.exports = {
         json['tmodjs-config'] = config;
         this['package.json'] = json;
 
+        this._fixConfig(config);
 
-        // 忽略大小写
-        config.type = config.type.toLowerCase();
-
-
-        // 模板合并规则
-        // 兼容 0.0.3-rc3 之前的配置
-        if (Array.isArray(config.combo) && !config.combo.length) {
-            config.combo = false;
-        } else {
-            config.combo = !!config.combo;
-        }
-
-
-        // 根据生成模块的类型删除不支持的配置字段
-        if (config.type === 'templatejs') {
-            delete config.alias;
-        } else {
-            delete config.combo;
-        }
 
         return config;
     },
@@ -197,7 +189,7 @@ module.exports = {
      */
     saveUserConfig: function () {
 
-        var file = this.path + '/package.json';
+        var file = this.base + '/package.json';
         var configName = 'tmodjs-config';
         var json = this['package.json'];
 
@@ -220,112 +212,36 @@ module.exports = {
     },
 
 
-    // 绑定文件监听事件
-    _onwatch: function (dir, callback) {
+    // 修正配置-向前兼容
+    _fixConfig: function (config) {
 
-        var that = this;
-        var watchList = {};
-        var timer = {};
-
-
-        var walk = function (dir) {
-            fs.readdirSync(dir).forEach(function (item) {
-                var fullname = dir + '/' + item;
-                if (fs.statSync(fullname).isDirectory()){
-                    watch(fullname);
-                    walk(fullname);
-                }
-            });
-        };
+        // 忽略大小写
+        config.type = config.type.toLowerCase();
 
 
-        // 排除“.”、“_”开头或者非英文命名的目录
-        var filter = function (name) {
-            return !FILTER_RE.test(name) && name !== that.output;
-        };
+        // 模板合并规则
+        // 兼容 0.0.3-rc3 之前的配置
+        if (Array.isArray(config.combo) && !config.combo.length) {
+            config.combo = false;
+        } else {
+            config.combo = !!config.combo;
+        }
 
 
-        var watch = function (parent) {
-
-            var target = path.basename(parent);
-
-            if (!filter(target)){
-                return;
-            }
-
-            if (watchList[parent]) {
-                watchList[parent].close();
-            }
-
-            watchList[parent] = fs.watch(parent, function (event, filename) {
-
-                var fullname = parent + '/' + filename;
-                var type;
-                var fstype;
-
-                if (!filter(filename)) {
-                    return;
-                }
-
-                // 检查文件、目录是否存在
-                if (!fs.existsSync(fullname)) {
-
-                    // 如果目录被删除则关闭监视器
-                    if (watchList[fullname]) {
-                        fstype = 'directory';
-                        watchList[fullname].close();
-                        delete watchList[fullname];
-                    } else {
-                        fstype = 'file';
-                    }
-
-                    type = 'delete';
-
-                } else {
-
-                    // 文件
-                    if (fs.statSync(fullname).isFile()) {
-
-                        fstype = 'file';
-                        type = event == 'rename' ? 'create' : 'updated'
-
-                    // 文件夹
-                    } else if (event === 'rename') {
-
-                        fstype = 'directory';
-                        type = 'create'
-                        watch(fullname);
-                        walk(fullname);
-                    }
-
-                }
-
-                var eventData = {
-                    type: type,
-                    target: filename,
-                    parent: parent,
-                    fstype: fstype
-                };
-
-                
-                if (/windows/i.test(os.type())) {
-                    // window 下 nodejs fs.watch 方法尚未稳定
-                    clearTimeout(timer[fullname]);
-                    timer[fullname] = setTimeout(function() {
-                        callback.call(that, eventData);
-                    }, 16);
-
-                } else {
-                    callback.call(that, eventData);
-                }
+        // 兼容 0.1.0 之前的配置
+        if (config.type === 'templatejs') {
+            config.type = 'default';
+        }
 
 
-            });
+        // 根据生成模块的类型删除不支持的配置字段
+        if (config.type === 'default') {
+            delete config.alias;
+        } else {
+            delete config.combo;
+        }
 
-        };
-
-        watch(dir);
-        walk(dir);
+        return config;
     },
 
 
@@ -405,18 +321,44 @@ module.exports = {
 
 
     // 获取字符串 md5 值
-    _md5: function (text) {
+    _getMd5: function (text) {
         return crypto.createHash('md5').update(text).digest('hex');
     },
 
 
-    // 检查模板是否更改
+    // 检查模板与配置是否更改
     _isChange: function (html, js) {
-        var newMd5 = this._md5(html + JSON.stringify(this['package.json']));
-        var oldMd5 = js.match(/<MD5:(\w*)>/)[1];
+        var newMd5 = this._getMd5(html + JSON.stringify(this['package.json']));
+        var oldMd5 = this._getMetadata(js).md5;
         return newMd5 !== oldMd5;
     },
 
+
+    // 获取元数据
+    _getMetadata: function (js) {
+        var data = js.match(/\/\*TMODJS\:(.*?)\*\//);
+        if (data) {
+            return JSON.parse(data[1]);
+        } else {
+            return {};
+        }
+    },
+
+
+    // 删除元数据
+    _removeMetadata: function (js) {
+        // 文件末尾设置一个空注释，然后让 UglifyJS 不压缩它，避免很多文件挤成一行  
+        return js.replace(/^\/\*TMODJS\:[\w\W]*?\*\//, '/**/');
+    },
+
+
+    // 设置元数据
+    _setMetadata: function (js, data) {
+        data = JSON.stringify(data || {});
+        js = '/*TMODJS:' + data + '*/\n' + js
+        .replace(/\/\*TMODJS\:(.*?)\*\//, '');
+        return js;
+    },
 
     // 调试语法错误
     _debug: function (error, callback) {
@@ -438,51 +380,71 @@ module.exports = {
             callback(message);
         });
 
-        //this._fsUnlink(debugFile);
     },
 
 
-    // 在控制台显示日志(支持UBB)
-    _log: function (message) {
+    // 编译运行时
+    _buildRuntime: function (templates, metadata) {
 
-        var styles = {
-            // styles
-            'bold'      : ['\x1B[1m',  '\x1B[22m'],
-            'italic'    : ['\x1B[3m',  '\x1B[23m'],
-            'underline' : ['\x1B[4m',  '\x1B[24m'],
-            'inverse'   : ['\x1B[7m',  '\x1B[27m'],
-            // colors
-            'white'     : ['\x1B[37m', '\x1B[39m'],
-            'grey'      : ['\x1B[90m', '\x1B[39m'],
-            'black'     : ['\x1B[30m', '\x1B[39m'],
-            'blue'      : ['\x1B[34m', '\x1B[39m'],
-            'cyan'      : ['\x1B[36m', '\x1B[39m'],
-            'green'     : ['\x1B[32m', '\x1B[39m'],
-            'magenta'   : ['\x1B[35m', '\x1B[39m'],
-            'red'       : ['\x1B[31m', '\x1B[39m'],
-            'yellow'    : ['\x1B[33m', '\x1B[39m']
-        };
+        var placeholder = '/*#templates#*/';
+        var output = path.join(this.output, RUNTIME + '.js');
+        var data = this._runtime;
+        var runtime;
 
+        if (!data) {
 
-        styles['b'] = styles['bold'];
-        styles['i'] = styles['italic'];
-        styles['u'] = styles['underline'];
+            runtime = fs.readFileSync(
+                __dirname + (
+                    this.options.engine
+                    ? '/lib/runtime/full.js'
+                    : '/lib/runtime/basic.js'
+                )
+            , 'utf-8');
 
-
-        message = message.replace(/\[([^\]]*?)\]/igm, function ($1, $2) {
-            return $2.indexOf('/') === 0
-            ? styles[$2.slice(1)][1]
-            : styles[$2][0];
-        });
+            data = {
+                helpers: this.helpers,
+                templates: templates || placeholder,
+                syntax: '',
+                engine: ''
+            };
 
 
-        this.log(message);
-    },
+            // 嵌入引擎
+            if (this.options.engine) {
+                data.engine = this.engine;
+                data.syntax = this.syntax;
+            }
 
 
+            runtime = runtime
+            .replace(/['"]<\:(.*?)\:>['"]/g, function ($1, $2) {
+                return data[$2] || '';
+            });
 
-    log: function (message) {
-        process.stdout.write(message);
+
+            runtime = this._setMetadata(runtime, metadata);
+
+
+            data.runtime = runtime;
+            this._runtime = data;
+
+        } else {
+
+            runtime = data.runtime.replace(placeholder, templates);
+            runtime = this._setMetadata(runtime, metadata);
+
+        }
+
+        this._fsWrite(output, runtime);
+
+        this.options.debug || !this.options.minify
+        ? uglifyjs.beautify(output)
+        : uglifyjs.minify(output);
+
+
+        data.file = output;
+
+        return data;
     },
 
 
@@ -490,101 +452,29 @@ module.exports = {
     _combo: function () {
 
         var that = this;
-        var templates = [];
-        var options = this.options;
-        var isDebug = options.debug;
-        var isWrappings = options.type !== 'templatejs';
-        var runtime = options.engine ? '/lib/runtime/full.js' : '/lib/runtime/basic.js';
-        
-        var template = fs.readFileSync(__dirname + runtime, 'utf-8');
-
+        var files = [];
+        var eventData = null;
         var combo = '';
 
+        var cache = this.cache;
+        var code = '';
 
-        var walk = function (dir) {
-            var dirList = fs.readdirSync(dir);
-            
-            dirList.forEach(function (item) {
+        for (var i in cache) {
 
-                if (fs.statSync(dir + '/' + item).isDirectory()) {
-                    walk(dir + '/' + item);
-                } else if (that._filter(item)) {
+            code = cache[i];
+            code = this._removeMetadata(code);
+            combo += code;
 
-                    var id = (dir + '/' + item)
-                    .replace(EXTNAME_RE, '')
-                    .replace(that.path + '/', '');
-
-                    templates.push(id);
-                    
-                    var target = that.output + '/' + id + '.js';
-
-
-                    if (fs.existsSync(target)) {
-                        var code = that._fsRead(target);
-
-                        // 一个猥琐的实现：
-                        // 文件末尾设置一个空注释，然后让 UglifyJS 不压缩它，避免很多文件挤成一行  
-                        code = code.replace(/^\/\*[\w\W]*?\*\//, '/**/');
-
-
-                        combo += code;
-                    }
-                    
-
-                }
-            });
-        };
-
-        if (!isWrappings && options.combo) {
-            walk(this.path);
+            files.push(i);
         }
 
-        var build = Date.now();
-        var debug = isDebug ? '<DEBUG>' : '';
-
-
-        var data = {
-            version: this.version,
-            build: build,
-            templates: combo,
-            debug: debug,
-            syntax: '',
-            engine: '',
-            helpers: this.helpers
-        };
-
-
-        // 嵌入引擎
-        if (this.options.engine) {
-            data.engine = fs.readFileSync(engineDirname + '/template.js', 'utf-8');
-            data.syntax = this.syntax;
-        }
-
-
-        template = template.replace(/['"]<\:(.*?)\:>['"]/g, function ($1, $2) {
-            return data[$2] || '';
+        eventData = this._buildRuntime(combo, {
+            debug: this.options.debug,
+            build: Date.now()
         });
+        eventData.files = files;
 
-
-        var target = path.join(this.output, RUNTIME + '.js');
-        
-
-        this._fsWrite(target, template);
-
-        isDebug || !this.options.minify
-        ? uglifyjs.beautify(target)
-        : uglifyjs.minify(target);
-
-
-        this.emit('combo', {
-            output: target,
-            name: RUNTIME,
-            fullname: RUNTIME + '.js',
-            extname: '.js',
-            isDebug: isDebug,
-            templates: templates,
-            build: build
-        });
+        this.emit('combo', eventData);
     },
 
 
@@ -608,20 +498,27 @@ module.exports = {
                 if (type === 'delete') {
 
                     this.emit('delete', {
-                        source: data.target
+                        source: target
                     });
                     fullname = fullname.replace(EXTNAME_RE, '');
-                    this._fsUnlink(fullname.replace(this.path, this.output) + '.js');
-                    this._combo();
+                    this._fsUnlink(fullname.replace(this.base, this.output) + '.js');
+
+                    delete this.cache[target];
+
+                    if (this.options.combo) {
+                        this._combo();
+                    }
 
                 } else if (/updated|create/.test(type)) {
                     
                     this.emit('change', {
-                        source: data.target
+                        source: target
                     });
 
                     if (this._compile(fullname)) {
-                        this._combo();
+                        if (this.options.combo) {
+                            this._combo();
+                        }
                     };  
 
                 }
@@ -643,36 +540,55 @@ module.exports = {
         // 目标路径
         var target = file
         .replace(EXTNAME_RE, '.js')
-        .replace(this.path, this.output);
+        .replace(this.base, this.output);
+
+        var cacheTarget = target.replace(this.output, this.output + '/.cache');
 
         
-        var mod = '';
+        var mod = this.cache[file];
         var modObject = {};
+        var metadata = {};
+        var count = 0;
         var error = true;
         var errorInfo = null;
         var isDebug = this.options.debug;
         var isWrappings = this.options.wrappings;
         var isEngine = this.options.engine;
 
+        var newMd5 = this._getMd5(source + JSON.stringify(this['package.json']));
 
-        // 读取上一次编译的结果
-        if (fs.existsSync(target)) {
+
+        // 如果开启了合并，编译后的文件使用缓存目录保存
+        if (this.options.combo) {
+            target = target.replace(this.output, this.output + '/.cache');
+        }
+
+
+        // 尝试从文件中读取上一次编译的结果
+        if (!mod && fs.existsSync(target)) {
             mod = this._fsRead(target);
         }
 
 
-        // 检查模板是否有改动
-        var isChange = !mod
-        || /<DEBUG>/.test(mod)
-        || isDebug
-        || this._isChange(source, mod);
+        // 获取缓存的元数据
+        if (mod) {
+            metadata = this._getMetadata(mod);
+            count = metadata.version || 0;
+        }
 
 
-        var id = file
-        .replace(this.path + '/', './');
+        // 检查是否需要编译
+        var isChange = !mod             // 从来没有编译过
+        || metadata.debug               // 上个版本为调试版
+        || isDebug                      // 当前配置为调试版
+        || newMd5 !== metadata.md5;     // 模板已经发生了修改（包括配置文件）
 
+
+
+        var id = file.replace(this.base + '/', '');
 
         var extname = id.match(EXTNAME_RE)[1];
+
         id = id.replace(EXTNAME_RE, '');
 
 
@@ -689,6 +605,7 @@ module.exports = {
 
         try {
             
+            // 编译模板
             if (isChange) {
                 modObject = template.AOTcompile(id, source, {
                     alias: this.options.alias,
@@ -707,20 +624,26 @@ module.exports = {
         }
 
 
+        // 不输出的情况：遇到错误 || 文件或配置没有更新
         if (!error && isChange) {
 
-            var md5 = this._md5(source + JSON.stringify(this['package.json']));
-            mod = '/*<TMODJS> <MD5:' + md5 + '>' + (isDebug ? ' <DEBUG>' : '') + '*/\n' + mod;
+            count ++;
+
+            mod = this._setMetadata(mod, {
+                debug: isDebug,
+                version: count,
+                md5: newMd5
+            });
 
             this._fsWrite(target, mod);
             uglifyjs[isDebug || !this.options.minify ? 'beautify' : 'minify'](target);
-
 
         }
 
 
         var compileInfo = {
             id: id,
+            version: count,
             file: file,
             extname: extname,
             isChange: isChange,
@@ -733,33 +656,59 @@ module.exports = {
 
         
         if (error) {
-            errorInfo.debugFile = this.path + '/.debug.js';
 
-            this._debug(errorInfo, function (message) {
+            if (errorInfo.source) {
+                
+                // 规范错误，模板编译器通常能够给出错误源
 
-                var e = {
-                    name: errorInfo.name,
-                    type: 'compileError',
-                    message: message,
-                    debugFile: errorInfo.debugFile,
-                    temp: errorInfo.temp
-                };
-                for (var name in compileInfo) {
-                    e[name] = compileInfo[name];
-                }
+                this.emit('compileError', errorInfo);
+                this.emit('error', errorInfo);
 
-                // 模板编译错误事件
-                this.emit('compileError', e);
+            } else {
 
-                this.emit('error', e);
+                // 语法错误，目前只能对比生成后的 js 来查找错误的模板语法
 
-            }.bind(this));
+                errorInfo.debugFile = this.base + '/.debug.js';
+
+                this.debuging = true;
+
+                this._debug(errorInfo, function (message) {
+
+                    var e = {
+                        name: errorInfo.name,
+                        type: 'compileError',
+                        message: message,
+                        debugFile: errorInfo.debugFile,
+                        temp: errorInfo.temp
+                    };
+                    for (var name in compileInfo) {
+                        e[name] = compileInfo[name];
+                    }
+
+                    // 模板编译错误事件
+                    this.emit('compileError', e);
+
+                    this.emit('error', e);
+
+                }.bind(this));
+            }
+
             
         } else {
 
             // 模板编译成功事件
             this.emit('compile', compileInfo);
+
+            // 删除上次遗留的调试文件
+            if (this.debuging) {
+                this._fsUnlink(this.base + '/.debug.js');
+                delete this.debuging;
+            }
         }
+
+
+        // 缓存编译好的模板
+        this.cache[file] = mod;
 
 
         if (error) {
@@ -800,7 +749,7 @@ module.exports = {
                     if (!error && recursion !== false && info.requires.length) {
 
                         list = info.requires.map(function (id) {
-                            var target = path.resolve(that.path, id + extname);
+                            var target = path.resolve(that.base, id + extname);
                             return target;
                         });
 
@@ -813,7 +762,9 @@ module.exports = {
 
             walk(typeof file === 'string' ? [file] : file);
 
-            !error && this._combo();
+            if (!error && this.options.combo) {
+                this._combo();
+            }
 
         } else {
 
@@ -842,8 +793,11 @@ module.exports = {
             };
 
 
-            walk(this.path);
-            !error && this._combo();
+            walk(this.base);
+
+            if (!error && this.options.combo) {
+                this._combo();
+            }
         }
 
     },
@@ -853,21 +807,44 @@ module.exports = {
 
         events.EventEmitter.call(this);
 
-        options = this.options = this.getUserConfig(options, input);
 
-        // 模板目录
-        this.path = path.resolve(input);
+        // 编译后的模板缓存
+        this.cache = {};
 
-        // 输出目录
-        this.output = path.resolve(path.join(this.path, options.output));
 
-        // 辅助方法
+        // 配置
+        this.options = options = this.getUserConfig(options, input);
+
+
+        // 模板目录绝对路径
+        this.base = path.resolve(input);
+
+
+        // 输出目录绝对路径
+        this.output = path.resolve(path.join(this.base, options.output));
+
+
+        // 辅助方法（代码）
         this.helpers = '';
 
 
-        // 加载辅助方法
+        // 模板语法转换器（代码）
+        this.syntax = '';
+
+
+        // 模板引擎（代码）
+        this.engine = fs.readFileSync(
+            engineDirname + '/template.js'
+        , 'utf-8');
+
+
+        // 配置模板引擎：过滤数据中的 HTML
+        template.isEscape = options.escape;
+
+
+        // 配置模板引擎：辅助方法
         if (options['helpers']) {
-            var helpersFile = path.join(this.path, options['helpers']);
+            var helpersFile = path.join(this.base, options['helpers']);
 
             if (fs.existsSync(helpersFile)) {
                 this.helpers = fs.readFileSync(helpersFile, 'utf-8');
@@ -878,11 +855,11 @@ module.exports = {
         }
 
 
-        // 加载模板语法设置
+        // 配置模板引擎：模板语法
         if (options['syntax'] && options['syntax'] !== 'native') {
             var syntaxFile = options['syntax']  === 'simple'
             ? engineDirname + '/template-syntax.js'
-            : path.join(this.path, options['syntax']);
+            : path.join(this.base, options['syntax']);
 
             if (fs.existsSync(syntaxFile)) {
                 this.syntax = fs.readFileSync(syntaxFile, 'utf-8');
@@ -892,19 +869,39 @@ module.exports = {
             }
         }
 
+            
+        // 删除上次遗留的调试文件
+        this._fsUnlink(this.base + '/.debug.js');
 
-        // 是否过滤 XSS 的开关
-        template.isEscape = options.escape;
+
+        // 删除不必要的缓存目录
+        if (!options.combo) {
+            this._rmdir(this.output + '/.cache');
+        }
+        
+
+        // 输出运行时
+        this._buildRuntime();
 
 
-        // 初始化 watch 事件
+        stdout('[grey]TmodJS - Template Compiler' + '[/grey]\n');
+        //stdout('[grey]» ' + this.output + '[/grey]\n');
+
+
+        // 初始化 watch 事件，插入兼容钩子
         this.on('newListener', function (event, listener) {
-            if (event === 'watch') {
-                this._log('\n[inverse]Waiting..[/inverse]\n\n');
-                this._onwatch(this.path, function (data) {
+            if (watch && event === 'watch') {
+
+                stdout('\n[green]Waiting..[/green]\n\n');
+
+                watch(this.base, function (data) {
                     this.emit('watch', data);
-                });
-                this._onwatch = function () {};
+                }.bind(this), function (name) {
+                    // 排除“.”、“_”开头或者非英文命名的目录
+                    return !FILTER_RE.test(name) && name !== this.output;
+                }.bind(this), fs);
+
+                watch = null;
             }
         });
 
@@ -912,51 +909,48 @@ module.exports = {
         // 监听模板修改事件
         this.on('change', function (data) {
             var time = (new Date).toLocaleTimeString();
-            this._log('[grey]' + time + '[/grey] ');
-            this._log('[grey]Template has been updated[/grey]\n');
+            stdout('[grey]' + time + ' Change[/grey]\n');
         });
 
 
         // 监听模板加载事件
         this.on('load', function (data) {
             if (data.isChange) {
-                this._log('[green]⊙[/green] ');
+                stdout('[green]•[/green] ');
             } else {
-                this._log('[grey]⊙[/grey] ');
+                stdout('[grey]•[/grey] ');
             }
             
-            this._log(data.id.replace(/^\.\//, '') + '[grey].' + data.extname + '[/grey]');
+            stdout(data.id);
         });
 
 
         // 监听模板编译事件
         this.on('compile', function (data) {
-            this._log('\n');
+            stdout(this.options.debug ? ' [grey]<DEBUG>[/grey]' : '');
+            stdout(' [grey]:v' + data.version + '[/grey]');
+            stdout('\n');
         });
 
 
         // 监听编译错误事件
         this.on('compileError', function (data) {
-            this._log(' [inverse][red]Syntax Error[/red][/inverse]\n');
-            this._log('\n[red]Template ID: ' + data.id + '[/red]\n');
-            this._log('[red]' + data.message + '[/red]\n');
+            stdout(' [inverse][red]Syntax Error[/red][/inverse]\n\n');
+
+            if (data.source) {
+                stdout('[red]' + data.line + ': ' + data.source + '[/red]\n');
+            }
+
+            stdout('[red]' + data.message + '[/red]\n');
         });
 
 
         // 监听模板合并事件
-        this.on('combo', function (data) {
-            var output = options.type === 'templatejs'
-                ? options.output + '/' + data.fullname
-                : options.output + '/';
-
-            output = output.replace(/^\.\//, '');
-
-            this._log('[grey]> [/grey]');
-            this._log(this.options.debug ? '[inverse]<DEBUG>[/inverse] ' : '');
-            this._log(output);
-            this._log('\n');
-
-        });
+        // this.on('combo', function (data) {
+        //     stdout('[grey]»[/grey] ');
+        //     stdout('[grey]' + data.file + '[/grey]');
+        //     stdout('\n');
+        // });
 
     }
 

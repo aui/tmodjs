@@ -84,7 +84,7 @@ $ tmod ./tpl -w -output ./build
 *	``-d``或``--debug``输出调试版本
 *	``--charset value``定义模板编码，默认``utf-8``
 *	``--output value``定义输出目录，默认``./build``
-*	``--type value``定义输出模块格式，默认``templatejs``，可选``cmd``、``amd``、``commonjs``
+*	``--type value``定义输出模块格式，默认``default``，可选``cmd``、``amd``、``commonjs``
 *	``--version``显示版本号
 *	``--help``显示帮助信息
 
@@ -99,7 +99,7 @@ $ tmod ./tpl -w -output ./build
 
 ####	1. 默认类型格式的使用方式
 
-模板的``type``为默认值（``type:templatejs``）的时候，TmodJS 默认将整个目录的模板压缩合并到一个名为 template.js 的脚本中，通常情况下你只需要在页面中引入它就好（其余的文件可暂时忽略）。例如：
+模板的``type``为默认值（``type:default``）的时候，TmodJS 默认将整个目录的模板压缩合并到一个名为 template.js 的脚本中，通常情况下你只需要在页面中引入它就好（其余的文件可暂时忽略）。例如：
 
 	<script src="tpl/build/template.js"></script>
 
@@ -201,18 +201,18 @@ escape: true,
 engine: false,
 
 // 输出的模块类型，可选：
-// templatejs:  模板目录将会打包后输出，可使用 script 标签直接引入，也支持 NodeJS/RequireJS/SeaJS。
+// default:  模板目录将会打包后输出，可使用 script 标签直接引入，也支持 NodeJS/RequireJS/SeaJS。
 // cmd:         这是一种兼容 RequireJS/SeaJS 的模块（类似 atc v1版本编译结果）
 // amd:         支持 RequireJS 等流行加载器
 // commonjs:    编译为 NodeJS 模块
-type: 'templatejs',
+type: 'default',
 
 // 运行时别名
-// 仅针对于非 templatejs 的类型模块
+// 仅针对于非 default 的类型模块
 alias: null,
 
 // 是否合并模板
-// 仅针对于 templatejs 类型的模块
+// 仅针对于 default 类型的模块
 combo: true,
 
 // 是否输出为压缩的格式
@@ -267,26 +267,34 @@ minify: true
 
 ##	更新日志
 
-###	TmodJS v0.0.4
+###	v0.1.0
+
+*	减少对磁盘的读写，优化性能
+*	增加自动递增的模板版本号，控制台可显示模板被修改的次数
+*	优化默认设置下输出的文件数量，仅保留``template.js``，临时文件使用隐藏的``.cache``目录存放
+*	自动清理``.debug.js``文件
+*	对非规范的``include``语句模板在编译过程给予提示
+
+###	v0.0.4
 
 *	增加``escape``配置，如果后台给出的数据已经进行了 XSS 过滤，就可以关闭模板的默认过滤以提升模板渲染效率
-*	简化``combo``功能，只提供全部合并与不合并两个选项，值为布尔类型（兼容旧的版本的配置，会自动转换成布尔类型）
+*	简化``combo``功能，default只提供全部合并与不合并两个选项，值为布尔类型（兼容旧的版本的配置，会自动转换成布尔类型）
 *	取消鸡肋的异步载入插件，同时``async``配置失效
 *	为了便于理解，命令行输入的``--output``参数不再相对于模板目录，而是工作目录（配置文件的``output``参数仍保持不变）
 *	优化控制台日志显示
 
-###	TmodJS v0.0.3
+###	v0.0.3
 
 *	修复``combo``配置不能为空数组的 BUG
 *	支持页面内嵌动态编译与预编译两种方案共存（请设置``engine:true``，并在页面中中引入 TmodJS 输出的 template.js。如果想让 template.js 不内置合并的模板，可以设置``combo:[]``）
 *	运行时性能优化
 *	增加``alias``配置字段，在 AMD 与 CMD 模式下可以指定运行时依赖 ID
 
-###	TmodJS v0.0.2
+###	v0.0.2
 
 修复极其特殊情况下 TmodJS 无法为 AMD/CMD 模块正确声明依赖的问题[#14](https://github.com/aui/tmodjs/issues/14)
 
-###	TmodJS v0.0.1
+###	v0.0.1
 
 这是一个革命性的版本！同时项目更名为 **TmodJS**，内部版本号收归到 0.0.1，这是一个新的开始，未来将稳步更新。
 

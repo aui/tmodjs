@@ -1,4 +1,4 @@
-/*<TMODJS> <MD5:e3808c02ada6b9e4ff53b8d71354e772>*/
+/*TMODJS:{"version":1,"md5":"49e539323ef82ca1d715f06311ab1d49"}*/
 define(function(require) {
     require("../copyright");
     return require("template")("public/footer", function($data, $id) {

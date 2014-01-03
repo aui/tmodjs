@@ -11,8 +11,8 @@
         "helpers": null,
         "escape": true,
         "engine": false,
-        "type": "cmd",
-        "alias": null,
+        "type": "templatejs",
+        "combo": false,
         "minify": false
     }
 }

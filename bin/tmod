@@ -169,7 +169,7 @@ userConfig = TmodJS.saveUserConfig();
 
 if (isEditConfig) {
     
-    process.stdout.write('open: ' + userConfig + '\n');
+    process.stdout.write('Open: ' + userConfig + '\n');
 
     exec(
         (/windows/i.test(os.type()) ? 'start' : 'open')
