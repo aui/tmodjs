@@ -374,7 +374,7 @@ NodeJS 版本：
 
 ###	贡献名单
 
-*	[@aui](https://github.com/aui)（糖饼，来自 QQ空间前端团队）
+*	[@aui](https://github.com/aui)（糖饼，来自 QQ 空间前端团队）
 *	[@TooBug](https://github.com/TooBug)（来自 CDC 前端团队）
 *	[@Jsonzhang](https://github.com/Jsonzhang)（来自 CDC 前端团队，GruntJS 插件开发者）
 
