@@ -1,2 +1,2 @@
-/*<TMODJS> <MD5:e264cb32bc711fc766b0c22f02dd393d>*/
+/*TMODJS:{"version":1,"md5":"162d4ecb65e3a746824f925ec57a7c7e"}*/
 template("copyright", "(c) 2013");

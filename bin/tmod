@@ -2,7 +2,7 @@
 
 'use strict';
 
-var TmodJS = require('../tmod.js');
+var TmodJS = require('../src/tmod.js');
 var version = require('../package.json').version;
 
 var fs = require('fs');
@@ -147,7 +147,7 @@ if (!fs.existsSync(dir)) {
     process.stdout.write('Error: directory does not exist\n');
     help();
     process.exit(1);
-};
+}
 
 
 // 转换成相对于模板目录的路径
@@ -177,9 +177,11 @@ if (isEditConfig) {
     );
 
 } else {
+
     TmodJS.compile();
 
     if (isWatch) {
         TmodJS.watch();
     }
+    
 }

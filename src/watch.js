@@ -68,13 +68,14 @@ var watch = function (parent, callback, filter) {
             if (fs.statSync(fullname).isFile()) {
 
                 fstype = 'file';
-                type = event == 'rename' ? 'create' : 'updated'
+                type = event == 'rename' ? 'create' : 'updated';
 
             // 文件夹
             } else if (event === 'rename') {
 
                 fstype = 'directory';
-                type = 'create'
+                type = 'create';
+                
                 watch(fullname, callback, filter);
                 walk(fullname, callback, filter);
             }

@@ -1,5 +1,9 @@
 template.helper('$ubb2html', function (content) {
-	content = template.helpers.$escape(content);
+
+	// 转义 HTML 字符
+	content = this.$escape(content);
+
+	// 解析 UBB 字符
     return content
     .replace(/\[b\]([^\[]*?)\[\/b\]/igm, '<b>$1</b>')
     .replace(/\[i\]([^\[]*?)\[\/i\]/igm, '<i>$1</i>')

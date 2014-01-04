@@ -6,16 +6,15 @@
 
 'use strict';
 
-var version = require('./package.json').version;
-var template = require('./lib/AOTcompile.js');
-var uglifyjs = require('./lib/uglify.js');
-var stdout = require('./lib/stdout.js');
-var watch = require('./lib/watch.js');
-var path = require('./lib/path.js');
+var version = require('../package.json').version;
+var template = require('./AOTcompile.js');
+var uglifyjs = require('./uglify.js');
+var stdout = require('./stdout.js');
+var watch = require('./watch.js');
+var path = require('./path.js');
 
 var fs = require('fs');
 var vm = require('vm');
-var os = require('os');
 var events = require('events');
 var crypto = require('crypto');
 var exec = require('child_process').exec;
@@ -25,12 +24,11 @@ var engineDirname = path.dirname(require.resolve('art-template'));
 
 
 var RUNTIME = 'template';
-var DIRNAME_RE = /[^\/]*/;
 var FILTER_RE = /[^\w\.\-$]/;
 var EXTNAME_RE = /\.(html|htm|tpl)$/i;
 
 var log = function (message) {
-    console.log(message)
+    console.log(message);
 };
 
 
@@ -89,10 +87,16 @@ module.exports = {
 
 
     // 获取用户配置
-    getUserConfig: function (options, dir) {
+    getUserConfig: function () {
 
-        dir = this.base || dir;
-        var file = dir + '/package.json';
+        var options = arguments[0];
+
+        if (!options) {
+            return this.options;
+        }
+
+        var base = this.base;
+        var file = base + '/package.json';
         var defaults = this.defaults;
         var json = null;
         var name = null;
@@ -118,7 +122,7 @@ module.exports = {
                     "tmodjs": "0"
                 },
                 "tmodjs-config": {}
-            }
+            };
 
         }
 
@@ -251,16 +255,18 @@ module.exports = {
     },
 
 
-    // 模板文件写入
-    _fsWrite: function (file, data) {
+    // 文件写入
+    _fsWrite: function (file, data, charset) {
         this._fsMkdir(path.dirname(file));
-        fs.writeFileSync(file, data, this.options['charset']);
+        fs.writeFileSync(file, data, charset || 'utf-8');
     },
 
 
-    // 模板文件读取
-    _fsRead: function (file) {
-        return fs.readFileSync(file, this.options['charset']);
+    // 文件读取
+    _fsRead: function (file, charset) {
+        if (fs.existsSync(file)) {
+            return fs.readFileSync(file, charset || 'utf-8');
+        }  
     },
 
 
@@ -283,7 +289,7 @@ module.exports = {
 
 
     // 删除文件夹，包括子文件夹
-    _rmdir: function (dir) {
+    _fsRmdir: function (dir) {
 
         var walk = function (dir) {
 
@@ -360,6 +366,7 @@ module.exports = {
         return js;
     },
 
+
     // 调试语法错误
     _debug: function (error, callback) {
 
@@ -368,7 +375,7 @@ module.exports = {
 
         code = "/*! <DEBUG:" + error.id + '> */\n' + code;
 
-        this._fsWrite(debugFile, code);
+        this._fsWrite(debugFile, code, this.options.charset);
         
         // 启动子进程进行调试，从根本上避免影响当前进程
         
@@ -386,23 +393,26 @@ module.exports = {
     // 编译运行时
     _buildRuntime: function (templates, metadata) {
 
+        metadata = metadata || {};
+
         var placeholder = '/*#templates#*/';
         var output = path.join(this.output, RUNTIME + '.js');
         var data = this._runtime;
         var runtime;
+
 
         if (!data) {
 
             runtime = fs.readFileSync(
                 __dirname + (
                     this.options.engine
-                    ? '/lib/runtime/full.js'
-                    : '/lib/runtime/basic.js'
+                    ? '/runtime/full.js'
+                    : '/runtime/basic.js'
                 )
             , 'utf-8');
 
             data = {
-                helpers: this.helpers,
+                helpers: this._helpersCode,
                 templates: templates || placeholder,
                 syntax: '',
                 engine: ''
@@ -411,8 +421,10 @@ module.exports = {
 
             // 嵌入引擎
             if (this.options.engine) {
-                data.engine = this.engine;
-                data.syntax = this.syntax;
+                data.engine = fs.readFileSync(
+                    engineDirname + '/template.js'
+                , 'utf-8');
+                data.syntax = this._syntaxCode;
             }
 
 
@@ -435,29 +447,27 @@ module.exports = {
 
         }
 
-        this._fsWrite(output, runtime);
+        this._fsWrite(output, runtime, this.options.charset);
 
-        this.options.debug || !this.options.minify
-        ? uglifyjs.beautify(output)
-        : uglifyjs.minify(output);
+        if (this.options.debug || !this.options.minify) {
+            uglifyjs.beautify(output);
+        } else {
+            uglifyjs.minify(output);
+        }
 
-
-        data.file = output;
-
-        return data;
+        return runtime;
     },
 
 
     // 打包模板
     _combo: function () {
 
-        var that = this;
         var files = [];
-        var eventData = null;
+        var mod = null;
         var combo = '';
-
-        var cache = this.cache;
+        var cache = this._getCache();
         var code = '';
+        var build = Date.now();
 
         for (var i in cache) {
 
@@ -468,13 +478,28 @@ module.exports = {
             files.push(i);
         }
 
-        eventData = this._buildRuntime(combo, {
+        mod = this._buildRuntime(combo, {
             debug: this.options.debug,
-            build: Date.now()
+            build: build
         });
-        eventData.files = files;
+        
 
-        this.emit('combo', eventData);
+        // 广播：合并事件
+        this.emit('combo', {
+
+            // 编译时间
+            build: build,
+
+            // 打包的代码
+            output: mod,
+
+            // 输出的文件路径
+            outputFile: path.join(this.output, RUNTIME + '.js'),
+
+            // 被合并的文件列表
+            sourcefiles: files
+
+        });
     },
 
 
@@ -498,12 +523,13 @@ module.exports = {
                 if (type === 'delete') {
 
                     this.emit('delete', {
-                        source: target
+                        id: this._toId(target),
+                        sourceFile: target
                     });
                     fullname = fullname.replace(EXTNAME_RE, '');
                     this._fsUnlink(fullname.replace(this.base, this.output) + '.js');
 
-                    delete this.cache[target];
+                    this._removeCache(target);
 
                     if (this.options.combo) {
                         this._combo();
@@ -512,14 +538,15 @@ module.exports = {
                 } else if (/updated|create/.test(type)) {
                     
                     this.emit('change', {
-                        source: target
+                        id: this._toId(target),
+                        sourceFile: target
                     });
 
                     if (this._compile(fullname)) {
                         if (this.options.combo) {
                             this._combo();
                         }
-                    };  
+                    }
 
                 }
             }
@@ -529,32 +556,33 @@ module.exports = {
     },
 
 
+    // 路径转换为模板 ID
+    _toId: function (file) {
+        var id = file.replace(this.base + '/', '');
+        var extname = id.match(EXTNAME_RE)[1];
+        id = id.replace(EXTNAME_RE, '');
+        return id;
+    },
+
+
     // 编译单个模板
     _compile: function (file) {
 
-        var that = this;
-
         // 模板字符串
-        var source = this._fsRead(file);
+        var source = this._fsRead(file, this.options.charset);
 
         // 目标路径
         var target = file
         .replace(EXTNAME_RE, '.js')
         .replace(this.base, this.output);
-
-        var cacheTarget = target.replace(this.output, this.output + '/.cache');
-
         
-        var mod = this.cache[file];
+        var mod = this._getCache(file);
         var modObject = {};
         var metadata = {};
         var count = 0;
         var error = true;
         var errorInfo = null;
         var isDebug = this.options.debug;
-        var isWrappings = this.options.wrappings;
-        var isEngine = this.options.engine;
-
         var newMd5 = this._getMd5(source + JSON.stringify(this['package.json']));
 
 
@@ -566,7 +594,7 @@ module.exports = {
 
         // 尝试从文件中读取上一次编译的结果
         if (!mod && fs.existsSync(target)) {
-            mod = this._fsRead(target);
+            mod = this._fsRead(target, this.options.charset);
         }
 
 
@@ -584,22 +612,28 @@ module.exports = {
         || newMd5 !== metadata.md5;     // 模板已经发生了修改（包括配置文件）
 
 
-
-        var id = file.replace(this.base + '/', '');
-
-        var extname = id.match(EXTNAME_RE)[1];
-
-        id = id.replace(EXTNAME_RE, '');
+        // 获取模板 ID
+        var id = this._toId(file);
 
 
-        // 模板加载事件
+        // 广播：模板加载事件
         this.emit('load', {
+
+            // 模板 ID
             id: id,
-            file: file,
-            extname: extname,
+
+            // 模板是否被修改
             isChange: isChange,
+
+            // 原始文件路径
+            sourceFile: file,
+
+            // 模板源代码
             source: source,
-            target: target
+
+            // 输出路径
+            outputFile: target
+
         });
 
 
@@ -635,22 +669,39 @@ module.exports = {
                 md5: newMd5
             });
 
-            this._fsWrite(target, mod);
+            this._fsWrite(target, mod, this.options.charset);
             uglifyjs[isDebug || !this.options.minify ? 'beautify' : 'minify'](target);
 
         }
 
 
         var compileInfo = {
+
+            // 模板 ID
             id: id,
+
+            // 版本
             version: count,
-            file: file,
-            extname: extname,
-            isChange: isChange,
-            error: error,
+
+            // 源码
             source: source,
-            target: target,
-            code: mod,
+
+            // 模板文件路径
+            sourceFile: file,
+
+            // 编译结果代码
+            output: mod,
+
+            // 编译输出文件路径
+            outputFile: target,
+
+            // 是否被修改
+            isChange: isChange,
+
+            // 是否遇到错误
+            error: error,
+
+            // 依赖的子模板 ID 列表
             requires: modObject.requires || []
         };
 
@@ -675,12 +726,21 @@ module.exports = {
                 this._debug(errorInfo, function (message) {
 
                     var e = {
+
+                        // 错误名称
                         name: errorInfo.name,
-                        type: 'compileError',
+
+                        // 报错信息
                         message: message,
+
+                        // 调试文件地址
                         debugFile: errorInfo.debugFile,
+
+                        // 编译器输出的临时文件
                         temp: errorInfo.temp
+
                     };
+
                     for (var name in compileInfo) {
                         e[name] = compileInfo[name];
                     }
@@ -708,7 +768,7 @@ module.exports = {
 
 
         // 缓存编译好的模板
-        this.cache[file] = mod;
+        this._setCache(file, mod);
 
 
         if (error) {
@@ -728,12 +788,13 @@ module.exports = {
 
         var that = this;
         var error = false;
+        var walk;
 
         if (file) {
 
             var extname = path.extname(file);
 
-            var walk = function (list) {
+            walk = function (list) {
 
                 list.forEach(function (file) {
 
@@ -755,7 +816,7 @@ module.exports = {
 
                         walk(list);
 
-                    };
+                    }
                     
                 });
             };
@@ -769,7 +830,7 @@ module.exports = {
         } else {
 
 
-            var walk = function (dir) {
+            walk = function (dir) {
                 
                 if (dir === that.output) {
                     return;
@@ -803,93 +864,135 @@ module.exports = {
     },
 
 
-    init: function (input, options) {
-
-        events.EventEmitter.call(this);
-
-
-        // 编译后的模板缓存
-        this.cache = {};
+    // 计算字节长度
+    _getByteLength: function (content) {
+        return content.replace(/[^\x00-\xff]/gi, '--').length;
+    },
 
 
-        // 配置
-        this.options = options = this.getUserConfig(options, input);
+    _cache: {},
 
 
-        // 模板目录绝对路径
-        this.base = path.resolve(input);
+    // 获取缓存
+    _getCache: function (id) {
+        if (typeof id === 'undefined') {
+            return this._cache;
+        } else {
+            return this._cache[id];
+        }
+    },
 
 
-        // 输出目录绝对路径
-        this.output = path.resolve(path.join(this.base, options.output));
+    // 设置缓存
+    _setCache: function (id, data) {
+        this._cache[id] = data;
+    },
 
 
-        // 辅助方法（代码）
-        this.helpers = '';
+    // 删除缓存
+    _removeCache: function (id) {
+        delete this._cache[id];
+    },
 
 
-        // 模板语法转换器（代码）
-        this.syntax = '';
-
-
-        // 模板引擎（代码）
-        this.engine = fs.readFileSync(
-            engineDirname + '/template.js'
-        , 'utf-8');
-
+    // 初始化模板引擎
+    _initEngine: function () {
+        var options = this.options;
 
         // 配置模板引擎：过滤数据中的 HTML
         template.isEscape = options.escape;
 
 
         // 配置模板引擎：辅助方法
-        if (options['helpers']) {
-            var helpersFile = path.join(this.base, options['helpers']);
+        if (options.helpers) {
 
+            var helpersFile = path.resolve(this.base, options.helpers);
+            
             if (fs.existsSync(helpersFile)) {
-                this.helpers = fs.readFileSync(helpersFile, 'utf-8');
-                vm.runInNewContext(this.helpers, {
+
+                this._helpersCode = fs.readFileSync(helpersFile, 'utf-8');
+                vm.runInNewContext(this._helpersCode, {
                     template: template
                 });
+
+            } else {
+
+                stdout('[red]Not found: ' + helpersFile + '[/red]');
+                process.exit(1);
+
             }
         }
 
 
         // 配置模板引擎：模板语法
-        if (options['syntax'] && options['syntax'] !== 'native') {
-            var syntaxFile = options['syntax']  === 'simple'
+        if (options.syntax && options.syntax !== 'native') {
+
+            var syntaxFile = options.syntax  === 'simple'
             ? engineDirname + '/template-syntax.js'
-            : path.join(this.base, options['syntax']);
+            : path.resolve(this.base, options.syntax);
 
             if (fs.existsSync(syntaxFile)) {
-                this.syntax = fs.readFileSync(syntaxFile, 'utf-8');
-                vm.runInNewContext(this.syntax, {
+
+                this._syntaxCode = fs.readFileSync(syntaxFile, 'utf-8');
+                vm.runInNewContext(this._syntaxCode, {
                     template: template
                 });
-            }
-        }
 
-            
+            } else {
+
+                stdout('[red]Not found: ' + syntaxFile + '[/red]');
+                process.exit(1);
+
+            }
+        }  
+    },
+
+
+    // 清理项目临时文件
+    _clear: function () {
+
         // 删除上次遗留的调试文件
         this._fsUnlink(this.base + '/.debug.js');
 
 
         // 删除不必要的缓存目录
-        if (!options.combo) {
-            this._rmdir(this.output + '/.cache');
+        if (!this.options.combo) {
+            this._fsRmdir(this.output + '/.cache');
         }
-        
 
-        // 输出运行时
-        this._buildRuntime();
+    },
 
 
-        stdout('[grey]TmodJS - Template Compiler' + '[/grey]\n');
-        //stdout('[grey]» ' + this.output + '[/grey]\n');
+    init: function (input, options) {
+
+
+        // 模板项目路径
+        this.base = path.resolve(input);
+
+
+        // 项目配置选项
+        this.options = options = this.getUserConfig(options);
+
+
+        // 输出路径
+        this.output = path.resolve(this.base, options.output);
+
+
+        // 清理模板项目临时文件
+        this._clear();
+
+
+        // 初始化模板引擎
+        this._initEngine();
+
+
+        // 初始化事件系统
+        events.EventEmitter.call(this);
 
 
         // 初始化 watch 事件，插入兼容钩子
         this.on('newListener', function (event, listener) {
+
             if (watch && event === 'watch') {
 
                 stdout('\n[green]Waiting..[/green]\n\n');
@@ -897,19 +1000,30 @@ module.exports = {
                 watch(this.base, function (data) {
                     this.emit('watch', data);
                 }.bind(this), function (name) {
-                    // 排除“.”、“_”开头或者非英文命名的目录
+
+                    // 排除“.”、“_”开头或者非英文命名的子目录
                     return !FILTER_RE.test(name) && name !== this.output;
+
                 }.bind(this), fs);
 
                 watch = null;
             }
+
         });
 
 
         // 监听模板修改事件
         this.on('change', function (data) {
             var time = (new Date).toLocaleTimeString();
-            stdout('[grey]' + time + ' Change[/grey]\n');
+            stdout('[grey]' + time + '[/grey]\n');
+        });
+
+
+        // 监听模板删除事件
+        this.on('delete', function (data) {
+            var time = (new Date).toLocaleTimeString();
+            stdout('[grey]' + time + '[/grey]\n');
+            stdout('[red]-[/red] ' + data.id + '\n');
         });
 
 
@@ -937,7 +1051,7 @@ module.exports = {
         this.on('compileError', function (data) {
             stdout(' [inverse][red]Syntax Error[/red][/inverse]\n\n');
 
-            if (data.source) {
+            if (data.line && data.source) {
                 stdout('[red]' + data.line + ': ' + data.source + '[/red]\n');
             }
 
@@ -948,11 +1062,17 @@ module.exports = {
         // 监听模板合并事件
         // this.on('combo', function (data) {
         //     stdout('[grey]»[/grey] ');
-        //     stdout('[grey]' + data.file + '[/grey]');
+        //     stdout('[grey]' + RUNTIME + '.js[/grey]');
+        //     stdout(' [grey]:build' + data.version + '[/grey]');
         //     stdout('\n');
         // });
+
+        // 输出运行时
+        this._buildRuntime();
+
+
+        stdout('[grey]TmodJS - Template Compiler' + '[/grey]\n');
 
     }
 
 };
-

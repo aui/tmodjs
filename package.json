@@ -19,7 +19,7 @@
         "type": "git",
         "url": "https://github.com/aui/tmodjs.git"
     },
-    "main": "./tmod.js",
+    "main": "./src/tmod.js",
     "bin": {
         "tmod": "./bin/tmod",
         "tmodjs": "./bin/tmod"

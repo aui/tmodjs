@@ -20,7 +20,7 @@ if (!/\\/.test(path.resolve())) {
                 value = value.split(oldPath.sep).join('/');
             }
             return value;
-        }
+        };
     };
 
     for (var name in newPath) {

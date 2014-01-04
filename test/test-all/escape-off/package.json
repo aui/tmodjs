@@ -7,9 +7,9 @@
     "tmodjs-config": {
         "output": "./build",
         "charset": "utf-8",
-        "syntax": "./template-syntax.js",
+        "syntax": "simple",
         "helpers": null,
-        "escape": true,
+        "escape": false,
         "engine": false,
         "type": "default",
         "combo": true,

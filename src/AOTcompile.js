@@ -46,7 +46,7 @@ var testTemplateSyntax = function (source) {
 var testUri = function (uri, fromUri, source) {
     if (!/^\./.test(uri) || EXTNAME_RE.test(uri)) {
 
-        var line, source;
+        var line;
 
         // 如果只出现一次这个字符串，很容易确认模板错误行
         if (source.split(uri).length === 2) {

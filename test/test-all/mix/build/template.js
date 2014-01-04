@@ -1,4 +1,4 @@
-/*<TMODJS> <build:1388679236060> */
+/*TMODJS:{}*/
 (function(global) {
     "use strict";
     var template = function(id, content) {
@@ -274,6 +274,7 @@
 })(this);
 
 !function(global, template) {
+    "use strict";
     var get = template.get;
     var helpers = template.helpers;
     var resolve = function(from, to) {

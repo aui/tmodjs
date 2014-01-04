@@ -1,5 +1,6 @@
-/*<TMODJS> <BUILD:1388679294437> */
+/*TMODJS:{}*/
 !function(global) {
+    "use strict";
     var template = function(path, content) {
         return template[/string|function/.test(typeof content) ? "compile" : "render"].apply(template, arguments);
     };

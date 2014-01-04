@@ -1,10 +1,10 @@
-/*! <TmodJS> <build:1387867198550> */
+/*TMODJS:{}*/
 (function(global) {
     "use strict";
     var template = function(id, content) {
         return template[typeof content === "string" ? "compile" : "render"].apply(template, arguments);
     };
-    template.version = "2.0.2";
+    template.version = "2.0.3";
     template.openTag = "<%";
     template.closeTag = "%>";
     template.isEscape = true;
@@ -161,10 +161,10 @@
             var variables = "var $helpers=this," + (isDebug ? "$line=0," : "");
             var isNewEngine = "".trim;
             var replaces = isNewEngine ? [ "$out='';", "$out+=", ";", "$out" ] : [ "$out=[];", "$out.push(", ");", "$out.join('')" ];
-            var concat = isNewEngine ? "if(content!==undefined){$out+=content;return content;}" : "$out.push(content);";
-            var print = "function(content){" + concat + "}";
-            var include = "function(id,data){" + "data=data||$data;" + "var content=$helpers.$include(id,data,$id);" + concat + "}";
-            forEach(code.split(openTag), function(code, i) {
+            var concat = isNewEngine ? "$out+=$text;return $text;" : "$out.push($text);";
+            var print = "function($text){" + concat + "}";
+            var include = "function(id,data){" + "data=data||$data;" + "var $text=$helpers.$include(id,data,$id);" + concat + "}";
+            forEach(code.split(openTag), function(code) {
                 code = code.split(closeTag);
                 var $0 = code[0];
                 var $1 = code[1];
@@ -211,8 +211,8 @@
                     });
                 }
                 if (code.indexOf("=") === 0) {
-                    var isEscape = code.indexOf("==") !== 0;
-                    code = code.replace(/^=*|[\s;]*$/g, "");
+                    var isEscape = !/^=[=#]/.test(code);
+                    code = code.replace(/^=[=#]?|[\s;]*$/g, "");
                     if (isEscape && template.isEscape) {
                         var name = code.replace(/\s*\([^\)]+\)/, "");
                         if (!_helpers.hasOwnProperty(name) && !/^(include|print)$/.test(name)) {
@@ -274,6 +274,7 @@
 })(this);
 
 !function(global, template) {
+    "use strict";
     var get = template.get;
     var helpers = template.helpers;
     var resolve = function(from, to) {
@@ -345,7 +346,7 @@
 
               default:
                 if (exports.helpers.hasOwnProperty(key)) {
-                    code = "==" + key + "(" + split.join(",") + ");";
+                    code = "=#" + key + "(" + split.join(",") + ");";
                 } else {
                     code = code.replace(/[\s;]*$/, "");
                     code = "=" + code;
