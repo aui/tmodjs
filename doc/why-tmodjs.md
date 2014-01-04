@@ -1,3 +1,4 @@
+<script>!function(a){function d(){for(c=0;c<b.length;c++)"viewport"==b[c].name&&(b[c].content="width=device-width, minimum-scale=0.25, maximum-scale=1.6")}var c,b=a.getElementsByTagName("meta");if(navigator.userAgent.match(/iPhone/i)){for(c=0;c<b.length;c++)"viewport"==b[c].name&&(b[c].content="width=device-width, minimum-scale=1.0, maximum-scale=1.0");a.addEventListener("gesturestart",d,!1)}}(document);</script>
 #	进击！前端模板工程化
 
 ##	前言
@@ -106,9 +107,9 @@ Ajax 远程加载 | ✓  | ✗| ✓ | ✓ | ✓
 	var template = Handlebars.templates["user.tmpl"];
 	var html = template(data);
 
-预编译工具在一定程度上解决了我们的问题，但由于操作实在是太繁琐，因此它们也并没有流行起来。例如一个 web app 单页应用，几百条前端模板是常有的事儿，开发阶段我们会不断的添加、修改模板，如果每次都需要重新编译这简直会令人抓狂，与此同时大量零散的模板脚本也会引发新的问题，编译后的模板没有提供显式的依赖声明，对于大型项目来说，自动化工具依然难以介入。
+预编译工具在一定程度上解决了我们的问题，但由于操作实在是太繁琐，因此它们也并没有流行起来。前端模板因为大量的局部模板存在，相对于后端模板的一个显著特征是碎片化程度高，例如一个 web app 单页应用，几百条前端模板是常有的事儿，开发阶段我们会不断的添加、修改模板，如果每次都需要重新编译这简直会令人抓狂，与此同时大量零散的模板脚本也会引发新的问题，编译后的模板没有提供显式的依赖声明，对于大型项目来说，自动化工具依然难以介入。
 
-就目前而言，业界依然没有出现针对前端模板成熟的自动化工具，于是经过无数次实践、在各种方案权衡后，我们研发了全新自动化工具 —— TmodJS，为前端模板工程化而来。
+问题总会引起我们的思考，于是经过无数次实践、设计设计了一套方案试图让前端模板进入工程化时代，与此同时推出了相应的工具 —— TmodJS。
 
 ##	工程化前端模板
 
@@ -151,9 +152,9 @@ TmodJS 的同步接口是通过通过打包合并模板或者使用 AMD、CMD �
 
 总之，模板转换为 js 后不但解决了跨域部署的烦恼，其优化空间也更加灵活多样。案例：
 
-1.	腾讯视频前端团队的实践：关闭 TmodJS 的打包合并，按照网站栏目建立模板子目录，通过 GruntJS 按栏目进行合压缩，然后让栏目页面单独引入合并后的栏目模板。
-2.	QQ 空间 CDN 有线上 SeaJS 模块动态合并服务，这时候 TmodJS 编译后的模板会被当作一个普通的 SeaJS 模块引入到项目中，当 UI 模块被调用的时候逻辑与依赖的模板都会进行动态合并加载，完全无需本地构建工具操作。
-3.	MicroTrend 是腾讯内部的一个移动端单页 WebApp 项目，包含较多的模板片段，发布前每次都需要手工进行模板抽离与压缩，极其耗时。采用 TmodJS 进行模板管理，模板被打包压缩到一个 js 文件中，开发阶段输出的模板包直接作为发布后的文件，节省了发布阶段繁琐的优化环节。[查看编译后的模板](http://microtrend.cdc.tencent.com/tpl/dist/template.js)
+1.	**配合本地构建工具**：腾讯视频前端团队关闭 TmodJS 的打包合并，使用 GruntJS 对输出的脚本进行二次优化。按照网站栏目建立模板子目录，然后按栏目进行合压缩，然后让栏目页面单独引入合并后的栏目模板。
+2.	**后端动态压缩合并**：QQ 空间 CDN 有线上 SeaJS 模块动态合并服务，这时候 TmodJS 编译后的模板会被当作一个普通的 SeaJS 模块引入到项目中，当 UI 模块被调用的时候逻辑与依赖的模板都会进行动态合并加载，完全无需本地构建工具操作。
+3.	**自带的优化手段**：MicroTrend 是腾讯内部的一个移动端单页 WebApp 小项目，采用 TmodJS 进行模板管理后，模板被打包压缩到一个 js 文件中，开发阶段输出的模板包直接作为发布后的文件，十分便捷。[查看编译后的模板](http://microtrend.cdc.tencent.com/tpl/dist/template.js)
 
 ###	4. 本地调试支持
 
@@ -182,7 +183,7 @@ TmodJS 的同步接口是通过通过打包合并模板或者使用 AMD、CMD �
 
 ###	5. 前后端模板共用
 
-一般项目，我们直接采用``<script>``标签载入编译后模板包即可，但是对于使用 RequireJS 或 SeaJS 模块化的项目、甚至是 NodeJS 的项目这将如何处理？
+前面提到，TmodJS 默认设置下会输出一个包含所有模板的模板包 template.js，这个文件可以兼容多种模块格式，除了通过脚本直接加载还可以使用 RequierJS、SeaJS、NodeJS 加载。
 
 RequierJS 的模块规范是 AMD，SeaJS 的模块是 CMD，而 NodeJS 的模块规范是 CommonJS —— 这几种规范有很多共同点，很容易进行兼容，这是模板包内部的实现方式：
 
@@ -201,25 +202,31 @@ RequierJS 的模块规范是 AMD，SeaJS 的模块是 CMD，而 NodeJS 的模块
         global.template = template;
     }
    
-模板包通过运行时判断后，会对不同的环境暴露对应 API，并且模板加载接口保持不变！可以想象：后端直出 HTML 与前端异步加载的混合架构将变得更加容易。
+模板包通过运行时判断后，会对不同的环境暴露对应 API，并且模板加载接口保持不变。
+
+除此之外，还可以将每个模板都编译为 NodeJS 模块。无论如何，后端直出 HTML 与前端异步加载的混合架构将变得简单自然！
 
 ##	关于 TmodJS
 
 起源于腾讯内部公用组件平台的开源项目，开发团队来自腾讯 QQ 空间与 CDC。
 
+###	愿景
+
+希望 TmodJS 成为每个前端开发者必备的利器！
+
 ###	常见问题
 
 问：TmodJS 需要部署到服务器中吗？
 
-> 答：不需要，这是本地开发工具，基于 NodeJS 编写是为了实现跨平台。
+> 答：不需要，这是本地开发工具。
 
 问：TmodJS 的编译后模板性能如何？
 
-> 答：TmodJS 预编译器基于 artTemplate，artTemplate 的执行速度是业界领先的模板引擎之一（仍在不断优化中）。速度测试：<http://aui.github.io/artTemplate/test/test-speed.html>
+> 答：TmodJS 预编译器基于 artTemplate，artTemplate 的执行速度是业界领先的模板引擎之一（仍在不断优化中）。[速度对比](http://aui.github.io/artTemplate/test/test-speed.html)
 
 问：将模板编译成 js 语句会导致体积增加吗？
 
-> 答：不会，一般情况下还能起到压缩的效果。例如在腾讯 Microtrend 项目为例：中采用 TmodJS 编译后，原来 Gzip 下 14kb 模板变成 7kb，压缩率高达到 50%，原因：1、模板编译器会压缩 HTML 多余字符 2、编译后代码简练且不再依赖模板引擎。具体请查看编译输出的模板：<http://microtrend.cdc.tencent.com/tpl/dist/template.js>
+> 答：不会，一般情况下还能起到压缩的效果。例如在腾讯 Microtrend 项目为例：中采用 TmodJS 编译后，原来 Gzip 下 14kb 模板变成 7kb，压缩率高达到 50%，原因：1、模板编译器会压缩 HTML 多余字符 2、编译后代码简练且不再依赖模板引擎。[查看编译后的模板](http://microtrend.cdc.tencent.com/tpl/dist/template.js)
 
 问：原来页面上使用 artTemplate 的模板可以无缝迁移到 TmodJS 这种基于文件系统的模板中来吗？
 

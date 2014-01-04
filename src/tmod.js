@@ -1019,7 +1019,7 @@ module.exports = {
         });
 
 
-        // 监听模板删除事件
+        // 监听模板删除事件（Windows NodeJS 暂时无法做到）
         this.on('delete', function (data) {
             var time = (new Date).toLocaleTimeString();
             stdout('[grey]' + time + '[/grey]\n');
