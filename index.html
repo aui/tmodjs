@@ -1,43 +1,238 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <title>进击！前端模板工程化 by aui</title>
-  </head>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+body {
+  max-width: 620px;
+  margin: auto;
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px;
+}
+body > *:first-child {
+  margin-top: 0 !important;
+}
+body > *:last-child {
+  margin-bottom: 0 !important;
+}
+a {
+  color: #4183C4;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative;
+}
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none;
+}
+h1 tt, h1 code {
+  font-size: inherit;
+}
+h2 tt, h2 code {
+  font-size: inherit;
+}
+h3 tt, h3 code {
+  font-size: inherit;
+}
+h4 tt, h4 code {
+  font-size: inherit;
+}
+h5 tt, h5 code {
+  font-size: inherit;
+}
+h6 tt, h6 code {
+  font-size: inherit;
+}
+h1 {
+  font-size: 28px;
+  color: black;
+}
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black;
+}
+h3 {
+  font-size: 18px;
+}
+h4 {
+  font-size: 16px;
+}
+h5 {
+  font-size: 14px;
+}
+h6 {
+  color: #777777;
+  font-size: 14px;
+}
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0;
+}
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+body > h1:first-child + h2 {
+  margin-top: 0;
+  padding-top: 0;
+}
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0;
+}
+li p.first {
+  display: inline-block;
+}
+li {
+  margin: 0;
+}
+ul, ol {
+  padding-left: 30px;
+}
+ul :first-child, ol :first-child {
+  margin-top: 0;
+}
+dl {
+  padding: 0;
+}
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+blockquote {
+  border-left: 2px solid #dddddd;
+  padding: 0 15px;
+  color: #777777;
+}
+blockquote > :first-child {
+  margin-top: 0;
+}
+blockquote > :last-child {
+  margin-bottom: 0;
+}
+table {
+  padding: 0;
+  border-collapse: collapse;
+}
+tr {
+  border-top: 1px solid #cccccc;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+}
+tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+th {
+  font-weight: bold;
+  border: 1px solid #cccccc;
+  text-align: left;
+  margin: 0;
+  padding: 6px 13px;
+}
+td {
+  border: 1px solid #cccccc;
+  text-align: left;
+  margin: 0;
+  padding: 6px 13px;
+}
+th :first-child, td :first-child {
+  margin-top: 0;
+}
+th :last-child, td :last-child {
+  margin-bottom: 0;
+}
+img {
+  max-width: 100%;
+}
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+pre {
+  background-color: #303030;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+}
+pre code {
+  color: #f2f2f2;
+  border: none;
+  padding: 0;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+pre tt {
+  background-color: transparent;
+  border: none;
+}
+@media print {
+  table, pre {
+    page-break-inside: avoid;
+  }
+}
 
-  <body>
-    <div id="container">
-      <div class="inner">
+</style>
+<title>进击！前端模板工程化</title>
 
-        <header>
-          <h1>进击！前端模板工程化</h1>
-          <h2>基于 TmodJS 前端模板工程化解决方案</h2>
-        </header>
+</head>
+<body>
+<h1>进击！前端模板工程化</h1>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/aui/tmodjs/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/aui/tmodjs/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/aui/tmodjs" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
+<h2>前言</h2>
 
-        <hr>
+<p>现在，越来越多的前端项目采用了单页或者混合式的架构，在这种架构中后端只负责吐出 JSON 数据，前端异步来渲染 HTML，前端模板被大量使用，与此同时也将引发开发维护与发布优化的问题。为了解决这些问题，我们曾经开发了工具 TmodJS（原名 atc），试图通过本地自动化工具让端模板走上工程化之路。很高兴这个工具经过长达 8 个月的磨砺后，它从一个简陋的工具变成如今健壮的前端开发“利器”，并且已经有多个大型项目在使用它。现在我将对前端模板工程化的一些思考与总结分享出来，希望能够让大家更好的理解 TmodJS 的意义所在。在主题开始之前，先简单总结下这些年前端模板技术的发展。</p>
 
-        <section id="main_content">
-          <h2>
-<a name="%E5%89%8D%E8%A8%80" class="anchor" href="#%E5%89%8D%E8%A8%80"><span class="octicon octicon-link"></span></a>前言</h2>
-
-<p>现在，越来越多的前端项目采用了单页或者混合式的架构，在这种架构中后端只负责吐出 JSON 数据，前端异步来渲染 HTML，前端模板被大量使用，与此同时也将引发开发维护与发布优化的问题。为了解决这些问题，我们曾经开发了工具 TmodJS（原名 atc），试图通过本地自动化工具让端模板走上工程化之路。很高兴这个工具经过长达 8 个月的磨砺后，它从一个简陋的工具变成如今健壮的前端开发“利器”，并且已经有多个大型项目在使用它。现在我将对前端模板工程化的一些思考与总结分享出来，希望能够让大家更好的理解 TmodJS 的意义所在。在主题开始之前，先简单总结下前端模板技术的发展。</p>
-
-<h2>
-<a name="%E6%89%8B%E5%B7%A5%E6%8B%BC%E6%8E%A5%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%97%B6%E4%BB%A3" class="anchor" href="#%E6%89%8B%E5%B7%A5%E6%8B%BC%E6%8E%A5%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%97%B6%E4%BB%A3"><span class="octicon octicon-link"></span></a>手工拼接字符串时代</h2>
+<h2>手工拼接字符串时代</h2>
 
 <p>早期，开发人员都是直接在 js 文件中采用最原始的方式直接拼接 HTML 字符串：</p>
 
@@ -54,10 +249,9 @@ for (var i = 0, users = data.users; i &lt; users.length; i ++) {
 
 <p>这种方式刚开始在一两个简单的页面中还是比较灵活的，但弊端也十分明显：UI 与逻辑代码混杂在一起，阅读起来会非常吃力。一旦随着业务复杂起来，或者多人维护的情况下，几乎会失控。</p>
 
-<h2>
-<a name="%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E6%97%B6%E4%BB%A3" class="anchor" href="#%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E6%97%B6%E4%BB%A3"><span class="octicon octicon-link"></span></a>前端模板引擎时代</h2>
+<h2>前端模板引擎时代</h2>
 
-<p>受 jquery 作者的 tmpl 模板引擎影响，从 09 年开始到现在前端模板引擎出现了百花齐放，一条前端模板类似这样：</p>
+<p>受 jquery 作者的 tmpl 模板引擎影响，从 09 年开始到现在，前端模板引擎出现了百花齐放的局面，涌现出一大批行色各异的引擎，几乎每个前端工程中都使用了模板引擎。一条前端模板类似这样：</p>
 
 <pre><code>&lt;script id="user_tmpl" type="text/html"&gt;
 {{each users as value}}
@@ -76,43 +270,39 @@ document.getElementById('content').innerHTML = html;
 
 <p><a href="http://aui.github.io/artTemplate/demo/simple-syntax/basic.html">在线示例</a></p>
 
-<p>通过前端模板引擎将 UI 分离后，模板的书写与修改就变得简单多了，多人协作的问题已经得到解决，因此前端模板引擎它也成了前端技术体系中中一个十分基础的类库。但是，这种方式规模化后其弊端也随之而来。</p>
+<p>通过前端模板引擎将 UI 分离后，模板的书写与修改就变得简单多了，也提升了可维护性。但是，随着这种方式规模化后其弊端也随之而来。</p>
 
-<h3>
-<a name="%E9%A1%B5%E9%9D%A2%E5%86%85%E5%B5%8C%E6%A8%A1%E6%9D%BF%E4%B9%8B%E5%BC%8A%E7%AB%AF" class="anchor" href="#%E9%A1%B5%E9%9D%A2%E5%86%85%E5%B5%8C%E6%A8%A1%E6%9D%BF%E4%B9%8B%E5%BC%8A%E7%AB%AF"><span class="octicon octicon-link"></span></a>页面内嵌模板之弊端</h3>
+<h3>页面内嵌模板之弊端</h3>
 
-<h4>
-<a name="1-%E5%BC%80%E5%8F%91%E8%B0%83%E8%AF%95" class="anchor" href="#1-%E5%BC%80%E5%8F%91%E8%B0%83%E8%AF%95"><span class="octicon octicon-link"></span></a>1. 开发调试</h4>
+<h4>1. 开发调试</h4>
 
 <p>每次修改前端模板需要改动页面的代码，有时候存放模板的页面又依赖服务器，这使得我们无法使用使用类似 Fiddler 的工具将页面映射到本地进行开发，从而不得不传到服务器或者自己搭建本地服务器环境，以至于开发维护过程异常繁琐。</p>
 
-<h4>
-<a name="2-%E4%BD%93%E7%A7%AF%E4%BC%98%E5%8C%96" class="anchor" href="#2-%E4%BD%93%E7%A7%AF%E4%BC%98%E5%8C%96"><span class="octicon octicon-link"></span></a>2. 体积优化</h4>
+<h4>2. 体积优化</h4>
 
 <p>动态页面与前端模板结合的架构中，不利于浏览器缓存，通常在单页应用中，页面页面会堆砌着大量的<code>&lt;script type="text/html"&gt;&lt;/script&gt;</code>标签，每次进入应用都需要重新加载模板代码，造成不必要的网络开销。</p>
 
-<h4>
-<a name="3--%E6%A8%A1%E6%9D%BF%E5%A4%8D%E7%94%A8" class="anchor" href="#3--%E6%A8%A1%E6%9D%BF%E5%A4%8D%E7%94%A8"><span class="octicon octicon-link"></span></a>3.  模板复用</h4>
+<h4>3.  模板复用</h4>
 
 <p>比如类似“好友选择器”这样的公用模块，页面内嵌模板满足不了模板复用的需求。</p>
 
 <p>以上三个问题本质都是因为模板堆砌在一个文件中造成的，于是越来越的项目开始将前端模板从页面中迁移出来，目前主要有两种方式：</p>
 
-<h3>
-<a name="%E4%BC%98%E5%8C%96%E5%A4%96%E7%BD%AE%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E4%BC%98%E5%8C%96%E5%A4%96%E7%BD%AE%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>优化：外置模板</h3>
+<h3>优化：外置模板</h3>
 
-<h4>
-<a name="1-ajax-%E6%88%96-iframe-%E8%BF%9C%E7%A8%8B%E6%8B%89%E5%8F%96%E6%96%B9%E6%A1%88" class="anchor" href="#1-ajax-%E6%88%96-iframe-%E8%BF%9C%E7%A8%8B%E6%8B%89%E5%8F%96%E6%96%B9%E6%A1%88"><span class="octicon octicon-link"></span></a>1. Ajax 或 Iframe 远程拉取方案</h4>
+<h4>1. Ajax 拉取方案</h4>
 
-<p>通过 Ajax 或 Iframe 加载远程模板，然后再使用模板引擎解析，这种方式的弊端相当明显：</p>
+<p>通过 Ajax 加载远程模板，然后再使用模板引擎解析。这种方式的弊端相当明显：</p>
 
 <ol>
-<li> 无法跨域部署。这是由浏览器同源策略限制的，导致模板无法部署到 CDN 网络。</li>
-<li> 复杂度比较高，难以接入主流的自动化部署、优化工具。</li>
-</ol><h4>
-<a name="2-%E5%9C%A8-js-%E6%96%87%E4%BB%B6%E4%B8%AD%E5%AD%98%E6%94%BE%E6%A8%A1%E6%9D%BF" class="anchor" href="#2-%E5%9C%A8-js-%E6%96%87%E4%BB%B6%E4%B8%AD%E5%AD%98%E6%94%BE%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>2. 在 JS 文件中存放模板</h4>
+<li>无法跨域部署。这是由浏览器同源策略限制的，导致模板无法部署到 CDN 网络。</li>
+<li>复杂度比较高，难以接入主流的自动化部署、优化工具。</li>
+</ol>
 
-<p>为避免上述加载模板方案无法跨域的致命缺陷，模板存放在 js 文件中又成了最佳实践方式。但是 js 需要对回车符进行转义，会严重影响开发效率：</p>
+
+<h4>2. 在 JS 文件中存放模板</h4>
+
+<p>为避免上述加载模板方案无法跨域的致命缺陷，模板存放在 js 文件中又成了最佳实践方式。但是 js 需要对回车符进行转义，对书写不友好，例如：</p>
 
 <pre><code>var user_tmpl =
 '&lt;% for (var i = 0; i &lt; users.length; i++) { %&gt;\
@@ -124,58 +314,58 @@ document.getElementById('content').innerHTML = html;
 &lt;% } %&gt;';
 </code></pre>
 
-<h3>
-<a name="%E6%A8%A1%E6%9D%BF%E5%AD%98%E6%94%BE%E6%96%B9%E6%A1%88%E4%BC%98%E5%8A%A3%E6%80%BB%E7%BB%93" class="anchor" href="#%E6%A8%A1%E6%9D%BF%E5%AD%98%E6%94%BE%E6%96%B9%E6%A1%88%E4%BC%98%E5%8A%A3%E6%80%BB%E7%BB%93"><span class="octicon octicon-link"></span></a>模板存放方案优劣总结</h3>
+<h3>模板存放方案优劣总结</h3>
 
 <table>
-<thead><tr>
-<th>存放方式</th>
-<th>书写友好</th>
-<th>跨域问题</th>
-<th>本地调试</th>
-<th>代码复用</th>
-<th>缓存</th>
-<th>按需加载</th>
-</tr></thead>
+<thead>
+<tr>
+<th>存放方式 </th>
+<th> 书写友好 </th>
+<th> CDN 跨域部署 </th>
+<th> 本地调试 </th>
+<th> 代码复用 </th>
+<th> 按需加载</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td>页面内嵌</td>
-<td>✓</td>
-<td>✓</td>
-<td>✗</td>
-<td>✗</td>
-<td>✗</td>
-<td>✗</td>
+<td>内嵌业务页中 </td>
+<td> ✓ </td>
+<td> ✗ </td>
+<td> ✗ </td>
+<td> ✗ </td>
+<td> ✗</td>
 </tr>
 <tr>
-<td>Ajax 远程加载</td>
-<td>✓</td>
-<td>✗</td>
-<td>✓</td>
-<td>✓</td>
-<td>✓</td>
-<td>✓</td>
+<td>Ajax 远程加载 </td>
+<td> ✓  </td>
+<td> ✗</td>
+<td> ✓ </td>
+<td> ✓ </td>
+<td> ✓</td>
 </tr>
 <tr>
-<td>嵌入 js 文件</td>
-<td>✗</td>
-<td>✓</td>
-<td>✓</td>
-<td>✓</td>
-<td>✓</td>
-<td>✓</td>
+<td>嵌入 js 文件 </td>
+<td> ✗ </td>
+<td> ✓ </td>
+<td> ✓ </td>
+<td> ✓ </td>
+<td> ✓</td>
 </tr>
 </tbody>
-</table><p>在实践中我们发现：方便优化的模式不利于开发；利于开发的模式不利于优化。</p>
+</table>
 
-<p>为了解决上述问题，业界出现了一些工具。已知开源引擎 handlebars.js 与 Twitter 的 Hogan.js 采用了预编译技术来完成模板到 js 的转换，以 handlebars.js 使用为例，先使用 NodeJS 安装它：</p>
+
+<p>在实践中我们发现：方便优化的模式不利于开发；利于开发的模式不利于优化。</p>
+
+<p>为了解决上述问题，业界先后出现了一些工具，如 handlebars.js 与 Hogan.js（来自 Twitter） 采用了预编译技术来完成模板到 js 的转换，以 handlebars.js 使用为例，先使用 NodeJS 安装它：</p>
 
 <pre><code>$ npm install -g handlebars
 </code></pre>
 
 <p>然后提取模板内容（<code>script</code> 标签之间）并保存到一个文件中。在这里我们把它保存为 <code>user.tmpl</code>。运行 <code>handlebars</code> 命令预编译这个模板文件。</p>
 
-<pre><code>$ handlebars user_tmpl.tmpl -f user.tmpl.js
+<pre><code>$ handlebars user.tmpl -f user.tmpl.js
 </code></pre>
 
 <p>编译完成后就可以在前端应用中加载这个脚本，比如这样引入：</p>
@@ -189,17 +379,15 @@ document.getElementById('content').innerHTML = html;
 var html = template(data);
 </code></pre>
 
-<p>于是，预编译工具在一定程度上解决了我们的问题。但由于操作实在是太繁琐，实际使用起来也是非常不顺畅，它们也并没有流行起来。例如一个 web app 单页应用，几百条前端模板是常有的事儿，开发阶段我们会不断的添加、修改模板，如果每次都需要重新编译这简直会令人抓狂，与此同时大量零散的模板脚本也会引发新的问题，编译后的模板没有提供显式的依赖声明，对于大型项目来说，自动化工具依然难以介入。</p>
+<p>预编译工具在一定程度上解决了我们的问题，但由于操作实在是太繁琐，因此它们也并没有流行起来。例如一个 web app 单页应用，几百条前端模板是常有的事儿，开发阶段我们会不断的添加、修改模板，如果每次都需要重新编译这简直会令人抓狂，与此同时大量零散的模板脚本也会引发新的问题，编译后的模板没有提供显式的依赖声明，对于大型项目来说，自动化工具依然难以介入。</p>
 
-<p>总之，预编译方案点燃了前端模板工程化希望之火，使得我们不必局限于浏览器的技术限制，从而让我们更多的想法通过本地工具执行。经过无数次实践、在各种方案权衡后，我们研发了全新的预编译工具 —— TmodJS。</p>
+<p>就目前而言，业界依然没有出现针对前端模板成熟的自动化工具，于是经过无数次实践、在各种方案权衡后，我们研发了全新自动化工具 —— TmodJS，为前端模板工程化而来。</p>
 
-<h2>
-<a name="%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF" class="anchor" href="#%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%9D%BF"><span class="octicon octicon-link"></span></a>工程化前端模板</h2>
+<h2>工程化前端模板</h2>
 
-<p>TmodJS 采用一系列集成方案来最大化提升前端工程效率与质量。</p>
+<p>TmodJS 采用一系列集成方案来最大化提升前端工程效率与质量，本地预编译技术的运用使得我们不必局限于浏览器的技术限制，从而让我们更多的想法通过工具来执行。</p>
 
-<h3>
-<a name="1-%E5%9F%BA%E4%BA%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F" class="anchor" href="#1-%E5%9F%BA%E4%BA%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="octicon octicon-link"></span></a>1. 基于文件系统</h3>
+<h3>1. 基于文件系统</h3>
 
 <p>在 TmodJS 的规范中，前端模板不再内嵌到页面中，而是使用专门的目录进行组织维护；使用路径作为模板的 ID，这样与源文件保持对应关系 —— 这样好处就是极大的增加了可维护性。例如：页面头部底部的公用模板可以放在 tpl/public 目录下，新闻栏目的模板可以放在 tpl/news 下面。</p>
 
@@ -212,10 +400,9 @@ var html = template(data);
 
 <p>总之，使用文件系统来管理模板已经在服务器端模板中得到广泛的验证，而在前端也同样适用，无论项目规模是多么轻量或者庞大。</p>
 
-<h3>
-<a name="2-%E5%90%8C%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%8E%A5%E5%8F%A3" class="anchor" href="#2-%E5%90%8C%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%8E%A5%E5%8F%A3"><span class="octicon octicon-link"></span></a>2. 同步加载接口</h3>
+<h3>2. 使用同步加载接口</h3>
 
-<p>TmodJS 的同步接口是通过通过打包合并模板或者使用 AMD、CMD 规范实现，从而避免浏览器的异步加载带来的各种问题，如网络速度、回调套嵌等。例如加载 news/index.html 模板：</p>
+<p>TmodJS 的同步接口是通过通过打包合并模板或者使用 AMD、CMD 规范实现，从而避免浏览器的异步加载带来的各种问题，如网络速度、回调套嵌等。例如加载模板 news/index.html：</p>
 
 <pre><code>var tpl = template('news/index');
 </code></pre>
@@ -226,12 +413,11 @@ var html = template(data);
 document.getElementById('content').innerHTML = html;
 </code></pre>
 
-<h3>
-<a name="3--%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BC%98%E5%8C%96" class="anchor" href="#3--%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BC%98%E5%8C%96"><span class="octicon octicon-link"></span></a>3.  自动化优化</h3>
+<h3>3.  自动化执行优化</h3>
 
 <p>在默认设置下，TmodJS 会将模板目录所有模板编译后再进行压缩与合并，输出后的 template.js 称之为模板包（内部名称叫 TemplateJS 格式）这种打包的方式非常适合移动端单页 WebApp，输出后的模板包可直接可作为开发阶段与线上运行的文件。</p>
 
-<p>当然，将所有前端模板都打包在一个文件中不一定适合每一个项目，因为很多大型项目需要更细致的优化，所以 TmodJS 还可以选择不打包合并输出，而是输出单个的 js 文件，这样这些模板脚本可以交给外部工具进行优化，例如大名鼎鼎的 GruntJS。除此之外，使用 RequireJS 与 SeaJS 或者 NodeJS 的用户还可以通过配置将每一个模板都编译成与它们的模块，这时候模板加载的接口是这样的：</p>
+<p>当然，将所有前端模板都打包在一个文件中不一定适合每一个项目，因为很多大型项目需要更细致的优化，所以 TmodJS 还可以选择输出单个的 js 文件，这样这些模板脚本可以交给外部工具进行优化，例如大名鼎鼎的 GruntJS。除此之外，使用 RequireJS 与 SeaJS 或者 NodeJS 的用户还可以通过配置将每一个模板都编译成与它们的模块，这时候模板加载的接口是这样的：</p>
 
 <pre><code>var tpl = requier('tpl/news/index');
 var html = tpl(data);
@@ -243,12 +429,13 @@ var html = tpl(data);
 <p>总之，模板转换为 js 后不但解决了跨域部署的烦恼，其优化空间也更加灵活多样。案例：</p>
 
 <ol>
-<li> 腾讯视频前端团队的实践：关闭 TmodJS 的打包合并，按照网站栏目建立模板子目录，通过 GruntJS 按栏目进行合压缩，然后让栏目页面单独引入合并后的栏目模板。</li>
-<li> QQ 空间 CDN 有线上 SeaJS 模块动态合并服务，这时候 TmodJS 编译后的模板会被当作一个普通的 SeaJS 模块引入到项目中，当 UI 模块被调用的时候逻辑与依赖的模板都会进行动态合并加载，完全无需本地构建工具操作。</li>
-<li> MicroTrend 是腾讯内部的一个移动端单页 WebApp 项目，包含较多的模板片段，发布前每次都需要手工进行模板抽离与压缩，极其耗时。采用 TmodJS 进行模板管理，模板被打包压缩到一个 js 文件中，开发阶段输出的模板包直接作为发布后的文件，节省了发布阶段繁琐的优化环节。<a href="http://microtrend.cdc.tencent.com/tpl/dist/template.js">查看编译后的模板</a>
-</li>
-</ol><h3>
-<a name="4-%E6%9C%AC%E5%9C%B0%E8%B0%83%E8%AF%95" class="anchor" href="#4-%E6%9C%AC%E5%9C%B0%E8%B0%83%E8%AF%95"><span class="octicon octicon-link"></span></a>4. 本地调试</h3>
+<li>腾讯视频前端团队的实践：关闭 TmodJS 的打包合并，按照网站栏目建立模板子目录，通过 GruntJS 按栏目进行合压缩，然后让栏目页面单独引入合并后的栏目模板。</li>
+<li>QQ 空间 CDN 有线上 SeaJS 模块动态合并服务，这时候 TmodJS 编译后的模板会被当作一个普通的 SeaJS 模块引入到项目中，当 UI 模块被调用的时候逻辑与依赖的模板都会进行动态合并加载，完全无需本地构建工具操作。</li>
+<li>MicroTrend 是腾讯内部的一个移动端单页 WebApp 项目，包含较多的模板片段，发布前每次都需要手工进行模板抽离与压缩，极其耗时。采用 TmodJS 进行模板管理，模板被打包压缩到一个 js 文件中，开发阶段输出的模板包直接作为发布后的文件，节省了发布阶段繁琐的优化环节。<a href="http://microtrend.cdc.tencent.com/tpl/dist/template.js">查看编译后的模板</a></li>
+</ol>
+
+
+<h3>4. 本地调试支持</h3>
 
 <p>通常开发阶段模板会经常被修改，所以 TmodJS 支持监听模板目录的修改，当模板发生修改则会进行增量编译，时间久了甚至可以让人忘记编译过程的存在，完全忘记这是在写前端模板。</p>
 
@@ -274,8 +461,7 @@ Cannot read property '0' of undefined
 {{users[0].name}}
 </code></pre>
 
-<h3>
-<a name="5-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%A4%8D%E7%94%A8" class="anchor" href="#5-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%A4%8D%E7%94%A8"><span class="octicon octicon-link"></span></a>5. 前后端复用</h3>
+<h3>5. 前后端模板共用</h3>
 
 <p>一般项目，我们直接采用<code>&lt;script&gt;</code>标签载入编译后模板包即可，但是对于使用 RequireJS 或 SeaJS 模块化的项目、甚至是 NodeJS 的项目这将如何处理？</p>
 
@@ -299,67 +485,46 @@ if (typeof define === 'function') {
 
 <p>模板包通过运行时判断后，会对不同的环境暴露对应 API，并且模板加载接口保持不变！可以想象：后端直出 HTML 与前端异步加载的混合架构将变得更加容易。</p>
 
-<h2>
-<a name="%E5%85%B3%E4%BA%8E-tmodjs" class="anchor" href="#%E5%85%B3%E4%BA%8E-tmodjs"><span class="octicon octicon-link"></span></a>关于 TmodJS</h2>
+<h2>关于 TmodJS</h2>
 
-<p>起源于腾讯内部公用组件平台的开源项目，开发团队来自 QQ 空间与 CDC。</p>
+<p>起源于腾讯内部公用组件平台的开源项目，开发团队来自腾讯 QQ 空间与 CDC。</p>
 
-<h3>
-<a name="%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98" class="anchor" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="octicon octicon-link"></span></a>常见问题</h3>
+<h3>常见问题</h3>
 
 <p>问：TmodJS 需要部署到服务器中吗？</p>
 
-<blockquote>
-<p>答：不需要，这是本地开发工具，基于 NodeJS 编写是为了实现跨平台。</p>
-</blockquote>
+<blockquote><p>答：不需要，这是本地开发工具，基于 NodeJS 编写是为了实现跨平台。</p></blockquote>
 
 <p>问：TmodJS 的编译后模板性能如何？</p>
 
-<blockquote>
-<p>答：TmodJS 预编译器基于 artTemplate，artTemplate 的执行速度是业界领先的模板引擎之一（仍在不断优化中）。速度测试：<a href="http://aui.github.io/artTemplate/test/test-speed.html">http://aui.github.io/artTemplate/test/test-speed.html</a></p>
-</blockquote>
+<blockquote><p>答：TmodJS 预编译器基于 artTemplate，artTemplate 的执行速度是业界领先的模板引擎之一（仍在不断优化中）。速度测试：<a href="http://aui.github.io/artTemplate/test/test-speed.html">http://aui.github.io/artTemplate/test/test-speed.html</a></p></blockquote>
 
 <p>问：将模板编译成 js 语句会导致体积增加吗？</p>
 
-<blockquote>
-<p>答：不会，一般情况下还能起到压缩的效果。例如在腾讯 Microtrend 项目为例：中采用 TmodJS 编译后，原来 Gzip 下 14kb 模板变成 7kb，压缩率高达到 50%，原因：1、模板编译器会压缩 HTML 多余字符 2、编译后代码简练且不再依赖模板引擎。具体请查看编译输出的模板：<a href="http://microtrend.cdc.tencent.com/tpl/dist/template.js">http://microtrend.cdc.tencent.com/tpl/dist/template.js</a></p>
-</blockquote>
+<blockquote><p>答：不会，一般情况下还能起到压缩的效果。例如在腾讯 Microtrend 项目为例：中采用 TmodJS 编译后，原来 Gzip 下 14kb 模板变成 7kb，压缩率高达到 50%，原因：1、模板编译器会压缩 HTML 多余字符 2、编译后代码简练且不再依赖模板引擎。具体请查看编译输出的模板：<a href="http://microtrend.cdc.tencent.com/tpl/dist/template.js">http://microtrend.cdc.tencent.com/tpl/dist/template.js</a></p></blockquote>
 
 <p>问：原来页面上使用 artTemplate 的模板可以无缝迁移到 TmodJS 这种基于文件系统的模板中来吗？</p>
 
-<blockquote>
-<p>答：完全可以。甚至可以浏览器动态编译与本地预编译混合使用。</p>
-</blockquote>
+<blockquote><p>答：完全可以。甚至可以浏览器动态编译与本地预编译混合使用。</p></blockquote>
 
 <p>问：前端模板能防范 XSS 漏洞么？</p>
 
-<blockquote>
-<p>答：编译后的 JS 默认会对每一处输出语句进行扫描过滤，模板书写无需考虑安全问题。</p>
-</blockquote>
+<blockquote><p>答：编译后的 JS 默认会对每一处输出语句进行扫描过滤，模板书写无需考虑安全问题。</p></blockquote>
 
-<h3>
-<a name="%E4%BD%BF%E7%94%A8-tmodjs-%E7%9A%84%E9%A1%B9%E7%9B%AE" class="anchor" href="#%E4%BD%BF%E7%94%A8-tmodjs-%E7%9A%84%E9%A1%B9%E7%9B%AE"><span class="octicon octicon-link"></span></a>使用 TmodJS 的项目</h3>
+<h3>使用 TmodJS 的项目</h3>
 
 <ul>
-<li>  QQ 空间</li>
-<li>  腾讯视频</li>
-<li>  Spa（迅雷）</li>
-<li>  MicroTrend（腾讯）</li>
-<li>  Tracker（腾讯）</li>
-<li>  ……</li>
-</ul><h3>
-<a name="github-%E4%B8%BB%E9%A1%B5" class="anchor" href="#github-%E4%B8%BB%E9%A1%B5"><span class="octicon octicon-link"></span></a>Github 主页</h3>
+<li>QQ 空间</li>
+<li>腾讯视频</li>
+<li>Spa（迅雷）</li>
+<li>MicroTrend（腾讯）</li>
+<li>Tracker（腾讯）</li>
+<li>……</li>
+</ul>
+
+
+<h3>Github 主页</h3>
 
 <p><a href="https://github.com/aui/tmodjs">https://github.com/aui/tmodjs</a></p>
-        </section>
-
-        <footer>
-          进击！前端模板工程化 is maintained by <a href="https://github.com/aui">aui</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-
-        
-      </div>
-    </div>
-  </body>
+</body>
 </html>
