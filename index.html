@@ -500,11 +500,11 @@ if (typeof define === 'function') {
 
 <p>问：TmodJS 的编译后模板性能如何？</p>
 
-<blockquote><p>答：TmodJS 预编译器基于 artTemplate，artTemplate 的执行速度是业界领先的模板引擎之一（仍在不断优化中）。速度测试：<a href="http://aui.github.io/artTemplate/test/test-speed.html">http://aui.github.io/artTemplate/test/test-speed.html</a></p></blockquote>
+<blockquote><p>答：TmodJS 预编译器基于 artTemplate，artTemplate 的执行速度是业界领先的模板引擎之一（仍在不断优化中）。<a href="http://aui.github.io/artTemplate/test/test-speed.html">速度对比</a></p></blockquote>
 
 <p>问：将模板编译成 js 语句会导致体积增加吗？</p>
 
-<blockquote><p>答：不会，一般情况下还能起到压缩的效果。例如在腾讯 Microtrend 项目为例：中采用 TmodJS 编译后，原来 Gzip 下 14kb 模板变成 7kb，压缩率高达到 50%，原因：1、模板编译器会压缩 HTML 多余字符 2、编译后代码简练且不再依赖模板引擎。具体请查看编译输出的模板：<a href="http://microtrend.cdc.tencent.com/tpl/dist/template.js">http://microtrend.cdc.tencent.com/tpl/dist/template.js</a></p></blockquote>
+<blockquote><p>答：不会，一般情况下还能起到压缩的效果。例如在腾讯 Microtrend 项目为例：中采用 TmodJS 编译后，原来 Gzip 下 14kb 模板变成 7kb，压缩率高达到 50%，原因：1、模板编译器会压缩 HTML 多余字符 2、编译后代码简练且不再依赖模板引擎。<a href="http://microtrend.cdc.tencent.com/tpl/dist/template.js">查看编译后的模板</a></p></blockquote>
 
 <p>问：原来页面上使用 artTemplate 的模板可以无缝迁移到 TmodJS 这种基于文件系统的模板中来吗？</p>
 
