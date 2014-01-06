@@ -158,11 +158,13 @@ if (options.output) {
 
 TmodJS.init(dir, options);
 
-TmodJS.on('error', function (data) {
+
+TmodJS.on('compileError', function (data) {
     if (!isWatch) {
         process.exit(1);
     }
 });
+
 
 userConfig = TmodJS.saveUserConfig();
 

@@ -713,7 +713,6 @@ module.exports = {
                 // 规范错误，模板编译器通常能够给出错误源
 
                 this.emit('compileError', errorInfo);
-                this.emit('error', errorInfo);
 
             } else {
 
@@ -748,8 +747,6 @@ module.exports = {
                     // 模板编译错误事件
                     this.emit('compileError', e);
 
-                    this.emit('error', e);
-
                 }.bind(this));
             }
 
@@ -764,11 +761,11 @@ module.exports = {
                 this._fsUnlink(this.base + '/.debug.js');
                 delete this.debuging;
             }
+
+            // 缓存编译好的模板
+            this._setCache(file, mod);
         }
 
-
-        // 缓存编译好的模板
-        this._setCache(file, mod);
 
 
         if (error) {

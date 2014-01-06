@@ -4,9 +4,9 @@ TmodJS（原名 atc）是一款前端模板编译工具，它可以让前端模�
 
 ##	为什么要使用 TmodJS？
 
-作为开发者，我们纵然可以使用记事本来编写程序，但事实上没人这样做，因为我们被喜欢的编辑器或 IDE 迷惑，这不是仅仅是习惯问题，我们坚信一个好用的工具可以大幅度提高我们的效率。
+作为开发者，我们纵然可以使用记事本来编写程序，但事实上没人这样做，因为我们被喜欢的编辑器或 IDE 迷惑，这不是仅仅是习惯问题，而是我们坚信：一个好用的工具可以大幅度提高我们的效率。
 
-对于前端开发者而言，TmodJS 也会像你的编辑器一样，一旦上手，爱不释手。
+对于前端开发者而言，TmodJS 也会像你的编辑器一样：一旦上手，便爱不释手。
 
 请继续阅读：[《进击！前端模板工程化》](http://aui.github.io/tmodjs/)。
 
@@ -21,7 +21,7 @@ TmodJS（原名 atc）是一款前端模板编译工具，它可以让前端模�
 
 通过 TmodJS 预编译技术让前端模板突破浏览器的文本文件加载限制，支持模板按文件存放，并且支持多层目录组织模板，并且模板之间可通过``include``语句进行复用。
 
-在 TmodJS 的规范中，前端模板不再内嵌到页面中，而是使用专门的目录进行组织维护；使用路径作为模板的 ID，这样与源文件保持对应关系 —— 这样好处就是极大的增加了可维护性。例如：页面头部底部的公用模板可以放在 tpl/public 目录下，新闻栏目的模板可以放在 tpl/news 下面。
+在 TmodJS 的规范中，前端模板不再内嵌到页面中，而是使用专门的目录进行组织维护；使用路径作为模板的 ID，这样与源文件保持对应关系 —— 这样好处就是极大的增加了可维护性。例如：页面头部底部的公用模板可以放在``tpl/public``目录下，新闻栏目的模板可以放在``tpl/news``下面。
 
 总之，使用文件系统来管理模板已经在服务器端模板中得到广泛的验证，而在前端也同样适用，无论项目规模是多么轻量或者庞大。
 
@@ -165,6 +165,10 @@ var options = {
 // options {Object} 选项
 TmodJS.init(path, options);
 
+// 监听编译过程的事件
+// 支持的事件有：compile、change、load、compileError、combo
+TmodJS.on('compile', function (data) {});
+
 // 编译模板
 // file {String} 参数可选，无则编译整个模板目录，否则编译指定的模板文件
 // recursion {Boolean} 若为 false 则不编译依赖的模板
@@ -173,12 +177,12 @@ TmodJS.compile(file, recursion);
 // 监控模板修改
 TmodJS.watch();
 
+// 获取用户配置
+//TmodJS.getUserConfig();
+
 // 保存用户设置到模板目录 package.json 文件中
 TmodJS.saveUserConfig();
 
-// 监听编译过程的事件
-// 支持：change、load、compileError、combo
-TmodJS.on('compile', function (data) {});
 ```	
 
 ##	配置
@@ -209,7 +213,7 @@ escape: true,
 engine: false,
 
 // 输出的模块类型，可选：
-// default:  模板目录将会打包后输出，可使用 script 标签直接引入，也支持 NodeJS/RequireJS/SeaJS。
+// default:     模板目录将会打包后输出，可使用 script 标签直接引入，也支持 NodeJS/RequireJS/SeaJS。
 // cmd:         这是一种兼容 RequireJS/SeaJS 的模块（类似 atc v1版本编译结果）
 // amd:         支持 RequireJS 等流行加载器
 // commonjs:    编译为 NodeJS 模块
@@ -281,6 +285,7 @@ minify: true
 *	优化默认设置下的文件输出，仅保留``template.js``，临时文件使用隐藏的``.cache``目录存放
 *	自动清理``.debug.js``文件
 *	对非规范的``include``语句模板在编译过程给予提示
+*	修复``compileError``事件触发异常的 bug
 *	减少对磁盘的读写，优化性能
 
 ###	v0.0.4
