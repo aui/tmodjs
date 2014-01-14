@@ -29,7 +29,10 @@ exports.beautify = function (file) {
         version: false,
         output: file,
         o: file,
+
+        // TMODJS: 开头的注释保存着元数据
         comments: '/TMODJS\:/',
+
         screw_ie8: false,
         export_all: false
     };
@@ -61,9 +64,14 @@ exports.minify = function (file) {
         o: file,
         mangle: true,
         m: true,
-        reserved: 'include,require',
-        r: 'include,require',
-        comments: '/TMODJS\:|^$/',
+
+        // require 变量是 AMD 、CMD 模块需要硬解析的字符
+        reserved: 'require',
+        r: 'require',
+
+        // TMODJS: 开头的注释保存着元数据
+        comments: '/TMODJS\\:|^v\\:\\d+/',
+
         compress: 'warnings=fasle',
         c: 'warnings=false',
         beautify: 'beautify=false,ascii-only=true',

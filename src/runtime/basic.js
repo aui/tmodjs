@@ -2,7 +2,7 @@
 
     'use strict';
 
-    var template = function (path, content) {
+    var template = function (uri, content) {
         return template[
             /string|function/.test(typeof content) ? 'compile' : 'render'
         ].apply(template, arguments);
@@ -80,8 +80,8 @@
     
     var helpers = template.helpers = {
 
-        $include: function (path, data, from) {
-            var id = resolve(from, path);
+        $include: function (uri, data, from) {
+            var id = resolve(from, uri);
             return template.render(id, data);
         },
 
@@ -111,9 +111,9 @@
     };
 
 
-    template.render = function (path, data) {
-        var fn = template.get(path) || debug({
-            id: path,
+    template.render = function (uri, data) {
+        var fn = template.get(uri) || debug({
+            id: uri,
             name: 'Render Error',
             message: 'No Template'
         });
@@ -122,11 +122,11 @@
     };
 
 
-    template.compile = function (path, fn) {
+    template.compile = function (uri, fn) {
         var isFunction = typeof fn === 'function';
-        var render = cache[path] = function (data) {
+        var render = cache[uri] = function (data) {
             try {
-                return isFunction ? new fn(data, path) + '' : fn;
+                return isFunction ? new fn(data, uri) + '' : fn;
             } catch (e) {
                 return debug(e)();
             }

@@ -1,4 +1,4 @@
-/*TMODJS:{"version":1,"md5":"ca7744b5f395e246704f15a19b0f1cd3"}*/
+/*TMODJS:{"version":5,"md5":"5ee9611e3fb210129ed0aafc7e55a5c5"}*/
 define(function(require) {
     require("./public/header");
     require("./public/footer");

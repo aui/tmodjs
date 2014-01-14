@@ -1,4 +1,4 @@
-/*TMODJS:{"version":1,"md5":"cab5e6f388319725086c6dc61243125a"}*/
+/*TMODJS:{"version":2,"md5":"572809eb7da16c9258e7ae64bf984cd8"}*/
 define(function(require) {
     require("./logo");
     return require("template")("public/header", function($data, $id) {

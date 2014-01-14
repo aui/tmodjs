@@ -332,29 +332,26 @@ module.exports = {
     },
 
 
-    // 检查模板与配置是否更改
-    _isChange: function (html, js) {
-        var newMd5 = this._getMd5(html + JSON.stringify(this['package.json']));
-        var oldMd5 = this._getMetadata(js).md5;
-        return newMd5 !== oldMd5;
-    },
-
-
     // 获取元数据
     _getMetadata: function (js) {
         var data = js.match(/\/\*TMODJS\:(.*?)\*\//);
         if (data) {
             return JSON.parse(data[1]);
-        } else {
-            return {};
         }
     },
 
 
     // 删除元数据
     _removeMetadata: function (js) {
-        // 文件末尾设置一个空注释，然后让 UglifyJS 不压缩它，避免很多文件挤成一行  
-        return js.replace(/^\/\*TMODJS\:[\w\W]*?\*\//, '/**/');
+        var data = this._getMetadata(js) || {};
+        var newText = '';
+
+        // 文件末尾设置一个空注释，然后让 UglifyJS 不压缩它，避免很多文件挤成一行
+        if (data.version) {
+            newText = '/*v:' + data.version + '*/';
+        }
+        
+        return js.replace(/^\/\*TMODJS\:[\w\W]*?\*\//, newText);
     },
 
 
@@ -583,11 +580,11 @@ module.exports = {
         var error = true;
         var errorInfo = null;
         var isDebug = this.options.debug;
+        var isCacheDir = this.options.combo;
         var newMd5 = this._getMd5(source + JSON.stringify(this['package.json']));
 
-
         // 如果开启了合并，编译后的文件使用缓存目录保存
-        if (this.options.combo) {
+        if (isCacheDir) {
             target = target.replace(this.output, this.output + '/.cache');
         }
 
@@ -600,7 +597,7 @@ module.exports = {
 
         // 获取缓存的元数据
         if (mod) {
-            metadata = this._getMetadata(mod);
+            metadata = this._getMetadata(mod) || {};
             count = metadata.version || 0;
         }
 
@@ -670,8 +667,15 @@ module.exports = {
             });
 
             this._fsWrite(target, mod, this.options.charset);
-            uglifyjs[isDebug || !this.options.minify ? 'beautify' : 'minify'](target);
 
+            if (!isCacheDir) {
+                if (isDebug || !this.options.minify) {
+                    uglifyjs.beautify(target);
+                } else {
+                    uglifyjs.minify(target);
+                }
+            }
+            
         }
 
 

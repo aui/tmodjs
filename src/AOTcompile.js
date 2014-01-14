@@ -164,6 +164,7 @@ template.AOTcompile = function (id, source, options) {
     
 
     if (isHTML) {
+        // 备注：compressHTML 可能会处理逻辑语句，不过实际场景中不会出问题
         code = isDebug ? source : compressHTML(source);
         code = stringify(code);
     } else {

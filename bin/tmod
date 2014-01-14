@@ -34,7 +34,7 @@ var help = function () {
             '\x1B[90m    defining an output directory\x1B[39m',
 
             '    --charset value',
-            '\x1B[90m    charset, utf-8 by default\x1B[39m',
+            '\x1B[90m    charset, "utf-8" by default\x1B[39m',
 
             '    --version',
             '\x1B[90m    display the version of TmodJS\x1B[39m',
@@ -75,20 +75,59 @@ while (args.length > 0) {
             isWatch = true;
             break;
 
+        case '--watch-off':
+            isWatch = false;
+            break;
+
         // 调试模式
         case '-d':
         case '--debug':
             options.debug = true;
             break;
 
-        // 输出目录
-        case '--output':
-            options.output = args.shift();
+        case '--debug-off':
+            options.debug = false;
             break;
 
         // 嵌入引擎
         case '--engine':
             options.engine = true;
+            break;
+
+        case '--engine--off':
+            options.engine = false;
+            break;
+
+        // 对输出值编码
+        case '--escape':
+            options.escape = true;
+            break;
+
+        case '--escape-off':
+            options.escape = false;
+            break;
+
+        // 打包合并
+        case '--combo':
+            options.combo = true;
+            break;
+
+        case '--combo-off':
+            options.combo = false;
+            break;
+
+        // 压缩代码
+        case '--minify':
+            options.minify = true;
+            break;
+
+        case '--minify-off':
+            options.minify = false;
+            break;
+
+        // 输出目录
+        case '--output':
+            options.output = args.shift();
             break;
 
         // 模板输出类型
@@ -151,10 +190,18 @@ if (!fs.existsSync(dir)) {
 
 
 // 转换成相对于模板目录的路径
+
 if (options.output) {
     options.output = path.relative(dir, path.resolve(options.output));
 }
 
+if (options.syntax) {
+    options.syntax = path.relative(dir, path.resolve(options.syntax));
+}
+
+if (options.helpers) {
+    options.helpers = path.relative(dir, path.resolve(options.helpers));
+}
 
 TmodJS.init(dir, options);
 

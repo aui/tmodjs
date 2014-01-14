@@ -1,4 +1,6 @@
 '<:engine:>'
+'<:syntax:>'
+
 !function (global, template) {
     
     'use strict';
@@ -17,8 +19,8 @@
         return id;
     };
 
-    helpers.$include = function (path, data, from) {
-        var id = resolve(from, path);
+    helpers.$include = function (uri, data, from) {
+        var id = resolve(from, uri);
         return template.render(id, data);
     };
 
@@ -26,7 +28,6 @@
         return get(id.replace(/^\.\//, ''));
     };
 
-    '<:syntax:>'
     '<:helpers:>'
     '<:templates:>' 
 
