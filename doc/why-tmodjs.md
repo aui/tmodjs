@@ -262,7 +262,3 @@ TmodJS 的同步接口是通过通过预先合并或者使用 AMD、CMD、Common
 ###	反馈
 
 在项目遇到问题可以抛出来，我们共同解决。[问题与建议](https://github.com/aui/tmodjs/issues)
-
---------
-
-本文作者：[糖饼](http://weibo.com/planeart)
