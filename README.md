@@ -118,7 +118,7 @@ document.getElementById('list').innerHTML = html;
 
 [TmodJS 源码包](https://github.com/aui/tmodjs/archive/master.zip)中``./test/tpl``是一个演示项目的前端模板目录。你可以通过这个演示项目快速了解 TmodJS 用法以及模板语法、模板加载方式。
 
-首先，使用``cd``命令切换到 TmodJS 源码的``./test/tpl``目录后，直接运行即可：
+首先，使用``cd``命令切换到 TmodJS 源码的``./test/tpl``目录后，然后运行：
 
 ```
 tmod
