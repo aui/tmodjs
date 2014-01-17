@@ -195,7 +195,7 @@ if (options.output) {
     options.output = path.relative(dir, path.resolve(options.output));
 }
 
-if (options.syntax) {
+if (options.syntax && options.syntax != 'simple' && options.syntax != 'native') {
     options.syntax = path.relative(dir, path.resolve(options.syntax));
 }
 
