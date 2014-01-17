@@ -197,7 +197,7 @@ TmodJS 的同步接口是通过通过预先合并或者使用 AMD、CMD、Common
 
 ###	5. 前后端模板共用
 
-前面提到，TmodJS 默认设置下会输出一个包含所有模板的模板包 template.js，这个文件可以兼容多种模块格式，除了通过``<script>``标签直接引入还可以使用 RequierJS、SeaJS、NodeJS 引入。RequierJS 的模块规范是 AMD，SeaJS 的模块是 CMD，而 NodeJS 的模块规范是 CommonJS —— 这几种规范有很多共同点，很容易进行兼容，这是模板包内部的实现方式：
+前面提到，TmodJS 默认设置下会输出一个包含所有模板的模板包 template.js，这个文件可以兼容多种模块格式，除了通过``<script>``标签直接引入还可以使用 RequierJS、SeaJS、NodeJS 引入。RequierJS 的模块规范是 AMD，SeaJS 的模块是 CMD，而 NodeJS 的模块规范是 CommonJS —— 这几种规范有很多共同点，很容易进行兼容。这是模板包内部的实现方式：
 
     // RequireJS && SeaJS
     if (typeof define === 'function') {
