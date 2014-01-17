@@ -37,13 +37,13 @@ npm install -g tmodjs
 
 ##	快速入门
 
-学习 TmodJS 只需要理解这四个关键点就好，5分钟可入门：
+学习 TmodJS 只需要理解这四个关键点就好，3 分钟可入门：
 
-###	一、建立模板目录
+###	一、前端模板目录
 
 TmodJS 的前端模板不再耦合在业务页面中，而是和后端模板一样有专门的目录管理。目录名称支持英文、数字、下划线。
 
-###	二、编写模板
+###	二、模板与语法
 
 一个模板对应一个文件，模板后缀可以是``.html``、``.htm``、``.tpl``。
 
@@ -52,33 +52,32 @@ TmodJS 的前端模板不再耦合在业务页面中，而是和后端模板一�
 ###	三、编译模板
 
 ```
-tmod [模板目录] [配置参数]
+tmod [模板根目录] [配置参数]
 ```
 
 ####	模板目录
 
-必须是模板的根目录，若无参数则为默认使用当前工作目录。
+可以不填，默认使用当前工作目录。
 
 ####	配置参数
             
-*	``-w``或``--watch``设置监控模板修改触发编译
 *	``-d``或``--debug``输出调试版本
 *	``--charset value``定义模板编码，默认``utf-8``
 *	``--output value``定义输出目录，默认``./build``
 *	``--type value``定义输出模块格式，默认``default``，可选``cmd``、``amd``、``commonjs``
+*	``--watch-off``不监控模板修改
 *	``--version``显示版本号
 *	``--help``显示帮助信息
 
-配置参数将会保存在模板目录[配置文件](#配置)中，下次运行无需输入配置参数（-w 与 -d 除外）。
+配置参数将会保存在模板目录[配置文件](#配置)中，下次运行无需输入配置参数（``-d`` 与 ``--watch-off`` 除外）。
 
 ####	示例
 
 ```
-tmod ./tpl --watch --charset utf-8
+tmod ./tpl --debug
 ```
 
->	1.	如果你经常需要修改模板，可以开启``-w``参数，让它检测修改自动编译。
->	2.	如果需要设置模板更多的编译选项，请使用``--config``参数，它会打开模板目录的项目配置文件，可设置语法、公用辅助方法、压缩选项等，参考[配置](#配置)。
+>	如果需要设置模板更多的编译选项，请使用``--config``参数，它会打开模板目录的项目配置文件，可设置语法、公用辅助方法、压缩选项等，参考[配置](#配置)。
 
 ###	四、调用模板
 
@@ -97,11 +96,10 @@ tmod ./tpl --watch --charset utf-8
 加载并渲染模板示例：
 
 ```	
+// 注意：模板路径不能包含后缀名
 var html = template('news/list', {hot: [...]});
 document.getElementById('list').innerHTML = html;
 ```
-
->	注意：模板 ID 不能包含模板后缀名
 
 以上是 TmodJS 默认的模板加载方式，其他``type``请参考：
 
@@ -118,7 +116,7 @@ document.getElementById('list').innerHTML = html;
 
 [TmodJS 源码包](https://github.com/aui/tmodjs/archive/master.zip)中``./test/tpl``是一个演示项目的前端模板目录。你可以通过这个演示项目快速了解 TmodJS 用法以及模板语法、模板加载方式。
 
-首先，使用``cd``命令切换到 TmodJS 源码的``./test/tpl``目录后，然后运行：
+首先，使用``cd``命令切换到 TmodJS 源码的``./test/tpl``目录后，然后运行命令：
 
 ```
 tmod
@@ -128,7 +126,7 @@ tmod
 
 ## 对外接口
 
-若想集成 TmodJS 到其它自动化工具中（如 GruntJS），可以使用 TmodJS 提供的 API：
+若想集成 TmodJS 到其它自动化工具中（如 GruntJS），可以使用 TmodJS 提供的 API 来接入：
 
 ```
 var TmodJS = require('tmodjs');
@@ -136,7 +134,7 @@ var TmodJS = require('tmodjs');
 // 模板目录
 var path = './demo/templates';
 
-// 配置
+// 配置（更多请参考文档）
 var options = {
 	output: './build',
 	charset: 'utf-8',
@@ -144,7 +142,7 @@ var options = {
 };
 
 // 初始化 TmodJS
-// path {String}	模板目录
+// path {String}	模板根目录
 // options {Object} 选项
 TmodJS.init(path, options);
 
@@ -170,7 +168,7 @@ TmodJS.saveUserConfig();
 
 ##	配置
 
-配置最终会保存在模板目录 package.json 文件中，你可以修改``"tmodjs-config"``，配置说明：
+配置最终会保存在模板目录 package.json 文件中，你可以修改``"tmodjs-config"``字段，配置说明：
 
 ```
 // 编译输出目录设置
@@ -258,12 +256,13 @@ minify: true
 
 **问**：我需要手动合并模板，如何让 tmodjs 不合并输出？
 
-> 编辑配置文件，设置``combo:false``。
+> 编辑配置文件，设置``combo: false``。
 
 ##	更新日志
 
 ###	v0.1.1
 
+*	默认开启模板实时监控。取消请使用``--watch-off``
 *	给压缩打包合并后的每条模板增加版本标记，例如``/*v:13*/``，以便对比线上版本
 
 ###	v0.1.0

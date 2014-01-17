@@ -18,23 +18,28 @@ var help = function () {
         '\x1B[7mTmodJS - Template Compiler\x1B[27m',
         '',
         'Usage:',
-        '    tmod <path> [options]',
+        '    tmod [path] [options]',
         'Options:',
         [
-            '    -w, --watch',
-            '\x1B[90m    use tmod in watch mode (auto compile when file changed)\x1B[39m',
 
             '    -d, --debug',
             '\x1B[90m    debugging Template\x1B[39m',
 
+            '    --watch-off',
+            '\x1B[90m    do not use in-time compilation\x1B[39m',
+
             '    --type',
-            '\x1B[90m    optional: templatejs (Default) | cmd (RequireJS/SeaJS) | amd (RequireJS) | commonjs (NodeJS)\x1B[39m',
+            '\x1B[90m    optional: ',
+                    '        templatejs   (Default)',
+                    '        cmd          (RequireJS/SeaJS)',
+                    '        amd          (RequireJS)',
+                    '        commonjs     (NodeJS)\x1B[39m',
 
             '    --output value',
             '\x1B[90m    defining an output directory\x1B[39m',
 
             '    --charset value',
-            '\x1B[90m    charset, "utf-8" by default\x1B[39m',
+            '\x1B[90m    charset, utf-8 by default\x1B[39m',
 
             '    --version',
             '\x1B[90m    display the version of TmodJS\x1B[39m',
