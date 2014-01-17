@@ -195,13 +195,15 @@ if (options.output) {
     options.output = path.relative(dir, path.resolve(options.output));
 }
 
-if (options.syntax) {
+if (options.syntax && /\.js$/.test(options.syntax)) {// 值可能为内置名称：native || simple
     options.syntax = path.relative(dir, path.resolve(options.syntax));
 }
 
 if (options.helpers) {
     options.helpers = path.relative(dir, path.resolve(options.helpers));
 }
+
+
 
 TmodJS.init(dir, options);
 
