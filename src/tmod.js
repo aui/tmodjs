@@ -158,7 +158,7 @@ module.exports = {
 
         json.dependencies.tmodjs = '~' + version;
 
-        
+
         // 默认配置 优先级：0
         for (name in defaults) {
             config[name] = defaults[name];
@@ -169,7 +169,7 @@ module.exports = {
         for (name in json['tmodjs-config']) {
             config[name] = json['tmodjs-config'][name];
         }
-        
+
 
         // 用户配置 优先级：2
         for (name in options) {
@@ -209,7 +209,7 @@ module.exports = {
 
         var text = JSON.stringify(json, null, 4);
 
-        
+
         fs.writeFileSync(file, text, 'utf-8');
 
         return file;
@@ -266,7 +266,7 @@ module.exports = {
     _fsRead: function (file, charset) {
         if (fs.existsSync(file)) {
             return fs.readFileSync(file, charset || 'utf-8');
-        }  
+        }
     },
 
 
@@ -298,7 +298,7 @@ module.exports = {
             }
 
             var files = fs.readdirSync(dir);
-            
+
             if (!files.length) {
                 fs.rmdirSync(dir);
                 return;
@@ -350,7 +350,7 @@ module.exports = {
         if (data.version) {
             newText = '/*v:' + data.version + '*/';
         }
-        
+
         return js.replace(/^\/\*TMODJS\:[\w\W]*?\*\//, newText);
     },
 
@@ -373,9 +373,9 @@ module.exports = {
         code = "/*! <DEBUG:" + error.id + '> */\n' + code;
 
         this._fsWrite(debugFile, code, this.options.charset);
-        
+
         // 启动子进程进行调试，从根本上避免影响当前进程
-        
+
         exec('node ' + debugFile, {timeout: 0}, function (error, stdout, stderr) {
             var message = error ? error.message : '';
             message = message
@@ -479,7 +479,7 @@ module.exports = {
             debug: this.options.debug,
             build: build
         });
-        
+
 
         // 广播：合并事件
         this.emit('combo', {
@@ -533,7 +533,7 @@ module.exports = {
                     }
 
                 } else if (/updated|create/.test(type)) {
-                    
+
                     this.emit('change', {
                         id: this._toId(target),
                         sourceFile: target
@@ -572,7 +572,7 @@ module.exports = {
         var target = file
         .replace(EXTNAME_RE, '.js')
         .replace(this.base, this.output);
-        
+
         var mod = this._getCache(file);
         var modObject = {};
         var metadata = {};
@@ -635,7 +635,7 @@ module.exports = {
 
 
         try {
-            
+
             // 编译模板
             if (isChange) {
                 modObject = template.AOTcompile(id, source, {
@@ -651,7 +651,7 @@ module.exports = {
 
         } catch (e) {
             errorInfo = e;
-            
+
         }
 
 
@@ -675,7 +675,7 @@ module.exports = {
                     uglifyjs.minify(target);
                 }
             }
-            
+
         }
 
 
@@ -709,11 +709,11 @@ module.exports = {
             requires: modObject.requires || []
         };
 
-        
+
         if (error) {
 
             if (errorInfo.source) {
-                
+
                 // 规范错误，模板编译器通常能够给出错误源
 
                 this.emit('compileError', errorInfo);
@@ -754,7 +754,7 @@ module.exports = {
                 }.bind(this));
             }
 
-            
+
         } else {
 
             // 模板编译成功事件
@@ -776,7 +776,7 @@ module.exports = {
             return false;
         } else {
             return compileInfo;
-        } 
+        }
     },
 
 
@@ -807,7 +807,7 @@ module.exports = {
 
                     error = !info;
 
-                    
+
                     if (!error && recursion !== false && info.requires.length) {
 
                         list = info.requires.map(function (id) {
@@ -818,7 +818,7 @@ module.exports = {
                         walk(list);
 
                     }
-                    
+
                 });
             };
 
@@ -832,13 +832,13 @@ module.exports = {
 
 
             walk = function (dir) {
-                
+
                 if (dir === that.output) {
                     return;
                 }
 
                 var dirList = fs.readdirSync(dir);
-                
+
                 dirList.forEach(function (item) {
 
                     if (error) {
@@ -850,7 +850,7 @@ module.exports = {
                     } else if (that._filter(item)) {
                         error = !that._compile(dir + '/' + item);
                     }
-                    
+
                 });
             };
 
@@ -908,7 +908,7 @@ module.exports = {
         if (options.helpers) {
 
             var helpersFile = path.resolve(this.base, options.helpers);
-            
+
             if (fs.existsSync(helpersFile)) {
 
                 this._helpersCode = fs.readFileSync(helpersFile, 'utf-8');
@@ -945,7 +945,7 @@ module.exports = {
                 process.exit(1);
 
             }
-        }  
+        }
     },
 
 
@@ -1002,8 +1002,9 @@ module.exports = {
                     this.emit('watch', data);
                 }.bind(this), function (name) {
 
+                    var name = path.basename(folderPath);
                     // 排除“.”、“_”开头或者非英文命名的子目录
-                    return !FILTER_RE.test(name) && name !== this.output;
+                    return !FILTER_RE.test(name) && folderPath !== this.output;
 
                 }.bind(this), fs);
 
@@ -1035,7 +1036,7 @@ module.exports = {
             } else {
                 stdout('[grey]•[/grey] ');
             }
-            
+
             stdout(data.id);
         });
 
