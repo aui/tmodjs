@@ -1000,7 +1000,7 @@ module.exports = {
 
                 watch(this.base, function (data) {
                     this.emit('watch', data);
-                }.bind(this), function (name) {
+                }.bind(this), function (folderPath) {
 
                     var name = path.basename(folderPath);
                     // 排除“.”、“_”开头或者非英文命名的子目录
