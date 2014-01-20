@@ -1,4 +1,4 @@
-/*TMODJS:{"version":1,"md5":"6599b97b0326fe559d5c1fbef543716a"}*/
+/*TMODJS:{"version":2,"md5":"e616712eabe752419ca04ccf713b3eb8"}*/
 define([ "../template", "../copyright" ], function(template) {
     return template("public/footer", function($data, $id) {
         var $helpers = this, time = $data.time, $escape = $helpers.$escape, include = function(id, data) {

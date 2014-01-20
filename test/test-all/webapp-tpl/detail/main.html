@@ -1,0 +1,22 @@
+<div id="page-detail" data-id="{{id}}" class="wrap">
+    <div class="time_bar" style=""><i class="icon icon_clock"></i>{{_period}}</div>
+    <div class="main" style="background:#FFF">
+        <div class="mod_compare">
+            {{include './report'}}
+            {{include './reputation'}}
+            {{include './focus'}}
+            {{include './hotTerm'}}
+            {{include './weibo'}}
+        </div>
+    </div>
+    <div id="pop_rss" style="display:none">
+        <div class="mask" data-trigger="mask"></div>
+        <ul class="pop_detail_rss">
+            {{if IsAppStore == 1}}
+            <li data-trigger="rss" data-index="1">近一月应用商店评论<i class="icon_mail"></i></li>
+            {{/if}}
+            <li data-trigger="rss" data-index="3">近一月用户评论<i class="icon_mail"></i></li>
+            <li data-trigger="rss" data-index="2">近一个月分析报告<i class="icon_mail"></i></li>
+        </ul>
+    </div>
+</div> 

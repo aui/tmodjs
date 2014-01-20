@@ -15,7 +15,7 @@ var options = {};
 
 var help = function () {
     var message = [
-        '\x1B[7mTmodJS - Template Compiler\x1B[27m',
+        '\x1B[7mTmodJS\x1B[27m - Template Compiler',
         '',
         'Usage:',
         '    tmod [path] [options]',
@@ -60,7 +60,7 @@ var help = function () {
 var dir;
 var value;
 var userConfig;
-var isWatch = false;
+var isWatch = true;
 var isEditConfig = false;
 var args = process.argv.slice(2);
 

@@ -2,7 +2,7 @@
     "name": "template",
     "version": "1.0.0",
     "dependencies": {
-        "tmodjs": "~0.1.0"
+        "tmodjs": "~0.1.1"
     },
     "tmodjs-config": {
         "output": "./build",
@@ -13,6 +13,6 @@
         "engine": false,
         "type": "default",
         "combo": true,
-        "minify": true
+        "minify": false
     }
 }

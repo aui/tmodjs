@@ -1,0 +1,40 @@
+<div id="d-hotTerm" class="mod_detail">
+    <div class="detail_title">
+        <i class="icon icon_word"></i>
+        <h3 class="title">热词分析</h3>
+        <a data-trigger="tips" data-content="<strong class='tips'>热词分析：</strong>指热点关注词分析，反映微博上用户对产品的关注点、热门话题等。" href="javascript:;" class="question">?</a>
+    </div>
+    <div class="detail_con">
+        <div class="keyword_wrap keyword_define">
+            <div class="keyword_input">
+                <!--<span class="title">关键词订阅</span>-->
+                <input data-trigger="input" id="detail-keyword" type="text" class="ipt" placeholder="关键字"/>
+                <!--<a id="detail-showInput" data-trigger="showInput" href="javascript:;" class="keyword add_keyword"><i class="icon icon_add">+</i></a>-->
+                <a id="detail-addKeyword" data-trigger="addKeyword" href="javascript:;" class="add_keyword_button"><span class="txt">订阅</span></a>
+                
+            </div>
+
+            <div id="detail-keyword-my" {{if !hotTerm.CustomList.length}}style="display:none"{{/if}}>
+            <a id="detail-shouwEdit" data-trigger="shouwEdit" href="javascript:;" class="keyword add_keyword" ><span class="txt">编辑</span></a>
+            {{each hotTerm.CustomList}}
+            <span class="keyword">
+                <a href="#!/tag/{{id}}/{{$value.Word}}"><span class="txt">{{$value.Word}}</span><span class="num"><strong>{{$value.Count}}</strong>条</span></a>
+                <a data-trigger="removeKeyword" data-keyword="{{$value.Word}}" href="javascript:;" class="del" style="display:none">x</a>
+                {{if $value.IsNew}}
+                <span class="flag flag_n">n</span>
+                {{/if}}
+            </span>
+            {{/each}}
+            </div>
+        </div>
+        {{if IsLocateProblem !== 1}}
+        <div class="keyword_wrap"><!-- 上负面评论的时候，隐藏原来的热词 -->
+            {{each hotTerm.TopList}}
+            <span class="keyword"><a href="#!/tag/{{id}}/{{$value.Word}}"><span class="txt">{{$value.Word}}</span><span class="num"><strong>{{$value.Count}}</strong>条</span></a>{{if $value.IsNew}}<span class="flag flag_n">n</span>{{/if}}</span>
+            {{/each}}
+        </div>
+        {{else}}
+        <div class="keyword_wrap keyword_negative" id="keyword_negative"></div> <!-- 负面评论容器 -->
+        {{/if}}
+    </div>
+</div>

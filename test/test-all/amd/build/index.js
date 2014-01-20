@@ -1,4 +1,4 @@
-/*TMODJS:{"version":1,"md5":"f911f5d9484d6d439bd92b74059a3dc3"}*/
+/*TMODJS:{"version":2,"md5":"afe25510dffe1a37249f495a80e58d4d"}*/
 define([ "./template", "./public/header", "./public/footer" ], function(template) {
     return template("index", function($data, $id) {
         var $helpers = this, include = function(id, data) {

@@ -1,0 +1,17 @@
+{{each RawDataList}}
+<div class="weibo_item">
+    <div class="weibo_item_title">
+        <a href="http://t.qq.com/p/t/{{$value.BlogId}}" target="_blank" class="user_name">{{$value.Nick}}</a>
+        {{if $value.IsVip}}<i class="icon icon_vip"></i>{{/if}}
+        <span class="time">{{$value.ExtractDate}}</span>
+    </div>
+    <div class="weibo_item_con">
+        <a href="http://t.qq.com/p/t/{{$value.BlogId}}" target="_blank" >{{echo $value.Text}}</a>
+    </div>
+    <div class="weibo_item_ft">
+        <span class="from">来自 {{$value.From}}</span>
+        <a href="javascript:;" data-trigger="addReply" data-id="{{$value.BlogId}}" class="addReply">评论</a>
+        <span class="weibo_count"><i class="icon_weibo"></i>{{$value.Count}}</span>
+    </div>
+</div>
+{{/each}}

@@ -1,0 +1,14 @@
+<div id="page-weibo" class="wrap">
+    
+    <div class="main">
+        <div id="weibo-list" class="weibo_list">
+        {{include './list'}}
+        </div>
+        {{if HasNext}}
+            <a id="weibo-more" data-trigger="more" href="javascript:;" class="click_more" >点击更多</a>
+        {{else}}
+            <a id="weibo-more"  href="javascript:;" class="click_more disabled" >全部加载完毕</a>
+        {{/if}}
+    </div>
+    
+</div>

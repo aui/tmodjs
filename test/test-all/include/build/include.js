@@ -1,4 +1,4 @@
-/*TMODJS:{"version":1,"md5":"5bfc05c04116597857d42c256cd45c60"}*/
+/*TMODJS:{"version":2,"md5":"302a1925ef7e270689728351aa18bf36"}*/
 define([ "./template", "./a", "./b", "./e", "./d" ], function(template) {
     return template("include", function($data, $id) {
         var $helpers = this, include = function(id, data) {

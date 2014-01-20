@@ -150,7 +150,7 @@ module.exports = {
             }
 
             if (a > b) {
-                stdout('[red]You must upgrade to the latest version of TmodJS![/red]\n');
+                console.error('You must upgrade to the latest version of TmodJS!');
                 process.exit(1);
             }
         })(json.dependencies.tmodjs, version);
@@ -459,21 +459,27 @@ module.exports = {
     // 打包模板
     _combo: function () {
 
+        var that = this;
         var files = [];
         var mod = null;
         var combo = '';
-        var cache = this._getCache();
-        var code = '';
         var build = Date.now();
 
-        for (var i in cache) {
+        this._getCacheKeys().forEach(function (id) {
+            var code = that._getCache(id, 'output');
 
-            code = cache[i];
-            code = this._removeMetadata(code);
+            // 如果之前编译失败，可能没有缓存值
+            // TODO: 这里写兼容逻辑有点猥琐，待改进
+            if (!code) {
+                if (that._compile(id)) {}
+                code = that._getCache(id, 'output');
+            }
+
+            code = that._removeMetadata(code);
             combo += code;
 
-            files.push(i);
-        }
+            files.push(id); 
+        });
 
         mod = this._buildRuntime(combo, {
             debug: this.options.debug,
@@ -504,6 +510,8 @@ module.exports = {
      * 监听模板的修改进行即时编译
      */
     watch: function () {
+
+        this.emit('watchStart', {});
 
         // 监控模板目录
         this.on('watch', function (data) {
@@ -573,7 +581,7 @@ module.exports = {
         .replace(EXTNAME_RE, '.js')
         .replace(this.base, this.output);
         
-        var mod = this._getCache(file);
+        var mod = this._getCache(file, 'output');
         var modObject = {};
         var metadata = {};
         var count = 0;
@@ -767,7 +775,11 @@ module.exports = {
             }
 
             // 缓存编译好的模板
-            this._setCache(file, mod);
+            this._setCache(file, 'output', mod);
+
+            // 缓存源文件
+            this._setCache(file, 'source', source);
+            
         }
 
 
@@ -789,13 +801,16 @@ module.exports = {
 
         var that = this;
         var error = false;
-        var walk;
+        var length = 0;
+
+        this.emit('compileStart', {});
+
 
         if (file) {
 
             var extname = path.extname(file);
 
-            walk = function (list) {
+            var walk = function (list) {
 
                 list.forEach(function (file) {
 
@@ -807,16 +822,18 @@ module.exports = {
 
                     error = !info;
 
-                    
-                    if (!error && recursion !== false && info.requires.length) {
+                    if (!error) {
+                        length ++;
+                        if (!error && recursion !== false && info.requires.length) {
 
-                        list = info.requires.map(function (id) {
-                            var target = path.resolve(that.base, id + extname);
-                            return target;
-                        });
+                            list = info.requires.map(function (id) {
+                                var target = path.resolve(that.base, id + extname);
+                                return target;
+                            });
 
-                        walk(list);
+                            walk(list);
 
+                        }
                     }
                     
                 });
@@ -830,37 +847,27 @@ module.exports = {
 
         } else {
 
+            var list = this._getCacheKeys();
 
-            walk = function (dir) {
-                
-                if (dir === that.output) {
-                    return;
+            for (var i = 0; i < list.length; i ++) {
+                if (error = !that._compile(list[i])) {
+                    break;
+                } else {
+                    length ++;
                 }
-
-                var dirList = fs.readdirSync(dir);
-                
-                dirList.forEach(function (item) {
-
-                    if (error) {
-                        return;
-                    }
-
-                    if (fs.statSync(dir + '/' + item).isDirectory()) {
-                        walk(dir + '/' + item);
-                    } else if (that._filter(item)) {
-                        error = !that._compile(dir + '/' + item);
-                    }
-                    
-                });
-            };
-
-
-            walk(this.base);
+            }
 
             if (!error && this.options.combo) {
                 this._combo();
             }
+
         }
+
+
+        this.emit('compileEnd', {
+            error: error,
+            length: length
+        });
 
     },
 
@@ -871,28 +878,96 @@ module.exports = {
     },
 
 
-    _cache: {},
-
-
     // 获取缓存
-    _getCache: function (id) {
+    _getCache: function (id, name) {
+        var cache = this._cache;
+
         if (typeof id === 'undefined') {
-            return this._cache;
+            return cache;
         } else {
-            return this._cache[id];
+            cache = cache[id];
+
+            if (typeof name === 'undefined') {
+                return cache;
+            } else if (cache) {
+                return cache[name];
+            } 
         }
     },
 
 
+    // 获取所有缓存 id
+    _getCacheKeys: function () {
+        return Object.keys(this._cache);
+    },
+
+
     // 设置缓存
-    _setCache: function (id, data) {
-        this._cache[id] = data;
+    _setCache: function (id, name, data) {
+        var cache = this._cache;
+
+        if (typeof data === 'undefined') {
+            data = name;
+            cache[id] = data;
+        } else {
+
+            cache = cache[id];
+            if (!cache) {
+                cache = this._cache[id] = {};
+            }
+
+            cache[name] = data;
+        }
     },
 
 
     // 删除缓存
-    _removeCache: function (id) {
-        delete this._cache[id];
+    _removeCache: function (id, name) {
+        var cache = this._cache;
+
+        if (typeof name === 'undefined') {
+            delete cache[id];
+        } else if (cache[id]) {
+            delete cache[id][name];
+        }
+    },
+
+
+    // 清除全部缓存
+    _clearCache: function () {
+        this._cache = {};
+    },
+
+
+    // 初始化缓存
+    _initCache: function () {
+        var that = this;
+        var cache = this._cache = {};
+        var charset = this.options.charset;
+        var bo = this.base === this.output;
+
+        var walk = function (dir) {
+            
+            if (!bo && dir === that.output) {
+                return;
+            }
+
+            var dirList = fs.readdirSync(dir);
+            
+            dirList.forEach(function (item) {
+
+                if (fs.statSync(dir + '/' + item).isDirectory()) {
+                    walk(dir + '/' + item);
+                } else if (that._filter(item)) {
+                    var source = fs.readFileSync(dir + '/' + item, charset);
+                    that._setCache(dir + '/' + item, 'source', source);
+                }
+                
+            });
+        };
+
+
+        walk(this.base);
     },
 
 
@@ -966,6 +1041,9 @@ module.exports = {
 
     init: function (input, options) {
 
+        stdout('[inverse]TmodJS[/inverse] - Template Compiler' + '\n');
+        stdout('[grey]http://aui.github.io/tmodjs[/grey]\n');
+
 
         // 模板项目路径
         this.base = path.resolve(input);
@@ -987,6 +1065,14 @@ module.exports = {
         this._initEngine();
 
 
+        // 初始化缓存系统
+        this._initCache();
+
+
+        // 输出运行时
+        this._buildRuntime();
+
+
         // 初始化事件系统
         events.EventEmitter.call(this);
 
@@ -995,8 +1081,6 @@ module.exports = {
         this.on('newListener', function (event, listener) {
 
             if (watch && event === 'watch') {
-
-                stdout('\n[green]Waiting..[/green]\n\n');
 
                 watch(this.base, function (data) {
                     this.emit('watch', data);
@@ -1010,6 +1094,13 @@ module.exports = {
                 watch = null;
             }
 
+        });
+
+
+        this.on('watchStart', function () {
+            setTimeout(function () {
+                stdout('\n[green]Watching..[/green] [grey](quit watch: control + c)[/grey]\n\n');
+            }, 140);
         });
 
 
@@ -1056,7 +1147,7 @@ module.exports = {
                 stdout('[red]' + data.line + ': ' + data.source + '[/red]\n');
             }
 
-            stdout('[red]' + data.message + '[/red]\n');
+            stdout('[red]' + data.message + '[/red]\n\n');
         });
 
 
@@ -1064,15 +1155,8 @@ module.exports = {
         // this.on('combo', function (data) {
         //     stdout('[grey]»[/grey] ');
         //     stdout('[grey]' + RUNTIME + '.js[/grey]');
-        //     stdout(' [grey]:build' + data.version + '[/grey]');
         //     stdout('\n');
         // });
-
-        // 输出运行时
-        this._buildRuntime();
-
-
-        stdout('[grey]TmodJS - Template Compiler' + '[/grey]\n');
 
     }
 
