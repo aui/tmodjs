@@ -1,0 +1,1 @@
+ln -s $(PWD)/tmod /usr/local/share/npm/tmod

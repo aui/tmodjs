@@ -10,21 +10,16 @@ var fs = require('fs');
 var path = require('path');
 var os = require('os');
 
-
 var watchList = {};
 var timer = {};
-
 
 var walk = function (dir, callback, filter) {
     fs.readdirSync(dir).forEach(function (item) {
         var fullname = dir + '/' + item;
-
         if (fs.statSync(fullname).isDirectory()){
-
             if (!filter(fullname)){
                 return;
             }
-
             watch(fullname, callback, filter);
             walk(fullname, callback, filter);
         }

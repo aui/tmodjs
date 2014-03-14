@@ -53,7 +53,7 @@
     };
 
 
-    var each = function (data, callback) {
+    var each = function (data, callback) {             
         if (isArray(data)) {
             for (var i = 0, len = data.length; i < len; i++) {
                 callback.call(data, data[i], i, data);
@@ -77,7 +77,7 @@
         return id;
     };
 
-
+    
     var helpers = template.helpers = {
 
         $include: function (uri, data, from) {
@@ -90,7 +90,7 @@
         $escape: escapeHTML,
 
         $each: each
-
+        
     };
 
 
@@ -104,7 +104,7 @@
         if (message && global.console) {
             console.error('Template Error\n\n' + message);
         }
-
+        
         return function () {
             return '{Template Error}';
         };
@@ -132,10 +132,15 @@
             }
         };
 
-        isFunction && (render.prototype = fn.prototype = helpers);
-        isFunction && (render.toString = function () {
+        render.prototype = helpers;
+
+        if (isFunction) {
+            fn.prototype = helpers;
+        }
+        
+        render.toString = function () {
             return fn + '';
-        });
+        };
 
         return render;
     };

@@ -1,7 +1,7 @@
 template.helper('$ubb2html', function (content) {
 
 	// 转义 HTML 字符
-	content = this.$escape(content);
+	content = template.helpers.$escape(content);
 
 	// 解析 UBB 字符
     return content

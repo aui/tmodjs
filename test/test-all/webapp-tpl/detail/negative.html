@@ -1,0 +1,15 @@
+<div class="keyword_negative_title">
+    <h4>负面评论</h4>共收集到{{TopListTotalCount}}条
+</div>
+{{each locateTerm.TopList}}
+    {{if $index < 6}}
+    	<span class="keyword"><a href="#!/negative/{{id}}/{{$value.Term}}"><span class="num"><strong>{{$value.Count}}</strong>条</span><span class="txt">{{$value.Term}}</span></a>{{if $value.IsNew}}<span class="flag flag_n">n</span>{{/if}}</span>
+    {{else}}
+    	<span class="keyword other"><a href="#!/negative/{{id}}/{{$value.Term}}"><span class="num"><strong>{{$value.Count}}</strong>条</span><span class="txt">{{$value.Term}}</span></a>{{if $value.IsNew}}<span class="flag flag_n">n</span>{{/if}}</span>
+    {{/if}}
+{{/each}}
+<span class="keyword btn_other">
+	<a href="javascript:void(0);" data-trigger="showOtherNegative">
+		<span class="num"><strong>{{TopListOtherCount}}</strong>条</span><span class="txt">其他</span>
+	</a>
+</span>

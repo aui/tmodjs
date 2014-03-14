@@ -1,0 +1,64 @@
+<div class="project_main">
+    {{if IsFavStickie == 1}}
+        <span class="project_fav "></span>
+    {{/if}}
+    <div class="project_logo">
+        <img src="img/products/{{ProductUniqueId}}.png" onerror="this.onerror=null;this.src='./img/products/default.png'" alt="{{ProductUniqueName}}" />
+        {{if RepuIndexDiffrence < -30 && TotalCount > 30 || ReputationIndex < iCompRepuIndex || iComRepuIndexDiffrence > 30 || ReputationIndex < 28}}
+            <i class="flag_warning">!</i>
+        {{/if}}
+        <i class="flag_success">√</i>
+    </div>
+    <div class="project_name">
+        <h3>{{ProductUniqueName}}</h3>
+        {{if HasCompetition}}
+            {{if _compValue > 0}}
+            <p class="project_compare">领先竞品<span class="num">+{{_compValue}}</span></p>
+            {{else if _compValue === 0}}
+            <p class="project_compare">不相上下<span class="num">0</span></p>
+            {{else if _compValue < 0}}
+            <p class="project_compare tips_warning">落后竞品<span class="num">{{_compValue}}</span></p>
+            {{else}}
+            <p class="project_compare"><span class="num"></span></p>
+            {{/if}}
+
+        {{/if}}
+    </div>
+
+    {{if RepuIndexDiffrence > 0}}
+    <span class="project_updown"><i>↑</i></span>
+    {{else}}
+    <span class="project_updown compare_down"><i>↓</i></span>
+    {{/if}}
+    <!--口碑指数-->
+    <div class ="project_reputation {{_warnClass2}}">
+        {{ReputationIndex}}
+
+    </div>
+    <div class="project_value" data-trigger="switchValue">
+        <!--口碑涨幅-->
+        <div class="project_value_1 {{_updownClass}}" title="{{RepuIndexPercent}}%">
+            {{if RepuIndexDiffrence < 0}}
+            <i>-</i>{{ RepuIndexPercent}}<span>%</span>
+            {{else if RepuIndexDiffrence > 0}}
+            <i>+</i>{{ RepuIndexPercent}}<span>%</span>
+            {{else}}
+            0
+            {{/if}}
+        </div>
+        <!--口碑增减-->
+        <div class="project_value_2 {{_updownClass}}" title="{{RepuIndexDiffrence}}">
+            {{if RepuIndexDiffrence < 0}}
+                <i>-</i>{{RepuIndexDiffrence}}
+            {{else if RepuIndexDiffrence > 0}}
+                <i>+</i>{{RepuIndexDiffrence}}
+            {{else}}
+                0
+            {{/if}}
+        </div>
+        <!--热度指数-->
+        <div class="project_value_3" title="{{TotalCount}}">
+            {{TotalCount}}
+        </div>
+    </div>
+</div>

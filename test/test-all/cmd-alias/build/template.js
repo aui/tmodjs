@@ -92,7 +92,10 @@
                 return debug(e)();
             }
         };
-        render.prototype = fn.prototype = helpers;
+        render.prototype = helpers;
+        if (isFunction) {
+            fn.prototype = helpers;
+        }
         render.toString = function() {
             return fn + "";
         };

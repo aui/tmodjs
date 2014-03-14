@@ -1,0 +1,19 @@
+<div id="page-negative" class="wrap">
+
+    <div class="main">
+        <div class="keyword_level2_wrap">
+            <a href="javascript:;" data-trigger="more_keyword" class="btn btn_more">更多 <i class="icon icon_more"></i></a>
+            {{each TopList}}
+            <a href="javascript:;" data-trigger="select_keyword" class="keyword">
+                <span class="txt">{{$value.Term}}</span>
+                <span class="num">{{$value.Count}}</span>
+            </a>
+            {{/each}}
+        </div>
+        <div id="weibo-list" class="weibo_list">
+            {{include '../public/tag-list'}}
+        </div>
+        <a id="weibo-more" data-trigger="more" href="javascript:;" class="click_more" {{if HasNext}}disabled{{/if}}>点击更多</a>
+    </div>
+
+</div>

@@ -2,7 +2,7 @@
     "name": "template",
     "version": "1.0.0",
     "dependencies": {
-        "tmodjs": "~0.0.4-rc2"
+        "tmodjs": "~0.1.1"
     },
     "tmodjs-config": {
         "output": "./build",

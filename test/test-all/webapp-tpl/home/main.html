@@ -1,0 +1,13 @@
+<div id="page-home" class="wrap {{if _isValueSwitch}}project_value_switch{{/if}}">
+    <div class="time_bar" style="visibility:hidden"></div>
+    <div class="time_bar" style="position:fixed;"><i class="icon icon_clock"></i>近一{{_rangeTypeText}}内数据 <span class="time_bar_desc_2">口碑指数</span><span class="time_bar_desc">{{_sortTypeText}}</span></div>
+    <div id="home-main" class="main">
+        <div class="project_list">
+            {{each productList}}
+                <a class="mod_project" href="#!/detail/{{$value.ProductUniqueId}}/{{$value.ProductUniqueName}}" data-id="{{$value.ProductUniqueId}}" id="{{$value.ProductUniqueId}}">
+                    {{include './project' $value}}
+                </a>
+            {{/each}}
+        </div>
+    </div>
+</div> 

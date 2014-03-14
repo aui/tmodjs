@@ -1,4 +1,4 @@
-/*TMODJS:{"version":1,"md5":"b0a98aa9248087cee2026cc4239e4f41"}*/
+/*TMODJS:{"version":2,"md5":"389e1e681e44404576459aa4e5be3cbe"}*/
 template("index", function($data, $id) {
     var $helpers = this, include = function(id, data) {
         data = data || $data;

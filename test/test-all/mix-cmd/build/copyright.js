@@ -1,4 +1,4 @@
-/*TMODJS:{"version":5,"md5":"14901fde4ceadf78329c78f68d65071b"}*/
+/*TMODJS:{"version":6,"md5":"822614428504528e6c32975732c23529"}*/
 define(function(require) {
     return require("./template")("copyright", "(c) 2013");
 });

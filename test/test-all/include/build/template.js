@@ -1,7 +1,7 @@
 /*TMODJS:{}*/
 !function(global) {
     "use strict";
-    var template = function(path, content) {
+    var template = function(uri, content) {
         return template[/string|function/.test(typeof content) ? "compile" : "render"].apply(template, arguments);
     };
     var cache = template.cache = {};
@@ -55,8 +55,8 @@
         return id;
     };
     var helpers = template.helpers = {
-        $include: function(path, data, from) {
-            var id = resolve(from, path);
+        $include: function(uri, data, from) {
+            var id = resolve(from, uri);
             return template.render(id, data);
         },
         $string: toString,
@@ -75,24 +75,27 @@
             return "{Template Error}";
         };
     };
-    template.render = function(path, data) {
-        var fn = template.get(path) || debug({
-            id: path,
+    template.render = function(uri, data) {
+        var fn = template.get(uri) || debug({
+            id: uri,
             name: "Render Error",
             message: "No Template"
         });
         return data ? fn(data) : fn;
     };
-    template.compile = function(path, fn) {
+    template.compile = function(uri, fn) {
         var isFunction = typeof fn === "function";
-        var render = cache[path] = function(data) {
+        var render = cache[uri] = function(data) {
             try {
-                return isFunction ? new fn(data, path) + "" : fn;
+                return isFunction ? new fn(data, uri) + "" : fn;
             } catch (e) {
                 return debug(e)();
             }
         };
-        render.prototype = fn.prototype = helpers;
+        render.prototype = helpers;
+        if (isFunction) {
+            fn.prototype = helpers;
+        }
         render.toString = function() {
             return fn + "";
         };

@@ -1,4 +1,4 @@
-/*TMODJS:{"version":1,"md5":"56f427d7513a75362140b92ae977ce11"}*/
+/*TMODJS:{"version":2,"md5":"ec1bad2919c1f5938a2ddac95d097743"}*/
 template("public/footer", function($data, $id) {
     var $helpers = this, time = $data.time, $escape = $helpers.$escape, include = function(id, data) {
         data = data || $data;

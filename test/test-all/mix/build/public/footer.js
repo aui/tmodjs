@@ -1,2 +1,2 @@
-/*TMODJS:{"version":1,"md5":"33cd8faf8ecaf3969a682d0a841e6a90"}*/
+/*TMODJS:{"version":2,"md5":"37d3c2014346a9576171af879ac8243e"}*/
 template("public/footer", "<div id=\"footer\"> {{if time}} <p class='time'>{{time}}</p> {{/if}} {{include '../copyright'}} </div>");

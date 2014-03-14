@@ -1,4 +1,4 @@
-/*TMODJS:{"version":1,"md5":"69b5fd873be0e48445f3c880438bdb9e"}*/
+/*TMODJS:{"version":2,"md5":"52de152a10a5d1fe4fb72047dcde1fae"}*/
 define([ "../template", "./logo" ], function(template) {
     return template("public/header", function($data, $id) {
         var $helpers = this, include = function(id, data) {

@@ -1,2 +1,2 @@
-/*TMODJS:{"version":1,"md5":"19b7578ca7e4ae65953473c882a40ea7"}*/
+/*TMODJS:{"version":2,"md5":"2c5721d735c7aaf0874b12c29569e934"}*/
 template("public/header", ' <div id="header"> {{include \'./logo\'}} <ul id="nav"> <li><a href="http://www.qq.com">首页</a></li> <li><a href="http://news.qq.com/">新闻</a></li> <li><a href="http://pp.qq.com/">图片</a></li> <li><a href="http://mil.qq.com/">军事</a></li> </ul> </div>  ');
