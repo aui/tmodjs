@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Demo WebApp</title>
+<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+<style type="text/css" media="screen">@import "./css/iphonenav.css";</style>
+<script type="application/x-javascript" src="./js/iphonenav.js"></script>
+</head>
+
+<body>
+
+    <h1 id="pageTitle"></h1>
+    <a id="homeButton" class="button" href="#home">Home</a>
+    <a class="button" href="#searchForm">搜索</a>
+    
+    <div class="activity" id="home" title="Home" selected="true">
+        <ul class="ui-list">
+            <li><a href="#detail-0">难忘的一天</a></li>
+            <li><a href="#detail-1">向往</a></li>
+            <li><a href="#detail-2">曾经的你</a></li>
+            <li><a href="#detail-3">岁月轻狂</a></li>
+            <li><a href="#detail-4">星空</a></li>
+        </ul>
+    </div>
+
+    <div class="activity" id="detail-0" title="难忘的一天">
+        <h2>难忘的一天-许巍</h2>
+        <p>阳光正温暖 一直照进我心里</p>
+
+        <p>如果没有你 怎么会有我今天</p>
+
+        <p>有时我会想起 和你经历的故事</p>
+
+        <p>那些情景在飞扬 甜蜜又感伤</p>
+
+        <p>再次走过熟悉的地方</p>
+
+        <p>如今的你不知在何方</p>
+
+        <p>你曾给我的温暖感觉 依然在我心</p>
+
+        <p>如果再见你 又是怎样的情景</p>
+
+        <p>会不会将你 再次拥进我怀里</p>
+
+        <p>..</p>
+
+        <p>阳光正温暖 一直照进我心里</p>
+
+        <p>往事已遥远 一年又一年</p>
+
+        <p>竟然在这一天 再不经意之间</p>
+
+        <p>人群拥挤的街头 走过我身边</p>
+
+        <p>风吹起的青色衣衫</p>
+
+        <p>夕阳里的温暖容颜</p>
+
+        <p>你比以前更加美丽 像盛开的花</p>
+
+        <p>这是我难忘的一天</p>
+
+        <p>在隐忍和冲动之间</p>
+
+        <p>看着你渐渐的远去 消失在人海中</p>
+    </div>
+
+    <div class="activity" id="detail-1" title="向往">
+    </div>
+    <div class="activity" id="detail-2" title="曾经的你">
+    </div>
+    <div class="activity" id="detail-3" title="岁月轻狂">
+    </div>
+    <div class="activity" id="detail-4" title="星空">
+    </div>
+    <div id="searchResults" class="activity panel" title="Search">
+        <h2>Search results go here...</h2>
+    </div>
+    <form id="searchForm" class="activity dialog" action="#searchResults">
+        <fieldset>
+            <h1>Music Search</h1>
+            <a class="button toolButton goButton" href="#searchResults">搜索</a>
+            
+            <label>Artist:</label>
+            <input type="text"/>
+            <label>Song:</label>
+            <input type="text"/>
+        </fieldset>
+    </form>
+<script>
+
+function App () {
+    var router = new Router();
+    router.trigger();
+    this.router = router;
+    this.cache = {
+        activitys: {},
+        activitysHistory: []
+    };
+};
+
+App.prototype = {
+    constructor: App,
+    start: function () {
+        this.cache.activity.forEach(function (activity, index) {
+            activity.oncreate();
+        });
+    },
+    createActivity: function (id, route, oncreate) {
+        var activity = new Activity();
+
+        var data = {
+            id: id,
+            route: route,
+            oncreate: oncreate,
+            activity: activity
+        };
+
+        this.cache.activitys.push(data);
+
+        this.router.add(route, function () {
+            activity.show();
+        });
+
+        return data;
+    }
+};
+
+
+
+
+function Activity (id) {
+    thid.id = id;
+    this.node = this.createActivity();
+    Activity.length ++;
+};
+
+Activity.current = null;
+Activity.cache = {};
+Activity.history = [];
+Activity.length = 0;
+
+Activity.prototype = {
+
+    constructor: Activity,
+
+
+    className: 'activity',
+
+    _type: {
+        '-1': 'activity-forward',
+        '0': 'activity-show',
+        '1': 'activity-backward'
+    },
+
+    _currentType: 'activity-show',
+
+
+    createActivity: function () {
+        var activity = document.createElement('div');
+        activity.className = 'activity';
+        return activity;
+    },
+
+
+    show: function () {
+        if (this.open) {
+            return;
+        }
+
+        var fromActivity = Activity.current;
+        Activity.current = this;
+        
+
+        var index = Activity.history.indexOf(this.id);
+        var backward = index !== -1;
+
+        if (backward) {
+            Activity.history.splice(index, Activity.history.length);
+        }
+
+        Activity.history.push(this.id);
+        this._swipe(fromActivity, backward);
+
+        this.open = true;
+    },
+
+
+    hide: function () {
+        this.open = false;
+    },
+
+
+    _position: function (code) {
+        this.node.classList.remove(this._currentType);
+        this._currentType = this._type[code];
+        this.node.classList.add(this._currentType);
+    },
+
+    _swipe: function (fromActivity, backward) {
+        var code = backward ? 1 : -1; 
+        if (fromActivity) {
+            this._position(code);
+            fromActivity._position(code);
+        } else {
+           this._position(0);
+        }
+    },
+};
+
+
+function Router () {
+    var that = this;
+    this.routes = {};
+    Router.addEvent(function () {
+        return that.trigger();
+    });
+};
+
+Router.addEvent = function (callback) {
+    window.addEventListener
+    ? window.addEventListener('hashchange', callback, false)
+    : window.attachEvent('on' + 'hashchange', callback); // IE8
+};
+
+Router.prototype = {
+
+    constructor: Router,
+
+    /**
+     * 添加路由
+     * @param {String, RegExp}  表达式
+     * @param {Function}        回调函数
+     */
+    add: function (route, callback) {
+
+        if (typeof route === 'string') {
+            route = route
+            .replace(/:\w+/g, '([^\/]+)')
+            .replace(/\*\w+/g, '(.*?)');
+
+            route = "^" + route + "$";
+        } else {
+            route = route.toString();
+        }
+
+        this.routes[route] = callback;
+    },
+
+    /**
+     * 主动触发路由事件
+     * @param {String, RegExp}  表达式
+     */
+    trigger: function (param) {
+        param = (param || location.href)
+        .replace(/^[^#]*#?(.*)$/, '$1');
+
+        var route, callback, params;
+        var isEmpty = true;
+        var routes = this.routes;
+        
+        for (route in routes) {
+            callback = routes[route];
+            route = new RegExp(route);
+            if (route.test(param)) {
+                isEmpty = false;
+                params = route.exec(param).slice(1);
+
+                for (var i = 0; i < params.length; i ++) {
+                    params[i] = decodeURIComponent(params[i]);
+                }
+
+                callback.apply(this, params);
+            }
+        }
+
+        if (isEmpty && routes['^404$']) {
+            routes['^404$'].call(this);
+        }
+        
+    }
+
+};
+</script>
+</body>
+</html>

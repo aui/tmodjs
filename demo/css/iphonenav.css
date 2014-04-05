@@ -1,0 +1,144 @@
+
+body {
+    margin: 0;
+    font-family: Helvetica;
+    background: #FFFFFF;
+    color: #000000;
+    overflow: hidden;
+    -webkit-text-size-adjust: none;
+}
+
+body > h1 {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 10px;
+    line-height: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: rgba(0, 0, 0, 0.6) 0px -1px 0;
+    text-overflow: ellipsis;
+    color: #FFFFFF;
+    background: url(../img/iPhoneToolbar.png) #6d84a2 repeat-x;
+    border-bottom: 1px solid #2d3642;
+}
+
+.button {
+    position: absolute;
+    top: 8px;
+    right: 6px;
+    -webkit-border-image: url(../img/iPhoneButton.png) 0 5 0 5;
+    -webkit-border-radius: 0;
+    border-width: 0 5px 0 5px;
+    padding: 0;
+    height: 28px;
+    line-height: 28px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-shadow: rgba(0, 0, 0, 0.6) 0px -1px 0;
+    text-decoration: none;
+    background: none;
+}
+
+#homeButton {
+    display: none;
+    left: 6px;
+    right: auto;
+    -webkit-border-image: url(../img/iPhoneBackButton.png) 0 8 0 14;
+    border-width: 0 8px 0 14px;
+}
+
+.goButton {
+    -webkit-border-image: url(../img/iPhoneGoButton.png) 0 5 0 5;
+    border-width: 0 5px;
+}
+
+.activity {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 41px;
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+*[selected="true"] {
+    display: block;
+}
+.ui-list {
+    margin: 0;
+    padding: 0;   
+}
+.ui-list > li {
+    margin: 0;
+    border-bottom: 1px solid #E0E0E0;
+    padding: 0;
+    background: url(../img/iPhoneArrow.png) no-repeat right center;
+    font-size: 20px;
+    font-weight: bold;
+    list-style: none;
+}
+
+.ui-list > li > a {
+    display: block;
+    padding: 8px 32px 8px 8px;
+    text-decoration: none;
+    color: inherit;
+}
+    
+.panel {
+    box-sizing: border-box;
+    padding: 10px;
+    background: #c8c8c8 url(../img/pinstripes.png);
+}
+
+/************************************************************************************************/
+
+.dialog {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    min-height: 100%;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0;
+    text-align: right;
+}
+
+fieldset {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    border: none;
+    padding: 10px 6px;
+    background: url(../img/iPhoneToolbar.png) #7388a5 repeat-x;
+}
+
+fieldset > h1 {
+    margin: 0 10px 0 10px;
+    padding: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-shadow: rgba(0, 0, 0, 0.6) 0px -1px 0;
+    text-align: center;
+}
+
+label {
+    position: absolute;
+    margin: 14px 0 0 6px;
+    font-size: 14px;
+    color: #BBBBBB;
+}
+
+input {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 6px 0 0 0;
+    padding: 6px 6px 6px 44px;
+    font-size: 16px;
+    font-weight: normal;
+}

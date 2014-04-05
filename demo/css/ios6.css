@@ -1,0 +1,89 @@
+
+body {
+    margin: 0;
+    font-family: Helvetica;
+    background: #FFFFFF;
+    color: #000000;
+    overflow: hidden;
+    -webkit-text-size-adjust: none;
+}
+
+
+.activity {
+    background: #FFF;
+}
+.view-headerbar {
+
+}
+.view-headerbar-title {
+    height: 40px;
+    margin: 0;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: rgba(0, 0, 0, 0.6) 0px -1px 0;
+    text-overflow: ellipsis;
+    color: #FFFFFF;
+    background: url(../img/iPhoneToolbar.png) #6d84a2 repeat-x;
+    border-bottom: 1px solid #2d3642;
+}
+
+.ui-button,
+.ui-button-backward {
+    position: absolute;
+    top: 8px;
+    right: 6px;
+    -webkit-border-image: url(../img/iPhoneButton.png) 0 5 0 5;
+    -webkit-border-radius: 0;
+    border-width: 0 5px 0 5px;
+    padding: 0;
+    height: 28px;
+    line-height: 28px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-shadow: rgba(0, 0, 0, 0.6) 0px -1px 0;
+    text-decoration: none;
+    background: none;
+}
+
+.ui-button-backward {
+    left: 6px;
+    right: auto;
+    -webkit-border-image: url(../img/iPhoneBackButton.png) 0 8 0 14;
+    border-width: 0 8px 0 14px;
+}
+
+.goButton {
+    -webkit-border-image: url(../img/iPhoneGoButton.png) 0 5 0 5;
+    border-width: 0 5px;
+}
+
+
+
+.ui-list {
+    margin: 0;
+    padding: 0;   
+}
+.ui-list > li {
+    margin: 0;
+    border-bottom: 1px solid #E0E0E0;
+    padding: 0;
+    background: url(../img/iPhoneArrow.png) no-repeat right center;
+    font-size: 20px;
+    font-weight: bold;
+    list-style: none;
+}
+
+.ui-list > li > a {
+    display: block;
+    padding: 8px 32px 8px 8px;
+    text-decoration: none;
+    color: inherit;
+}
+    
+
+.view-text {
+    padding: 20px;
+}
