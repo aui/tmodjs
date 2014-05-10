@@ -17,33 +17,22 @@ var help = function () {
     var message = [
         '\x1B[7mTmodJS - Template Compiler\x1B[27m',
         '',
-        'Usage:',
+        'Usage',
         '    tmod <path> [options]',
-        'Options:',
+        '',
+        'Options',
         [
-            '    -w, --watch',
-            '\x1B[90m    use tmod in watch mode (auto compile when file changed)\x1B[39m',
-
-            '    -d, --debug',
-            '\x1B[90m    debugging Template\x1B[39m',
-
-            '    --type',
-            '\x1B[90m    optional: templatejs (Default) | cmd (RequireJS/SeaJS) | amd (RequireJS) | commonjs (NodeJS)\x1B[39m',
-
-            '    --output value',
-            '\x1B[90m    defining an output directory\x1B[39m',
-
-            '    --charset value',
-            '\x1B[90m    charset, "utf-8" by default\x1B[39m',
-
-            '    --version',
-            '\x1B[90m    display the version of TmodJS\x1B[39m',
-
-            '    --help',
-            '\x1B[90m    show this help infomation\x1B[39m'
+            '    -d, --debug  Debugging Template',
+            '         --type  Optional: default | cmd (RequireJS/SeaJS) | amd (RequireJS) |',
+            '                 commonjs (NodeJS)',
+            ' --output value  Defining an output directory',
+            '--charset value  Charset, "utf-8" by default',
+            '     --no-watch  Does not monitor template directory',
+            '      --version  Print the tmodjs version',
+            '        --help   Display this help text'
         ].join('\n'),
         '',
-        '\x1B[90m' + 'Documentation can be found at http://aui.github.io/tmodjs/' + '\x1B[39m'
+        '\x1B[90m' + 'Documentation can be found at https://github.com/aui/tmodjs' + '\x1B[39m'
     ];
 
     message = message.join('\n');
@@ -52,7 +41,7 @@ var help = function () {
 
 
 
-var dir;
+var base;
 var value;
 var userConfig;
 var isWatch = false;
@@ -61,7 +50,7 @@ var args = process.argv.slice(2);
 
 
 if (args[0] && /^[^-]|\//.test(args[0])) {
-    dir = args.shift();
+    base = args.shift();
 }
 
 
@@ -75,7 +64,7 @@ while (args.length > 0) {
             isWatch = true;
             break;
 
-        case '--watch-off':
+        case '--no-watch':
             isWatch = false;
             break;
 
@@ -85,17 +74,8 @@ while (args.length > 0) {
             options.debug = true;
             break;
 
-        case '--debug-off':
+        case '--no-debug':
             options.debug = false;
-            break;
-
-        // 嵌入引擎
-        case '--engine':
-            options.engine = true;
-            break;
-
-        case '--engine--off':
-            options.engine = false;
             break;
 
         // 对输出值编码
@@ -103,7 +83,7 @@ while (args.length > 0) {
             options.escape = true;
             break;
 
-        case '--escape-off':
+        case '--no-escape':
             options.escape = false;
             break;
 
@@ -112,7 +92,7 @@ while (args.length > 0) {
             options.combo = true;
             break;
 
-        case '--combo-off':
+        case '--no-combo':
             options.combo = false;
             break;
 
@@ -121,8 +101,16 @@ while (args.length > 0) {
             options.minify = true;
             break;
 
-        case '--minify-off':
+        case '--no-minify':
             options.minify = false;
+            break;
+
+        // 使用缓存
+        case '--cache':
+            options.cache = true;
+            break;
+        case '--no-cache':
+            options.cache = false;
             break;
 
         // 输出目录
@@ -170,52 +158,35 @@ while (args.length > 0) {
 
         default:
 
-            if (!dir) {
-                dir = value;
+            if (!base) {
+                base = value;
             }
     }
 }
 
 
-if (!dir) {
-    dir = './';
+if (!base) {
+    base = './';
 }
 
 
-if (!fs.existsSync(dir)) {
+if (!fs.existsSync(base)) {
     process.stdout.write('Error: directory does not exist\n');
-    help();
     process.exit(1);
 }
 
 
-// 转换成相对于模板目录的路径
-
-if (options.output) {
-    options.output = path.relative(dir, path.resolve(options.output));
-}
-
-if (options.syntax && /\.js$/.test(options.syntax)) {// 值可能为内置名称：native || simple
-    options.syntax = path.relative(dir, path.resolve(options.syntax));
-}
-
-if (options.helpers) {
-    options.helpers = path.relative(dir, path.resolve(options.helpers));
-}
+var tmodjs = new TmodJS(base, options);
 
 
-
-TmodJS.init(dir, options);
-
-
-TmodJS.on('compileError', function (data) {
+tmodjs.on('compileError', function (data) {
     if (!isWatch) {
         process.exit(1);
     }
 });
 
 
-userConfig = TmodJS.saveUserConfig();
+userConfig = tmodjs.saveConfig();
 
 
 if (isEditConfig) {
@@ -227,12 +198,13 @@ if (isEditConfig) {
         + ' ' + userConfig, {timeout: 0}, function () {}
     );
 
+
 } else {
 
-    TmodJS.compile();
+    tmodjs.compile();
 
     if (isWatch) {
-        TmodJS.watch();
+        tmodjs.watch();
     }
     
 }

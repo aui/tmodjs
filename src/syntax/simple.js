@@ -1,0 +1,1 @@
+module.exports = require('art-template/dist/template-debug.js');

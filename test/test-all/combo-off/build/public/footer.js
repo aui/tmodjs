@@ -1,19 +1,11 @@
-/*TMODJS:{"version":1,"md5":"56f427d7513a75362140b92ae977ce11"}*/
-template("public/footer", function($data, $id) {
-    var $helpers = this, time = $data.time, $escape = $helpers.$escape, include = function(id, data) {
+/*TMODJS:{"version":4,"md5":"2b64d110ff537c11e7b284f3d5ba6bca"}*/
+template("public/footer", function($data, $filename) {
+    "use strict";
+    var $helpers = this, time = $data.time, $escape = $helpers.$escape, include = function(filename, data) {
         data = data || $data;
-        var $text = $helpers.$include(id, data, $id);
-        $out += $text;
-        return $text;
+        var text = $helpers.$include(filename, data, $filename);
+        return $out += text;
     }, $out = "";
-    $out += '<div id="footer"> ';
-    if (time) {
-        $out += " <p class='time'>";
-        $out += $escape(time);
-        $out += "</p> ";
-    }
-    $out += " ";
-    include("../copyright");
-    $out += " </div>";
-    return new String($out);
+    return $out += '<div id="footer"> ', time && ($out += " <p class='time'>", $out += $escape(time), 
+    $out += "</p> "), $out += " ", include("../copyright"), $out += " </div>", new String($out);
 });

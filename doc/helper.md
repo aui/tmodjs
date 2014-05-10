@@ -24,13 +24,21 @@ template.helper('Math', Math);
 
 ```
 template.helper('$ubb2html', function (content) {
-	return content
-	.replace(/\[b\]([^\[]*?)\[\/b\]/igm, '<b>$1</b>')
-	.replace(/\[i\]([^\[]*?)\[\/i\]/igm, '<i>$1</i>')
-	.replace(/\[u\]([^\[]*?)\[\/u\]/igm, '<u>$1</u>')
-	.replace(/\[url=([^\]]*)\]([^\[]*?)\[\/url\]/igm, '<a href="$1">$2</a>')
-	.replace(/\[img\]([^\[]*?)\[\/img\]/igm, '<img src="$1" />');
+	// 转义 HTML 字符
+	content = template.helpers.$escape(content);
+	// 解析 UBB 字符
+    return content
+    .replace(/\[b\]([^\[]*?)\[\/b\]/igm, '<b>$1</b>')
+    .replace(/\[i\]([^\[]*?)\[\/i\]/igm, '<i>$1</i>')
+    .replace(/\[u\]([^\[]*?)\[\/u\]/igm, '<u>$1</u>')
+    .replace(/\[url=([^\]]*)\]([^\[]*?)\[\/url\]/igm, '<a href="$1">$2</a>')
+    .replace(/\[img\]([^\[]*?)\[\/img\]/igm, '<img src="$1" />');
 });
+```
+	
+在模板中的使用方式：
+
+	{{$ubb2html content}}
 ```
 
 ##	三、在模板中使用辅助方法

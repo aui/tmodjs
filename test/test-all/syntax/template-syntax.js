@@ -1,97 +1,88 @@
-/*!
- * artTemplate - Syntax Extensions
- * https://github.com/aui/artTemplate
- * Released under the MIT, BSD, and GPL Licenses
- */
- 
-(function (exports) {
+
+template.defaults.openTag = '<!--[';
+template.defaults.closeTag = ']-->';
+
+
+template.defaults.parser = function (code) {
+    code = code.replace(/^\s/, '');
     
-    exports.openTag = '{{';
-    exports.closeTag = '}}';
+    var split = code.split(' ');
+    var key = split.shift();
+    var args = split.join(' ');
 
+    switch (key) {
 
-    exports.parser = function (code) {
-        code = code.replace(/^\s/, '');
-        
-        var split = code.split(' ');
-        var key = split.shift();
-        var args = split.join(' ');
+        case 'if':
 
-        switch (key) {
+            code = 'if(' + args + '){';
+            break;
 
-            case 'var':
+        case 'else':
+            
+            if (split.shift() === 'if') {
+                split = ' if(' + split.join(' ') + ')';
+            } else {
+                split = '';
+            }
 
-                code = 'var ' + args + ';';
-                break;
+            code = '}else' + split + '{';
+            break;
 
-            case 'if':
+        case '/if':
 
-                code = 'if(' + args + '){';
-                break;
+            code = '}';
+            break;
 
-            case 'else':
+        case 'each':
+            
+            var object = split[0] || '$data';
+            var as     = split[1] || 'as';
+            var value  = split[2] || '$value';
+            var index  = split[3] || '$index';
+            
+            var param   = value + ',' + index;
+            
+            if (as !== 'as') {
+                object = '[]';
+            }
+            
+            code =  '$each(' + object + ',function(' + param + '){';
+            break;
+
+        case '/each':
+
+            code = '});';
+            break;
+
+        case 'echo':
+
+            code = 'print(' + args + ');';
+            break;
+
+        case 'print':
+        case 'include':
+
+            code = key + '(' + split.join(',') + ');';
+            break;
+
+        default:
+
+            if (template.helpers.hasOwnProperty(key)) {
                 
-                if (split.shift() === 'if') {
-                    split = ' if(' + split.join(' ') + ')';
-                } else {
-                    split = '';
-                }
-
-                code = '}else' + split + '{';
-                break;
-
-            case '/if':
-
-                code = '}';
-                break;
-
-            case 'each':
+                code = '=#' + key + '(' + split.join(',') + ');';
                 
-                var object = split[0] || '$data';
-                var as     = split[1] || 'as';
-                var value  = split[2] || '$value';
-                var index  = split[3] || '$index';
-                
-                var param   = value + ',' + index;
-                
-                if (as !== 'as') {
-                    object = '[]';
-                }
-                
-                code =  '$each(' + object + ',function(' + param + '){';
-                break;
+            } else {
 
-            case '/each':
+                code = code.replace(/[\s;]*$/, '');
+                code = '=' + code;
+            }
 
-                code = '});';
-                break;
+            break;
+    }
+    
+    
+    return code;
+};
 
-            case 'echo':
 
-                code = 'print(' + args + ');'
-                break;
 
-            case 'include':
-
-                code = 'include(' + split.join(',') + ');';
-                break;
-
-            default:
-
-                if (exports.helpers.hasOwnProperty(key)) {
-                    
-                    code = '=#' + key + '(' + split.join(',') + ');';
-                    
-                } else {
-
-                    code = code.replace(/[\s;]*$/, '');
-                    code = '=' + code;
-                }
-
-                break;
-        }
-        
-        
-        return code;
-    };
-})(template);

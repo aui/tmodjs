@@ -120,8 +120,6 @@ module.exports = function (dir, callback, filter) {
         return !FILTER_RE.test(name);
     };
 
-    //if (filter(dir)) {
-        watch(dir, callback, filter);
-        walk(dir, callback, filter);
-    //}
+    watch(dir, callback, filter);
+    walk(dir, callback, filter);
 };

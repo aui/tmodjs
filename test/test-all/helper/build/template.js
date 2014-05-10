@@ -1,3 +1,93 @@
-/*<TMODJS> <BUILD:1388679211003> */
-!function(e){var r=function(e,n){return r[/string|function/.test(typeof n)?"compile":"render"].apply(r,arguments)},n=r.cache={},t=function(e,r){return"string"!=typeof e&&(r=typeof e,"number"===r?e+="":e="function"===r?t(e.call(e)):""),e},i={"<":"&#60;",">":"&#62;",'"':"&#34;","'":"&#39;","&":"&#38;"},u=function(e){return t(e).replace(/&(?![\w#]+;)|[<>"']/g,function(e){return i[e]})},c=Array.isArray||function(e){return"[object Array]"==={}.toString.call(e)},l=function(e,r){if(c(e))for(var n=0,t=e.length;t>n;n++)r.call(e,e[n],n,e);else for(n in e)r.call(e,e[n],n)},o=function(e,r){var n=/(\/)[^/]+\1\.\.\1/,t=e.replace(/^([^.])/,"./$1").replace(/[^/]+$/,""),i=t+r;for(i=i.replace(/\/\.\//g,"/");i.match(n);)i=i.replace(n,"/");return i},a=r.helpers={$include:function(e,n,t){var i=o(t,e);return r.render(i,n)},$string:t,$escape:u,$each:l},f=function(r){var n="";for(var t in r)n+="<"+t+">\n"+r[t]+"\n\n";return n&&e.console&&console.error("Template Error\n\n"+n),function(){return"{Template Error}"}};r.render=function(e,n){var t=r.get(e)||f({id:e,name:"Render Error",message:"No Template"});return n?t(n):t},r.compile=function(e,r){var t="function"==typeof r,i=n[e]=function(n){try{return t?new r(n,e)+"":r}catch(i){return f(i)()}};return i.prototype=r.prototype=a,i.toString=function(){return r+""},i},r.get=function(e){return n[e.replace(/^\.\//,"")]},r.helper=function(e,r){a[e]=r},r.helper("$ubb2html",function(e){return e=r.helpers.$escape(e),e.replace(/\[b\]([^\[]*?)\[\/b\]/gim,"<b>$1</b>").replace(/\[i\]([^\[]*?)\[\/i\]/gim,"<i>$1</i>").replace(/\[u\]([^\[]*?)\[\/u\]/gim,"<u>$1</u>").replace(/\[url=([^\]]*)\]([^\[]*?)\[\/url\]/gim,'<a href="$1">$2</a>').replace(/\[img\]([^\[]*?)\[\/img\]/gim,'<img src="$1" />')}),/**/
-r("index",function(e){var r=this,n=r.$string,t=r.$ubb2html,i=e.title,u=r.$each,c=e.list,l=(e.$value,e.$index,r.$escape),o="";return o+='<div id="main"> <h3>',o+=n(t(i)),o+="</h3> <ul> ",u(c,function(e){o+=' <li><a href="',o+=l(e.url),o+='">',o+=n(t(e.title)),o+="</a></li> "}),o+=" </ul> </div>",new String(o)}),"function"==typeof define?define(function(){return r}):"undefined"!=typeof exports?module.exports=r:e.template=r}(this);
+/*TMODJS:{"version":"1.0.0"}*/
+!function(String) {
+    function template(filename, content) {
+        return (/string|function/.test(typeof content) ? compile : renderFile)(filename, content);
+    }
+    function toString(value, type) {
+        return "string" != typeof value && (type = typeof value, "number" === type ? value += "" : value = "function" === type ? toString(value.call(value)) : ""), 
+        value;
+    }
+    function escapeFn(s) {
+        return escapeMap[s];
+    }
+    function escapeHTML(content) {
+        return toString(content).replace(/&(?![\w#]+;)|[<>"']/g, escapeFn);
+    }
+    function each(data, callback) {
+        if (isArray(data)) for (var i = 0, len = data.length; len > i; i++) callback.call(data, data[i], i, data); else for (i in data) callback.call(data, data[i], i);
+    }
+    function resolve(from, to) {
+        var DOUBLE_DOT_RE = /(\/)[^/]+\1\.\.\1/, dirname = ("./" + from).replace(/[^/]+$/, ""), filename = dirname + to;
+        for (filename = filename.replace(/\/\.\//g, "/"); filename.match(DOUBLE_DOT_RE); ) filename = filename.replace(DOUBLE_DOT_RE, "/");
+        return filename;
+    }
+    function renderFile(filename, data) {
+        var fn = template.get(filename) || showDebugInfo({
+            filename: filename,
+            name: "Render Error",
+            message: "Template not found"
+        });
+        return data ? fn(data) : fn;
+    }
+    function compile(filename, fn) {
+        if ("string" == typeof fn) {
+            var string = fn;
+            fn = function() {
+                return new String(string);
+            };
+        }
+        var render = cache[filename] = function(data) {
+            try {
+                return new fn(data, filename) + "";
+            } catch (e) {
+                return showDebugInfo(e)();
+            }
+        };
+        return render.prototype = fn.prototype = helpers, render.toString = function() {
+            return fn + "";
+        }, render;
+    }
+    function showDebugInfo(e) {
+        var type = "{Template Error}", message = e.stack || "";
+        if (message) message = message.split("\n").slice(0, 2).join("\n"); else for (var name in e) message += "<" + name + ">\n" + e[name] + "\n\n";
+        return function() {
+            return "object" == typeof console && console.error(type + "\n\n" + message), type;
+        };
+    }
+    var cache = template.cache = {}, String = this.String, escapeMap = {
+        "<": "&#60;",
+        ">": "&#62;",
+        '"': "&#34;",
+        "'": "&#39;",
+        "&": "&#38;"
+    }, isArray = Array.isArray || function(obj) {
+        return "[object Array]" === {}.toString.call(obj);
+    }, helpers = template.helpers = {
+        $include: function(filename, data, from) {
+            return filename = resolve(from, filename), renderFile(filename, data);
+        },
+        $string: toString,
+        $escape: escapeHTML,
+        $each: each
+    };
+    template.get = function(filename) {
+        return cache[filename.replace(/^\.\//, "")];
+    }, template.helper = function(name, helper) {
+        helpers[name] = helper;
+    }, "function" == typeof define ? define(function() {
+        return template;
+    }) : "undefined" != typeof exports ? module.exports = template : this.template = template, 
+    template.helper("$ubb2html", function(content) {
+        return content = template.helpers.$escape(content), content.replace(/\[b\]([^\[]*?)\[\/b\]/gim, "<b>$1</b>").replace(/\[i\]([^\[]*?)\[\/i\]/gim, "<i>$1</i>").replace(/\[u\]([^\[]*?)\[\/u\]/gim, "<u>$1</u>").replace(/\[url=([^\]]*)\]([^\[]*?)\[\/url\]/gim, '<a href="$1">$2</a>').replace(/\[img\]([^\[]*?)\[\/img\]/gim, '<img src="$1" />');
+    }), /*v:12*/
+    template("index", function($data) {
+        "use strict";
+        var $helpers = this, $string = $helpers.$string, $ubb2html = $helpers.$ubb2html, title = $data.title, $each = $helpers.$each, list = $data.list, $escape = ($data.$value, 
+        $data.$index, $helpers.$escape), $out = "";
+        return $out += '<div id="main"> <h3>', $out += $string($ubb2html(title)), $out += "</h3> <ul> ", 
+        $each(list, function($value) {
+            $out += ' <li><a href="', $out += $escape($value.url), $out += '">', $out += $string($ubb2html($value.title)), 
+            $out += "</a></li> ";
+        }), $out += " </ul> </div>", new String($out);
+    });
+}();

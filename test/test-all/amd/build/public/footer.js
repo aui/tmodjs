@@ -1,21 +1,13 @@
-/*TMODJS:{"version":1,"md5":"6599b97b0326fe559d5c1fbef543716a"}*/
+/*TMODJS:{"version":7,"md5":"611dbb7dc160f8466b57a49c418d9e68"}*/
 define([ "../template", "../copyright" ], function(template) {
-    return template("public/footer", function($data, $id) {
-        var $helpers = this, time = $data.time, $escape = $helpers.$escape, include = function(id, data) {
+    return template("public/footer", function($data, $filename) {
+        "use strict";
+        var $helpers = this, time = $data.time, $escape = $helpers.$escape, include = function(filename, data) {
             data = data || $data;
-            var $text = $helpers.$include(id, data, $id);
-            $out += $text;
-            return $text;
+            var text = $helpers.$include(filename, data, $filename);
+            return $out += text;
         }, $out = "";
-        $out += '<div id="footer"> ';
-        if (time) {
-            $out += " <p class='time'>";
-            $out += $escape(time);
-            $out += "</p> ";
-        }
-        $out += " ";
-        include("../copyright");
-        $out += " </div>";
-        return new String($out);
+        return $out += '<div id="footer"> ', time && ($out += " <p class='time'>", $out += $escape(time), 
+        $out += "</p> "), $out += " ", include("../copyright"), $out += " </div>", new String($out);
     });
 });
