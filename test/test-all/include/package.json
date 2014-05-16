@@ -15,6 +15,6 @@
         "runtime": "template.js",
         "alias": null,
         "minify": false,
-        "cache": true
+        "cache": false
     }
 }

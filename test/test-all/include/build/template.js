@@ -43,7 +43,7 @@
                 return showDebugInfo(e)();
             }
         };
-        return render.prototype = fn.prototype = helpers, render.toString = function() {
+        return render.prototype = fn.prototype = utils, render.toString = function() {
             return fn + "";
         }, render;
     }
@@ -62,14 +62,15 @@
         "&": "&#38;"
     }, isArray = Array.isArray || function(obj) {
         return "[object Array]" === {}.toString.call(obj);
-    }, helpers = template.helpers = {
+    }, utils = template.utils = {
+        $helpers: {},
         $include: function(filename, data, from) {
             return filename = resolve(from, filename), renderFile(filename, data);
         },
         $string: toString,
         $escape: escapeHTML,
         $each: each
-    };
+    }, helpers = template.helpers = utils.$helpers;
     template.get = function(filename) {
         return cache[filename.replace(/^\.\//, "")];
     }, template.helper = function(name, helper) {

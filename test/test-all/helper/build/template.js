@@ -43,7 +43,7 @@
                 return showDebugInfo(e)();
             }
         };
-        return render.prototype = fn.prototype = helpers, render.toString = function() {
+        return render.prototype = fn.prototype = utils, render.toString = function() {
             return fn + "";
         }, render;
     }
@@ -62,14 +62,15 @@
         "&": "&#38;"
     }, isArray = Array.isArray || function(obj) {
         return "[object Array]" === {}.toString.call(obj);
-    }, helpers = template.helpers = {
+    }, utils = template.utils = {
+        $helpers: {},
         $include: function(filename, data, from) {
             return filename = resolve(from, filename), renderFile(filename, data);
         },
         $string: toString,
         $escape: escapeHTML,
         $each: each
-    };
+    }, helpers = template.helpers = utils.$helpers;
     template.get = function(filename) {
         return cache[filename.replace(/^\.\//, "")];
     }, template.helper = function(name, helper) {
@@ -77,17 +78,27 @@
     }, "function" == typeof define ? define(function() {
         return template;
     }) : "undefined" != typeof exports ? module.exports = template : this.template = template, 
-    template.helper("$ubb2html", function(content) {
-        return content = template.helpers.$escape(content), content.replace(/\[b\]([^\[]*?)\[\/b\]/gim, "<b>$1</b>").replace(/\[i\]([^\[]*?)\[\/i\]/gim, "<i>$1</i>").replace(/\[u\]([^\[]*?)\[\/u\]/gim, "<u>$1</u>").replace(/\[url=([^\]]*)\]([^\[]*?)\[\/url\]/gim, '<a href="$1">$2</a>').replace(/\[img\]([^\[]*?)\[\/img\]/gim, '<img src="$1" />');
-    }), /*v:12*/
+    template.helper("dateFormat", function(date, format) {
+        date = new Date(date);
+        var map = {
+            M: date.getMonth() + 1,
+            d: date.getDate(),
+            h: date.getHours(),
+            m: date.getMinutes(),
+            s: date.getSeconds(),
+            q: Math.floor((date.getMonth() + 3) / 3),
+            S: date.getMilliseconds()
+        };
+        return format = format.replace(/([yMdhmsqS])+/g, function(all, t) {
+            var v = map[t];
+            return void 0 !== v ? (all.length > 1 && (v = "0" + v, v = v.substr(v.length - 2)), 
+            v) : "y" === t ? (date.getFullYear() + "").substr(4 - all.length) : all;
+        });
+    }), /*v:21*/
     template("index", function($data) {
         "use strict";
-        var $helpers = this, $string = $helpers.$string, $ubb2html = $helpers.$ubb2html, title = $data.title, $each = $helpers.$each, list = $data.list, $escape = ($data.$value, 
-        $data.$index, $helpers.$escape), $out = "";
-        return $out += '<div id="main"> <h3>', $out += $string($ubb2html(title)), $out += "</h3> <ul> ", 
-        $each(list, function($value) {
-            $out += ' <li><a href="', $out += $escape($value.url), $out += '">', $out += $string($ubb2html($value.title)), 
-            $out += "</a></li> ";
-        }), $out += " </ul> </div>", new String($out);
+        var $utils = this, $helpers = $utils.$helpers, $string = $utils.$string, $escape = $utils.$escape, time = $data.time, $out = "";
+        return $out += $string($helpers.dateFormat($escape(time), "yyyy-MM-dd hh:mm:ss")), 
+        new String($out);
     });
 }();

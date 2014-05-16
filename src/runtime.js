@@ -83,7 +83,9 @@ var runtime = function (String) {
     };
 
 
-    var helpers = template.helpers = {
+    var utils = template.utils = {
+
+        $helpers: {},
 
         $include: function (filename, data, from) {
             filename = resolve(from, filename);
@@ -95,8 +97,11 @@ var runtime = function (String) {
         $escape: escapeHTML,
 
         $each: each
-
+        
     };
+
+
+    var helpers = template.helpers = utils.$helpers;
 
 
     function renderFile (filename, data) {
@@ -126,7 +131,7 @@ var runtime = function (String) {
             }
         };
 
-        render.prototype = fn.prototype = helpers;
+        render.prototype = fn.prototype = utils;
         render.toString = function () {
             return fn + '';
         };

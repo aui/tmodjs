@@ -230,7 +230,7 @@ Tmod.prototype = {
 
 
         // 比较模板项目版本号
-        if (version !== targetVersion && semver.satisfies(version, targetVersion)) {//lt
+        if (semver.lt(version, targetVersion)) {
             this.log('[red]You must upgrade to the latest version of tmodjs![/red]\n');
             this.log('Local:  ' + version + '\n')
             this.log('Target: ' + targetVersion + '\n');
