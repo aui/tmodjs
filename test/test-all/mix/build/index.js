@@ -1,2 +1,0 @@
-/*TMODJS:{"version":2,"md5":"751ec4c8bd107d8a3d2ab0519632b638"}*/
-template("index", "{{include './public/header'}} <div id=\"main\"> <h3>{{title}}</h3> <ul> {{each list}} <li><a href=\"{{$value.url}}\">{{$value.title}}</a></li> {{/each}} </ul> </div> {{include './public/footer'}}");

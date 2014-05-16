@@ -1,16 +1,2 @@
-/*TMODJS:{"version":3,"md5":"d84efb73184f7a829860aab51abf6505"}*/
-define(function(require) {
-    require("./logo");
-    return require("template")("public/header", function($data, $id) {
-        var $helpers = this, include = function(id, data) {
-            data = data || $data;
-            var $text = $helpers.$include(id, data, $id);
-            $out += $text;
-            return $text;
-        }, $out = "";
-        $out += ' <div id="header"> ';
-        include("./logo");
-        $out += ' <ul id="nav"> <li><a href="http://www.qq.com">首页</a></li> <li><a href="http://news.qq.com/">新闻</a></li> <li><a href="http://pp.qq.com/">图片</a></li> <li><a href="http://mil.qq.com/">军事</a></li> </ul> </div>  ';
-        return new String($out);
-    });
-});
+/*TMODJS:{"version":12,"md5":"0df0ce2d0e617583da35ea1e65fa8c8e"}*/
+define(function(require){return require("./logo"),require("template")("public/header",function(a,b){"use strict";var c=this,d=(c.$helpers,function(d,f){f=f||a;var g=c.$include(d,f,b);return e+=g}),e="";return e+=' <div id="header"> ',d("./logo"),e+=' <ul id="nav"> <li><a href="http://www.qq.com">首页</a></li> <li><a href="http://news.qq.com/">新闻</a></li> <li><a href="http://pp.qq.com/">图片</a></li> <li><a href="http://mil.qq.com/">军事</a></li> </ul> </div>  ',new String(e)})});

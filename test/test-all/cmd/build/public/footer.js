@@ -1,22 +1,2 @@
-/*TMODJS:{"version":2,"md5":"8084a2fec9437fffc94ff34c904352d2"}*/
-define(function(require) {
-    require("../copyright");
-    return require("../template")("public/footer", function($data, $id) {
-        var $helpers = this, time = $data.time, $escape = $helpers.$escape, include = function(id, data) {
-            data = data || $data;
-            var $text = $helpers.$include(id, data, $id);
-            $out += $text;
-            return $text;
-        }, $out = "";
-        $out += '<div id="footer"> ';
-        if (time) {
-            $out += " <p class='time'>";
-            $out += $escape(time);
-            $out += "</p> ";
-        }
-        $out += " ";
-        include("../copyright");
-        $out += " </div>";
-        return new String($out);
-    });
-});
+/*TMODJS:{"version":7,"md5":"51f9b85e31ee032bf492ad73c44bc1de"}*/
+define(function(require){return require("../copyright"),require("../template")("public/footer",function(a,b){"use strict";var c=this,d=(c.$helpers,a.time),e=c.$escape,f=function(d,e){e=e||a;var f=c.$include(d,e,b);return g+=f},g="";return g+='<div id="footer"> ',d&&(g+=" <p class='time'>",g+=e(d),g+="</p> "),g+=" ",f("../copyright"),g+=" </div>",new String(g)})});

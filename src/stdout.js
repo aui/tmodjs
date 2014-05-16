@@ -29,19 +29,14 @@ styles['b'] = styles['bold'];
 styles['i'] = styles['italic'];
 styles['u'] = styles['underline'];
 
-var stdout = function (message) {
+module.exports = function (message) {
     message = message.replace(/\[([^\]]*?)\]/igm, function ($1, $2) {
-        if (styles[$2.replace('/', '')]) {
-            return $2.indexOf('/') === 0
-            ? styles[$2.slice(1)][1]
-            : styles[$2][0];  
-        } else {
-            return $1;
-        }
+        return $2.indexOf('/') === 0
+        ? styles[$2.slice(1)][1]
+        : styles[$2][0];
     });
+
 
     process.stdout.write(message);
 };
-
-module.exports = stdout;
 

@@ -6,69 +6,54 @@ TmodJS 默认采用 simple 语法，它非常易于读写。
 
 ## 表达式
 
-``{{``与``}}``符号包裹起来的语句则为模板的逻辑表达式。
+``{{`` 与 ``}}`` 符号包裹起来的语句则为模板的逻辑表达式。
 
 ### 输出表达式
 
-输出模板变量：
+对内容编码输出：
 
-```
-{{content}}
-```
+    {{content}}
 
-默认会对变量中 HTML 字符编码输出，避免 XSS 漏洞。
+不编码输出：
 
-输出原始模板变量 - 不编码：
-
-```
-{{#content}}
-```
+    {{#content}}
+    
+编码可以防止数据中含有 HTML 字符串，避免引起 XSS 攻击。
 
 ### 条件表达式
 
-```
-{{if admin}}
-	{{content}}
-{{/if}}
-{{if user === 'admin'}}
-	{{content}}
-{{else if user === '007'}}
-	<strong>hello world</strong>
-{{/if}}
-```
+    {{if admin}}
+		<p>admin</p>
+    {{else if code > 0}}
+    	<p>master</p>
+    {{else}}
+        <p>error!</p>
+    {{/if}}
 
 ### 遍历表达式
 
-无论数组或者对象都可以用``each``进行遍历。
+无论数组或者对象都可以用 each 进行遍历。
 
-```
-{{each list}}
-	<li>{{$index}}. {{$value.user}}</li>
-{{/each}}
-```
+    {{each list as value index}}
+        <li>{{index}} - {{value.user}}</li>
+    {{/each}}
 
-其中 list 为要遍历的数据名称, ``$value`` 与 ``$index`` 是系统变量， ``$value`` 表示数据单条内容, ``$index`` 表示索引值，这两个变量也可以自定义：
+亦可以被简写：
 
-```
-{{each list as value index}}
-	<li>{{index}}. {{value.user}}</li>
-{{/each}}
-```
+    {{each list}}
+        <li>{{$index}} - {{$value.user}}</li>
+    {{/each}}
 
 ### 模板包含表达式
 
-例如嵌入一个 inc 目录下名为 demo 的模板：
+用于嵌入子模板。
 
-```
-{{include './inc/demo'}}
-```
+    {{include 'template_name'}}
 
-还可以传入指定的数据到子模板：
+子模板默认共享当前数据，亦可以指定数据：
 
-```
-{{include './inc/demo' data}}
-```
-
+    {{include 'template_name' news_list}}
+    
 ####	include 路径规范约定
 
 1.	路径不能带后缀名
@@ -78,4 +63,14 @@ TmodJS 默认采用 simple 语法，它非常易于读写。
 
 ## 辅助方法
 
-这属于插件的范畴，请参考：<https://github.com/aui/tmodjs/wiki/辅助方法>
+    {{time | dateFormat:'yyyy-MM-dd hh:mm:ss'}}
+
+支持传入参数与嵌套使用：
+
+    {{time | say:'cd' | ubb | link}}
+
+定义辅助方法请参考：<https://github.com/aui/tmodjs/wiki/辅助方法>
+
+----------------------------------------------
+
+本文档针对 TmodJS v1.0.0+ 编写

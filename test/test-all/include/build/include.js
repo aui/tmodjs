@@ -1,27 +1,18 @@
-/*TMODJS:{"version":2,"md5":"302a1925ef7e270689728351aa18bf36"}*/
+/*TMODJS:{"version":3,"md5":"f4d1cc4066fb3f4e0e9bc077ebb9b79b"}*/
 define([ "./template", "./a", "./b", "./e", "./d" ], function(template) {
-    return template("include", function($data, $id) {
-        var $helpers = this, include = function(id, data) {
+    return template("include", function($data, $filename) {
+        "use strict";
+        var $utils = this, include = ($utils.$helpers, function(filename, data) {
             data = data || $data;
-            var $text = $helpers.$include(id, data, $id);
-            $out += $text;
-            return $text;
-        }, labe = $data.labe, xxx = $data.xxx, $out = "";
-        include("./a", {
+            var text = $utils.$include(filename, data, $filename);
+            return $out += text;
+        }), xxx = ($data.labe, $data.xxx), $out = "";
+        return include("./a", {
             labe: ")"
-        });
-        include("./b", {
+        }), include("./b", {
             labe: "("
-        });
-        $out += " ";
-        include("./e", {
+        }), $out += " ", include("./e", {
             include: "./v"
-        });
-        $out += " ";
-        if ("include('./n')") {}
-        $out += " ";
-        include("./d");
-        xxx.include("./c");
-        return new String($out);
+        }), $out += " ", $out += " ", include("./d"), xxx.include("./c"), new String($out);
     });
 });

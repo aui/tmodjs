@@ -18,7 +18,13 @@ var timer = {};
 var walk = function (dir, callback, filter) {
     fs.readdirSync(dir).forEach(function (item) {
         var fullname = dir + '/' + item;
+
         if (fs.statSync(fullname).isDirectory()){
+
+            if (!filter(fullname)){
+                return;
+            }
+
             watch(fullname, callback, filter);
             walk(fullname, callback, filter);
         }
@@ -27,12 +33,6 @@ var walk = function (dir, callback, filter) {
 
 
 var watch = function (parent, callback, filter) {
-
-    var target = path.basename(parent);
-
-    if (!filter(target)){
-        return;
-    }
 
     if (watchList[parent]) {
         watchList[parent].close();
@@ -75,7 +75,7 @@ var watch = function (parent, callback, filter) {
 
                 fstype = 'directory';
                 type = 'create';
-                
+
                 watch(fullname, callback, filter);
                 walk(fullname, callback, filter);
             }
@@ -89,7 +89,7 @@ var watch = function (parent, callback, filter) {
             fstype: fstype
         };
 
-        
+
         if (/windows/i.test(os.type())) {
             // window 下 nodejs fs.watch 方法尚未稳定
             clearTimeout(timer[fullname]);
@@ -120,8 +120,6 @@ module.exports = function (dir, callback, filter) {
         return !FILTER_RE.test(name);
     };
 
-    //if (filter(dir)) {
-        watch(dir, callback, filter);
-        walk(dir, callback, filter);
-    //}
+    watch(dir, callback, filter);
+    walk(dir, callback, filter);
 };

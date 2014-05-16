@@ -1,32 +1,51 @@
 #	TmodJS
 
-TmodJS（原名 atc）是前端模板开发工具，它采用预编译技术让前端模板实现工程化。
+TmodJS（原名 atc）是一个简单易用的前端模板预编译工具，使用它可以实现前端模板模块化与自动化集成，让前端模板拥有后端模板一样的同步“文件”加载能力：
 
-##	为什么要使用它？
+一、**按文件与目录组织模板**
 
-从前，浏览器甚至都没有提供一个好用的调试工具，我们依然能够通过 alert 完成手头上的工作，似乎就这样满足了。突然有一天你使用了 Firebug 等工具后，你才会知道以前缺乏工具的日子过得多么艰苦。
+```
+template('tpl/home/main', data)
+```
 
-现在我们手上已经有了很多基础工具用来解决前端工程中不同的问题，而在前端模板领域却一直缺乏有效的自动优化工具，而 TmodJS 便是这样一个专注于前端模板的辅助开发工具。
+二、**模板支持引入子模板**
 
-对于前端开发者而言，TmodJS 可以像你现在手上使用的开发利器一样：一旦上手，便爱不释手。
+```
+{{include '../public/header'}}
+```
 
-使用 TmodJS，下面美好即将发生：
+##	目录
 
-1.	在开发阶段将编译模板为高性能的 js 文件
-2.	实现前端模板按文件与目录组织，脱离页面
-3.	支持模板之间支持引入外部模板
+*	[特性](#特性)
+*	[安装](#安装)
+*	[编写模板](#编写模板)
+*	[编译模板](#编译模板)
+*	[使用模板](#使用模板)
+*	[演示](#演示)
+*	[配置](#配置)
+*	[GruntJS](#GruntJS)
+*	[常见问题](#常见问题)
+*	[更新日志](#更新日志)
+*	[加入我们](#加入我们)
+*	[授权协议](#授权协议)
+
+##	特性
+
+0.	在开发阶段将编译模板为高性能的 js 文件
+1.	前端模板按文件与目录组织
+3.	模板之间支持引入外部模板
 4.	使用同步模板加载接口
-5.	可选输出多种 js 模块格式
-6.	支持接入第三方构建工具
-7.	编译后的模板支持前端与后端运行
+5.	支持多种 js 模块输出：AMD、CMD、CommonJS
+6.	支持作为 GruntJS 的插件构建项目
+7.	支持前后台模板共享模板目录
 8.	支持检测修改即时编译
-9.	支持本地调试模板
+9.	支持本地调试
 
-有点意思？请继续阅读：《[进击！前端模板工程化](http://aui.github.io/tmodjs/)》
+若想深入了解，请继续阅读：《[进击！前端模板工程化](http://aui.github.io/tmodjs/)》
 
 ##	安装
 
-先安装 [NodeJS](http://nodejs.org) 与 Npm (最新版 NodeJS 已经附带 Npm)，执行：
+使用 [NodeJS](http://nodejs.org) 附带的``npm``命令，执行：
 
 ```
 npm install -g tmodjs
@@ -34,184 +53,131 @@ npm install -g tmodjs
 
 > Mac OSX 可能需要管理员权限运行： ``sudo npm install -g tmodjs``
 
+##	编写模板
 
-##	快速入门
+TmodJS 的前端模板不再耦合在业务页面中，而是和后端模板一样有专门的目录管理。目录名称只支持英文、数字、下划线的组合，一个模板对应一个``.html``文件。
 
-学习 TmodJS 只需要理解这四个关键点就好，3 分钟可入门：
+支持基本的模板语法，如输出变量、条件判断、循环、包含子模板。[模板语法参考](https://github.com/aui/tmodjs/wiki/模板语法)
 
-###	一、前端模板目录
+> 完全支持 [artTemplate](https://github.com/aui/artTemplate) 的语法
 
-TmodJS 的前端模板不再耦合在业务页面中，而是和后端模板一样有专门的目录管理。目录名称支持英文、数字、下划线。
-
-###	二、模板与语法
-
-一个模板对应一个文件，模板后缀可以是``.html``、``.htm``、``.tpl``。
-
-模板支持输出变量、条件判断、循环、包含子模板，请查看：[模板语法参考](https://github.com/aui/tmodjs/wiki/模板语法)
-
-###	三、编译模板
+##	编译模板
 
 ```
-tmod [模板根目录] [配置参数]
+tmod [模板目录] [配置参数]
 ```
 
-####	模板目录
+必须是模板的根目录，若无参数则为默认使用当前工作目录，tmodjs 会监控模板目录修改，每次模板修改都会增量编译。
 
-可以不填，默认使用当前工作目录。
-
-####	配置参数
+###	配置参数
             
-*	``-d``或``--debug``输出调试版本
-*	``--charset value``定义模板编码，默认``utf-8``
-*	``--output value``定义输出目录，默认``./build``
-*	``--type value``定义输出模块格式，默认``default``，可选``cmd``、``amd``、``commonjs``
-*	``--watch-off``不监控模板修改
-*	``--version``显示版本号
-*	``--help``显示帮助信息
+*	``--debug``			输出调试版本
+*	``--charset value`` 定义模板编码，默认``utf-8``
+*	``--output value``  定义输出目录，默认``./build``
+*	``--type value``		定义输出模块格式，默认``default``，可选``cmd``、``amd``、``commonjs``
+*	``--no-watch``		关闭模板目录监控
+*	``--version``			显示版本号
+*	``--help``			显示帮助信息
 
-配置参数将会保存在模板目录[配置文件](#配置)中，下次运行无需输入配置参数（``-d`` 与 ``--watch-off`` 除外）。
+配置参数将会保存在模板目录[配置文件](#配置)中，下次运行无需输入配置参数（``--no-watch`` 与 ``--debug`` 除外）。
 
 ####	示例
 
 ```
-tmod ./tpl --debug
+tmod ./tpl --output ./build
 ```
 
 >	如果需要设置模板更多的编译选项，请使用``--config``参数，它会打开模板目录的项目配置文件，可设置语法、公用辅助方法、压缩选项等，参考[配置](#配置)。
 
-###	四、调用模板
+##	使用模板
 
-模板编译后，模板目录会生成 build 子目录，里面包含了所有的模板编译版本。编译后的模板可以使用同步接口加载模板。
+根据编译的``type``的配置不同，会有两种不同使用方式：
 
-需要注意的是，TmodJS 的 ``type``参数设置会改变模板的加载方式。
+###	使用默认的格式
 
-####	1. 默认类型格式的使用方式
-
-模板的``type``为默认值（``type:default``）的时候，TmodJS 默认将整个目录的模板压缩合并到一个名为 template.js 的脚本中，通常情况下你只需要在页面中引入它就好。例如：
+TmodJS 默认将整个目录的模板压缩打包到一个名为 template.js 的脚本中，可直接在页面中使用它：
 
 	<script src="tpl/build/template.js"></script>
+	<script>
+		var html = template('news/list', _list);
+		document.getElementById('list').innerHTML = html;
+	</script>
 
-除此之外 template.js 还支持 RequireJS、SeaJS、NodeJS 加载。[示例](http://aui.github.io/tmodjs/test/index.html)
+> template.js 还支持 RequireJS、SeaJS、NodeJS 加载。[示例](http://aui.github.io/tmodjs/test/index.html)
 
-加载并渲染模板示例：
+###	指定格式（amd / cmd / commonjs)
 
-```	
-// 注意：模板路径不能包含后缀名
-var html = template('news/list', {hot: [...]});
-document.getElementById('list').innerHTML = html;
-```
-
-以上是 TmodJS 默认的模板加载方式，其他``type``请参考：
-
-####	2. 其他类型格式使用方式（amd / cmd / commonjs)
-
-这个时候每个模板编译后都是一个 js 模块，每个模板可在模块中单独引入，无需引入 template.js 文件，加载并渲染模板示例：
+此时每个模板就是一个单独的模块，无需引用 template.js：
 
 ```
-var html = require('./tpl/build/news/list');
-document.getElementById('list').innerHTML = html;
+var render = require('./tpl/build/news/list');
+var html = render(_list);
 ```
 
-##	编译演示项目
+>	注意：模板路径不能包含模板后缀名
 
-[TmodJS 源码包](https://github.com/aui/tmodjs/archive/master.zip)中``./test/tpl``是一个演示项目的前端模板目录。你可以通过这个演示项目快速了解 TmodJS 用法以及模板语法、模板加载方式。
+##	演示
 
-首先，使用``cd``命令切换到 TmodJS 源码的``./test/tpl``目录后，然后运行命令：
-
-```
-tmod
-```
-
-编译完毕后你可以在浏览器中打开 [test/index.html](http://aui.github.io/tmodjs/test/index.html) 查看如何加载模板。
-
-## 对外接口
-
-若想集成 TmodJS 到其它自动化工具中（如 GruntJS），可以使用 TmodJS 提供的 API 来接入：
+[TmodJS 源码包](https://github.com/aui/tmodjs/archive/master.zip)中``test/tpl``是一个演示项目的前端模板目录，基于默认配置。切换到源码目录后，编译：
 
 ```
-var TmodJS = require('tmodjs');
+tmod test/tpl
+```
 
-// 模板目录
-var path = './demo/templates';
-
-// 配置（更多请参考文档）
-var options = {
-	output: './build',
-	charset: 'utf-8',
-	debug: false // 此字段不会保存在配置中
-};
-
-// 初始化 TmodJS
-// path {String}	模板根目录
-// options {Object} 选项
-TmodJS.init(path, options);
-
-// 监听编译过程的事件
-// 支持的事件有：compile、change、load、compileError、combo
-TmodJS.on('compile', function (data) {});
-
-// 编译模板
-// file {String} 参数可选，无则编译整个模板目录，否则编译指定的模板文件
-// recursion {Boolean} 若为 false 则不编译依赖的模板
-TmodJS.compile(file, recursion);
-
-// 监控模板修改
-TmodJS.watch();
-
-// 获取用户配置
-//TmodJS.getUserConfig();
-
-// 保存用户设置到模板目录 package.json 文件中
-TmodJS.saveUserConfig();
-
-```	
+编译完毕后你可以在浏览器中打开 [test/index.html](http://aui.github.io/tmodjs/test/index.html) 查看如何使用编译后的模板。
 
 ##	配置
 
-配置最终会保存在模板目录 package.json 文件中，你可以修改``"tmodjs-config"``字段，配置说明：
+TmodJS 的项目配置文件保存在模板目录的 package.json 中，省去每次输入命令行参数：
 
 ```
-// 编译输出目录设置
-output: './build',
-
-// 模板使用的编码。（注意：非 utf-8 编码的模板缺乏测试）
-charset: 'utf-8',
-
-// 定义模板采用哪种语法，内置可选：
-// simple: 默认语法，易于读写。可参看语法文档
-// native: 功能丰富，灵活多变。语法类似微型模板引擎 tmpl
-syntax: 'simple',
-
-// 自定义辅助方法路径
-helpers: null,
-
-// 是否过滤 XSS
-// 如果后台给出的数据已经进行了 XSS 过滤，就可以关闭模板的过滤以提升模板渲染效率
-escape: true,
-
-// 是否嵌入模板引擎，否则编译为不依赖引擎的纯 js 代码
-// 选择嵌入模板引擎后，模板以字符串存储并浏览器中执行编译
-engine: false,
-
-// 输出的模块类型，可选：
-// default:     模板目录将会打包后输出，可使用 script 标签直接引入，也支持 NodeJS/RequireJS/SeaJS。
-// cmd:         这是一种兼容 RequireJS/SeaJS 的模块（类似 atc v1版本编译结果）
-// amd:         支持 RequireJS 等流行加载器
-// commonjs:    编译为 NodeJS 模块
-type: 'default',
-
-// 运行时别名
-// 仅针对于非 default 的类型模块
-alias: null,
-
-// 是否合并模板
-// 仅针对于 default 类型的模块
-combo: true,
-
-// 是否输出为压缩的格式
-minify: true 
+{
+    "name": "template",
+    "version": "1.0.0",
+    "dependencies": {
+        "tmodjs": "1.0.0"
+    },
+    "tmodjs-config": {
+        "output": "./build",
+        "charset": "utf-8",
+        "syntax": "simple",
+        "helpers": null,
+        "escape": true,
+        "compress": true,
+        "type": "default",
+        "runtime": "template.js",
+        "combo": true,
+        "minify": true,
+        "cache": false
+    }
+}
 ```
+
+字段 | 类型 | 默认值| 说明
+------------ | ------------- | ------------ | ------------
+output | String | ``"./build"`` | 编译输出目录设置
+charset | String | ``"utf-8"`` | 模板使用的编码
+syntax | String | ``"simple"`` | 定义模板采用哪种语法。可选：``simple``、``native``
+helpers | String | ``null`` | 自定义辅助方法路径
+escape | Boolean | ``true`` | 是否过滤 XSS。如果后台给出的数据已经进行了 XSS 过滤，就可以关闭模板的过滤以提升模板渲染效率
+compress | Boolean | ``true`` | 是否压缩 HTML 多余空白字符
+type | String | ``"default"`` |  输出的模块类型，可选：``default``、``cmd``、``amd``、``commonjs``
+runtime | String | ``"template.js"`` | 设置输出的运行时名称
+alias | String | ``null`` | 设置模块依赖的运行时路径（仅针对于非``default``的类型模块配置字段。如果不指定模块内部会自动使用相对 runtime 的路径）
+combo | Boolean | ``true`` | 是否合并模板（仅针对于 default 类型的模块）
+minify | Boolean | ``true`` | 是否输出为压缩的格式
+cache | Boolean | ``true`` | 是否开启编译缓存
 	
+##	GruntJS
+
+让 TmodJS 作为 GruntJS 的一个插件使用：
+
+```
+npm install grunt-tmod --save-dev
+```
+
+由[@Jsonzhang](https://github.com/Jsonzhang)同学开发，项目主页：<https://github.com/Jsonzhang/grunt-tmod>
+
 ##	常见问题
 
 **问**：TmodJS 需要部署到服务器中吗？
@@ -256,16 +222,21 @@ minify: true
 
 **问**：我需要手动合并模板，如何让 tmodjs 不合并输出？
 
-> 编辑配置文件，设置``combo: false``。
+> 编辑配置文件，设置``combo:false``。
 
 ##	更新日志
 
+###	v1.0.0
+
+*	使用 artTemplate3.0 作为模板引擎，NodJS 可直接共享前端的模板目录的模板，无需预编译
+*	提供 GruntJS 插件
+*	取消``engine``配置
+*	增加``runtime``配置
+*	接口重构，支持多实例
+
 ###	v0.1.1
 
-*	修复无逻辑的模板在 Safari 浏览器上兼容问题
-*	默认开启模板实时监控。取消请使用``--watch-off``
 *	给压缩打包合并后的每条模板增加版本标记，例如``/*v:13*/``，以便对比线上版本
-*	增加``compileStart``与``compileEnd``事件
 
 ###	v0.1.0
 
@@ -297,7 +268,7 @@ minify: true
 
 ###	v0.0.1
 
-这是一个革命性的版本！同时项目更名为 **TmodJS**，内部版本号收归到 0.0.1，这是一个新的开始，未来将稳步更新。
+这是一个革命性的版本，内部大量优化！同时项目更名为 **TmodJS**，内部版本号收归到 0.0.1。
 
 使用 TemplageJS 格式的模块作为默认输出的类型：它包含模板目录中所有模板，除了支持页面 Script 直接引入之外还支持 RequireJS、SeaJS、NodeJS 加载，并且接口统一，跨架构与前后端运行！
 
@@ -306,8 +277,8 @@ minify: true
 *	吸收了来自业务的一些建议，编译方案的大调整，内部进行无数次优化，编译后的代码更小。
 *	编译后的脚本使用统一的接口：``template(path, data)`` 其中 path 相对于 template.js 所在目录
 *	自动打包目录与子目录的模板
-*	可选支持异步载入模板功能
-*	可选嵌入完整模板引擎（使用字符串存储模板）
+*	～～可选支持异步载入模板功能～～
+*	~~可选嵌入完整模板引擎（使用字符串存储模板）~~
 *	可选支持 RequireJS/SeaJS/NodeJS 模块
 *	保存模板配置文件（方便多人协作中使用版本管理工具共享配置）
 *	可选编译调试版本
@@ -367,11 +338,16 @@ NodeJS 版本：
 
 ###	贡献名单
 
-*	[@aui](https://github.com/aui)（糖饼，来自 QQ 空间前端团队）
-*	[@TooBug](https://github.com/TooBug)（来自 CDC 前端团队）
-*	[@Jsonzhang](https://github.com/Jsonzhang)（来自 CDC 前端团队，GruntJS 插件开发者）
+*	[@aui](https://github.com/aui)
+*	[@TooBug](https://github.com/TooBug)
+*	[@Jsonzhang](https://github.com/Jsonzhang)
+
+目前贡献者均来自腾讯前端团队。
 
 ###	特别感谢
 
 *	[@warmhug](https://github.com/warmhug)（在工具雏形阶段的热心的测试与反馈）
 
+##	授权协议
+
+BSD.

@@ -1,23 +1,15 @@
-/*TMODJS:{"version":2,"md5":"389e1e681e44404576459aa4e5be3cbe"}*/
-template("index", function($data, $id) {
-    var $helpers = this, include = function(id, data) {
+/*TMODJS:{"version":6,"md5":"241e7b5d276c15b5ea88e96079b04d28"}*/
+template("index", function($data, $filename) {
+    "use strict";
+    var $utils = this, include = ($utils.$helpers, function(filename, data) {
         data = data || $data;
-        var $text = $helpers.$include(id, data, $id);
-        $out += $text;
-        return $text;
-    }, $escape = $helpers.$escape, title = $data.title, $each = $helpers.$each, list = $data.list, $value = $data.$value, $index = $data.$index, $out = "";
-    include("./public/header");
-    $out += ' <div id="main"> <h3>';
-    $out += $escape(title);
-    $out += "</h3> <ul> ";
-    $each(list, function($value, $index) {
-        $out += ' <li><a href="';
-        $out += $escape($value.url);
-        $out += '">';
-        $out += $escape($value.title);
+        var text = $utils.$include(filename, data, $filename);
+        return $out += text;
+    }), $escape = $utils.$escape, title = $data.title, $each = $utils.$each, list = $data.list, $out = ($data.$value, 
+    $data.$index, "");
+    return include("./public/header"), $out += ' <div id="main"> <h3>', $out += $escape(title), 
+    $out += "</h3> <ul> ", $each(list, function($value) {
+        $out += ' <li><a href="', $out += $escape($value.url), $out += '">', $out += $escape($value.title), 
         $out += "</a></li> ";
-    });
-    $out += " </ul> </div> ";
-    include("./public/footer");
-    return new String($out);
+    }), $out += " </ul> </div> ", include("./public/footer"), new String($out);
 });

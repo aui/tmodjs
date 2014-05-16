@@ -1,6 +1,6 @@
 {
     "name": "tmodjs",
-    "version": "0.1.2",
+    "version": "1.0.0",
     "readmeFilename": "README.md",
     "description": "Template Compiler",
     "homepage": "https://github.com/aui/tmodjs",
@@ -29,9 +29,9 @@
         "test2": "tmod ./test/test-all/*"
     },
     "dependencies": {
-        "art-template": "2.0.4",
+        "art-template": "3.0.x",
         "uglify-js": "2.4.0",
-        "async": "0.2.6"
+        "semver": "2.3.0"
     },
     "license": "BSD"
 }
