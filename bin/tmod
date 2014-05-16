@@ -44,7 +44,7 @@ var help = function () {
 var base;
 var value;
 var userConfig;
-var isWatch = false;
+var isWatch = true;
 var isEditConfig = false;
 var args = process.argv.slice(2);
 
