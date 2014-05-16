@@ -6,48 +6,55 @@
 
 ##	一、新建一个辅助方法文件配置
 
-在模板目录新建一个 ./config/template-helper.js 文件，然后编辑 ./package.json 设置``"helpers": "./config/template-helper.js"``。
+在模板目录新建一个 config/template-helper.js 文件，然后编辑 package.json 设置``"helpers": "./config/template-helper.js"``。
 
 ##	二、编写辅助方法
 
-在 ./config/template-helper.js 中声明辅助方法。
+在 config/template-helper.js 中声明辅助方法。
 
 ###	示例
 
-1\. 让模板可访问全局的``Math``对象：
+以日期格式化为例：
 
 ```
-template.helper('Math', Math);
-```
+template.helper('dateFormat', function (date, format) {
 
-2\.	扩展一个 UBB 替换方法：
+    date = new Date(date);
 
-```
-template.helper('$ubb2html', function (content) {
-	// 转义 HTML 字符
-	content = template.helpers.$escape(content);
-	// 解析 UBB 字符
-    return content
-    .replace(/\[b\]([^\[]*?)\[\/b\]/igm, '<b>$1</b>')
-    .replace(/\[i\]([^\[]*?)\[\/i\]/igm, '<i>$1</i>')
-    .replace(/\[u\]([^\[]*?)\[\/u\]/igm, '<u>$1</u>')
-    .replace(/\[url=([^\]]*)\]([^\[]*?)\[\/url\]/igm, '<a href="$1">$2</a>')
-    .replace(/\[img\]([^\[]*?)\[\/img\]/igm, '<img src="$1" />');
+    var map = {
+        "M": date.getMonth() + 1, //月份 
+        "d": date.getDate(), //日 
+        "h": date.getHours(), //小时 
+        "m": date.getMinutes(), //分 
+        "s": date.getSeconds(), //秒 
+        "q": Math.floor((date.getMonth() + 3) / 3), //季度 
+        "S": date.getMilliseconds() //毫秒 
+    };
+    format = format.replace(/([yMdhmsqS])+/g, function(all, t){
+        var v = map[t];
+        if(v !== undefined){
+            if(all.length > 1){
+                v = '0' + v;
+                v = v.substr(v.length-2);
+            }
+            return v;
+        }
+        else if(t === 'y'){
+            return (date.getFullYear() + '').substr(4 - all.length);
+        }
+        return all;
+    });
+    return format;
 });
 ```
 	
-在模板中的使用方式：
-
-	{{$ubb2html content}}
-```
 
 ##	三、在模板中使用辅助方法
-	
-在模板中的使用方式：
 
 ```
-{{Math.min(1000, a, b)}}
-{{$ubb2html content}}
+{{time | dateFormat:'yyyy-MM-dd hh:mm:ss'}}
 ```	
 
-> 注意：引擎不会对辅助方法输出的 HTML 字符进行转义。
+----------------------------------------------
+
+本文档针对 TmodJS v1.0.0+ 编写
