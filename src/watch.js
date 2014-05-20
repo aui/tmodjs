@@ -17,7 +17,7 @@ var timer = {};
 
 var walk = function (dir, callback, filter) {
     fs.readdirSync(dir).forEach(function (item) {
-        var fullname = dir + '/' + item;
+        var fullname = path.join(dir, item);
 
         if (fs.statSync(fullname).isDirectory()){
 
@@ -40,11 +40,11 @@ var watch = function (parent, callback, filter) {
 
     watchList[parent] = fs.watch(parent, function (event, filename) {
 
-        var fullname = parent + '/' + filename;
+        var fullname = path.join(parent, filename);
         var type;
         var fstype;
 
-        if (!filter(filename)) {
+        if (!filter(fullname)) {
             return;
         }
 

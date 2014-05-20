@@ -79,7 +79,6 @@ var Tmod = function (base, options) {
             watch(this.base, function (data) {
                 this.emit('watch', data);
             }.bind(this), function (folderPath) {
-
                 return this.filter(folderPath) && folderPath !== this.output;
 
             }.bind(this), fs);
@@ -383,11 +382,9 @@ Tmod.prototype = {
      * @return  {Boolean}
      */
     filter: function (file) {
-
-        var stat = fs.statSync(file);
-
-        if (stat) {
-
+        
+        if (fs.existsSync(file)) {
+            var stat = fs.statSync(file);
             if (stat.isDirectory()) {
                 
                 var dirs = file.split(path.sep);
@@ -447,7 +444,7 @@ Tmod.prototype = {
             var fullname = path.join(parent, target);
 
 
-            if (target && fstype === 'file' && this.filter(target)) {
+            if (target && fstype === 'file' && this.filter(fullname)) {//
 
                 if (type === 'delete') {
 
