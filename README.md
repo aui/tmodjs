@@ -14,6 +14,8 @@ template('tpl/home/main', data)
 {{include '../public/header'}}
 ```
 
+TmodJS 启动后，会生成一个 js 文件，每次模板的创建与修改都会进行同步编译，开发者过程可直接使用``template(path)``调用本地模板，直到正式上线都无需对代码进行任何修改，行云流水，一气呵成。
+
 ##	目录
 
 *	[特性](#特性)
