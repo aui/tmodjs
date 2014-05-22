@@ -324,7 +324,9 @@ NodeJS 版本：
 
 ##	加入我们
 
-如果你也认同 TmodJS 的理念、它能让你在开发中体会到书写模板的快乐，那么我希望你也能参与到 TmodJS 这个开源项目中来，无论是贡献代码或者撰写博文推广它等。
+TmodJS 是一个开源项目，它为我们热爱的工作服务！开源项目离不开你的支持，非常期待你通过微博或者博客等来推广 TmodJS。
+
+如果你使用了 TmodJS，那么还请留下项目名，我们将在主页展示你的项目。[提交](https://github.com/aui/tmodjs/issues/1)
 
 ###	使用 TmodJS 的项目
 
@@ -335,8 +337,6 @@ NodeJS 版本：
 *	MicroTrend（腾讯）
 *	Tracker（腾讯）
 *	……
-
-[提交项目展示到 TmodJS 主页](https://github.com/aui/tmodjs/issues/1)
 
 ###	贡献名单
 
