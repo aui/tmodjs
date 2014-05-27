@@ -225,7 +225,7 @@ Tmod.prototype = {
         }
 
 
-        var targetVersion = json.dependencies.tmodjs;
+        var targetVersion = json.dependencies.tmodjs.replace(/^~/, '');
 
 
         // 比较模板项目版本号
