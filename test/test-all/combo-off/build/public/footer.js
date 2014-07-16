@@ -1,11 +1,2 @@
-/*TMODJS:{"version":6,"md5":"2b64d110ff537c11e7b284f3d5ba6bca"}*/
-template("public/footer", function($data, $filename) {
-    "use strict";
-    var $utils = this, time = ($utils.$helpers, $data.time), $escape = $utils.$escape, include = function(filename, data) {
-        data = data || $data;
-        var text = $utils.$include(filename, data, $filename);
-        return $out += text;
-    }, $out = "";
-    return $out += '<div id="footer"> ', time && ($out += " <p class='time'>", $out += $escape(time), 
-    $out += "</p> "), $out += " ", include("../copyright"), $out += " </div>", new String($out);
-});
+/*TMODJS:{"version":8,"md5":"3fb66ac398d81b747a6d2762473553f3"}*/
+template("public/footer",function(a,b){"use strict";var c=this,d=(c.$helpers,a.time),e=c.$escape,f=function(d,e){e=e||a;var f=c.$include(d,e,b);return g+=f},g="";return g+='<div id="footer"> ',d&&(g+=" <p class='time'>",g+=e(d),g+="</p> "),g+=" ",f("../copyright"),g+=" </div>",new String(g)});

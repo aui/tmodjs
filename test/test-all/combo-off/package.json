@@ -2,7 +2,7 @@
     "name": "template",
     "version": "1.0.0",
     "dependencies": {
-        "tmodjs": "1.0.0"
+        "tmodjs": "1.0.1-rc4"
     },
     "tmodjs-config": {
         "output": "./build",
@@ -14,7 +14,7 @@
         "type": "default",
         "runtime": "template.js",
         "combo": false,
-        "minify": false,
-        "cache": true
+        "minify": true,
+        "cache": false
     }
 }

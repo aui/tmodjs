@@ -40,6 +40,12 @@ var watch = function (parent, callback, filter) {
 
     watchList[parent] = fs.watch(parent, function (event, filename) {
 
+
+        // @see http://stackoverflow.com/questions/9629307/fs-watch-is-returning-null-for-the-file-name
+        if (filename === null) {
+            return;
+        }
+
         var fullname = path.join(parent, filename);
         var type;
         var fstype;

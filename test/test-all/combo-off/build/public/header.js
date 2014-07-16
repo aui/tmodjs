@@ -1,11 +1,2 @@
-/*TMODJS:{"version":6,"md5":"5a31ea62af555f35a18d394a92a27c04"}*/
-template("public/header", function($data, $filename) {
-    "use strict";
-    var $utils = this, include = ($utils.$helpers, function(filename, data) {
-        data = data || $data;
-        var text = $utils.$include(filename, data, $filename);
-        return $out += text;
-    }), $out = "";
-    return $out += ' <div id="header"> ', include("./logo"), $out += ' <ul id="nav"> <li><a href="http://www.qq.com">首页</a></li> <li><a href="http://news.qq.com/">新闻</a></li> <li><a href="http://pp.qq.com/">图片</a></li> <li><a href="http://mil.qq.com/">军事</a></li> </ul> </div>  ', 
-    new String($out);
-});
+/*TMODJS:{"version":8,"md5":"4b6070718603e5122466d0edb80e2cf4"}*/
+template("public/header",function(a,b){"use strict";var c=this,d=(c.$helpers,function(d,f){f=f||a;var g=c.$include(d,f,b);return e+=g}),e="";return e+=' <div id="header"> ',d("./logo"),e+=' <ul id="nav"> <li><a href="http://www.qq.com">\u9996\u9875</a></li> <li><a href="http://news.qq.com/">\u65b0\u95fb</a></li> <li><a href="http://pp.qq.com/">\u56fe\u7247</a></li> <li><a href="http://mil.qq.com/">\u519b\u4e8b</a></li> </ul> </div>  ',new String(e)});

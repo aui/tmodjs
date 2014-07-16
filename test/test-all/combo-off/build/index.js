@@ -1,15 +1,2 @@
-/*TMODJS:{"version":6,"md5":"241e7b5d276c15b5ea88e96079b04d28"}*/
-template("index", function($data, $filename) {
-    "use strict";
-    var $utils = this, include = ($utils.$helpers, function(filename, data) {
-        data = data || $data;
-        var text = $utils.$include(filename, data, $filename);
-        return $out += text;
-    }), $escape = $utils.$escape, title = $data.title, $each = $utils.$each, list = $data.list, $out = ($data.$value, 
-    $data.$index, "");
-    return include("./public/header"), $out += ' <div id="main"> <h3>', $out += $escape(title), 
-    $out += "</h3> <ul> ", $each(list, function($value) {
-        $out += ' <li><a href="', $out += $escape($value.url), $out += '">', $out += $escape($value.title), 
-        $out += "</a></li> ";
-    }), $out += " </ul> </div> ", include("./public/footer"), new String($out);
-});
+/*TMODJS:{"version":8,"md5":"f8c225edd0fd3d0d5ca75bf53e01ee76"}*/
+template("index",function(a,b){"use strict";var c=this,d=(c.$helpers,function(d,e){e=e||a;var f=c.$include(d,e,b);return i+=f}),e=c.$escape,f=a.title,g=c.$each,h=a.list,i=(a.$value,a.$index,"");return d("./public/header"),i+=' <div id="main"> <h3>\u6807\u9898 ',i+=e(f),i+="</h3> <ul> ",g(h,function(a){i+=' <li><a href="',i+=e(a.url),i+='">',i+=e(a.title),i+="</a></li> "}),i+=" </ul> </div> ",d("./public/footer"),new String(i)});

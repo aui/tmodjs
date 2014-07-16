@@ -1,8 +1,8 @@
 {
     "name": "template",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "dependencies": {
-        "tmodjs": "1.0.1-rc2"
+        "tmodjs": "1.0.1-rc3"
     },
     "tmodjs-config": {
         "output": "./build",

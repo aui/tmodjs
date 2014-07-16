@@ -195,7 +195,7 @@ var runtime = function (String) {
 
 
 
-var VAR_RE = /['"]<\:(.*?)\:>['"]/g;
+var VAR_RE = /['"]<\:(.*)\:>['"]/g;
 
 module.exports = function (data) {
     var code = runtime

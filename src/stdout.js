@@ -30,7 +30,7 @@ styles['i'] = styles['italic'];
 styles['u'] = styles['underline'];
 
 module.exports = function (message) {
-    message = message.replace(/\[([^\]]*?)\]/igm, function ($1, $2) {
+    message = message.replace(/\[([^\]]*)\]/igm, function ($1, $2) {
         return $2.indexOf('/') === 0
         ? styles[$2.slice(1)][1]
         : styles[$2][0];

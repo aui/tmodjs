@@ -151,7 +151,7 @@ module.exports = function (template) {
     var DIRNAME_RE = /[^/]+$/;
     var ANONYMOUS_RE = /^function\s+anonymous/;
     var EXTNAME_RE = /\.(html|htm|tpl)$/i;
-    var INCLUDE_RE = /"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|\/\*[\S\s]*?\*\/|\/(?:\\\/|[^/\r\n])+\/(?=[^\/])|\/\/.*|\.\s*include|(?:^|[^$])\binclude\s*\(\s*(["'])(.+?)\1/g; //"
+    var INCLUDE_RE = /"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|\/\*[\S\s]*\*\/|\/(?:\\\/|[^/\r\n])+\/(?=[^\/])|\/\/.*|\.\s*include|(?:^|[^$])\binclude\s*\(\s*(["'])(.+?)\1/g; //"
 
 
 
@@ -253,8 +253,8 @@ module.exports = function (template) {
     // 压缩 HTML 字符串
     var compressHTML = function (code) {
         code = code
-        .replace(/[\n\r\t\s]+/g, ' ')
-        .replace(/<!--.*?-->/g, '');
+        .replace(/\s+/g, ' ')
+        .replace(/<!--[\w\W]*-->/g, '');
 
         return code;
     };

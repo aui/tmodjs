@@ -72,7 +72,7 @@ var Tmod = function (base, options) {
     // 初始化 watch 事件，修复 watch 的跨平台的 BUG
     this.on('newListener', function (event, listener) {
 
-        if (watch && event === 'watch') {
+        if (/*watch && */event === 'watch') {
 
             this.log('\n[green]Waiting...[/green]\n\n');
 
@@ -83,7 +83,7 @@ var Tmod = function (base, options) {
 
             }.bind(this), fs);
 
-            watch = null;
+            //watch = null;
         }
 
     });
@@ -228,13 +228,17 @@ Tmod.prototype = {
         var targetVersion = json.dependencies.tmodjs.replace(/^~/, '');
 
 
-        // 比较模板项目版本号
-        if (semver.lt(version, targetVersion)) {
-            this.log('[red]You must upgrade to the latest version of tmodjs![/red]\n');
-            this.log('Local:  ' + version + '\n')
-            this.log('Target: ' + targetVersion + '\n');
-            process.exit(1);
-        }
+        
+        try {
+            // 比较模板项目版本号
+            if (semver.lt(version, targetVersion)) {
+                this.log('[red]You must upgrade to the latest version of tmodjs![/red]\n');
+                this.log('Local:  ' + version + '\n')
+                this.log('Target: ' + targetVersion + '\n');
+                process.exit(1);
+            }
+        } catch (e) {}
+
 
 
         // 更新模板项目的依赖版本信息
@@ -625,7 +629,7 @@ Tmod.prototype = {
 
     // 获取元数据
     _getMetadata: function (js) {
-        var data = js.match(/\/\*TMODJS\:(.*?)\*\//);
+        var data = js.match(/\/\*TMODJS\:(.*)\*\//);
         if (data) {
             return JSON.parse(data[1]);
         }
@@ -642,7 +646,7 @@ Tmod.prototype = {
             newText = '/*v:' + data.version + '*/';
         }
 
-        return js.replace(/^\/\*TMODJS\:[\w\W]*?\*\//, newText);
+        return js.replace(/^\/\*TMODJS\:[\w\W]*\*\//, newText);
     },
 
 
@@ -650,7 +654,7 @@ Tmod.prototype = {
     _setMetadata: function (js, data) {
         data = JSON.stringify(data || {});
         js = '/*TMODJS:' + data + '*/\n' + js
-        .replace(/\/\*TMODJS\:(.*?)\*\//, '');
+        .replace(/\/\*TMODJS\:(.*)\*\//, '');
         return js;
     },
 
@@ -766,6 +770,7 @@ Tmod.prototype = {
         var options = this._getUglifyOptions();
         options.mangle = {};
         options.beautify = false;
+        options.ascii_only = true;
         this._uglify(file, options);
     },
 

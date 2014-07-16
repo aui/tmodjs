@@ -121,8 +121,10 @@ module.exports = function (files, dest, options) {
 var getOutputOptions = function (options, dest) {
     var outputOptions = {
         beautify: false,
-        source_map: null
+        source_map: null,
+        ascii_only: false
     };
+
 
     if (/^\//.test(options.comments)) {
         outputOptions.comments = new Function("return(" + options.comments + ")")();
@@ -166,6 +168,10 @@ var getOutputOptions = function (options, dest) {
 
     if (options.indentLevel !== undefined) {
         outputOptions.indent_level = options.indentLevel;
+    }
+
+    if (options.ascii_only !== undefined) {
+        outputOptions.ascii_only = options.ascii_only;
     }
 
     if (options.mangle && options.reserved !== undefined) {
