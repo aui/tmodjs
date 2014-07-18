@@ -26,6 +26,7 @@ TmodJS 一经启动，就无需人工干预，每次模板创建与更新都会�
 *	[演示](#演示)
 *	[配置](#配置)
 *	[GruntJS](#GruntJS)
+*	[GulpJS](#GulpJS)
 *	[常见问题](#常见问题)
 *	[更新日志](#更新日志)
 *	[加入我们](#加入我们)
@@ -178,7 +179,21 @@ cache | Boolean | ``true`` | 是否开启编译缓存
 npm install grunt-tmod --save-dev
 ```
 
-由[@Jsonzhang](https://github.com/Jsonzhang)同学开发，项目主页：<https://github.com/Jsonzhang/grunt-tmod>
+由[@Jsonzhang](https://github.com/Jsonzhang)开发，项目主页：
+
+<https://github.com/Jsonzhang/grunt-tmod>
+
+## GulpJS
+
+让 TmodJS 作为 GulpJS 的一个插件使用：
+
+```
+npm install gulp-tmod --save-dev
+```
+
+由[@lichunqiang](https://github.com/lichunqiang)开发，项目主页：
+
+<https://github.com/lichunqiang/gulp-tmod>
 
 ##	常见问题
 
@@ -328,7 +343,7 @@ NodeJS 版本：
 
 ##	加入我们
 
-TmodJS 是一个开源项目，它为我们热爱的工作服务！开源项目离不开你的支持，非常期待你通过微博或者博客等来推广 TmodJS。
+TmodJS 是一个开源项目，如果你喜欢，非常期待你通过微博或者博客等来宣传 TmodJS。
 
 如果你使用了 TmodJS，那么还请留下项目名，我们将在主页展示你的项目。[提交](https://github.com/aui/tmodjs/issues/1)
 
@@ -343,11 +358,13 @@ TmodJS 是一个开源项目，它为我们热爱的工作服务！开源项目�
 *   UR（腾讯）
 *	……
 
-###	贡献名单
+###	代码贡献名单
 
 *	[@aui](https://github.com/aui)
+*	[@Jsonzhang](https://github.com/Jsonzhang)(grunt 插件作者)
+*	[@lichunqiang](https://github.com/lichunqiang)(gulp 插件作者)
 *	[@TooBug](https://github.com/TooBug)
-*	[@Jsonzhang](https://github.com/Jsonzhang)
+*	[@bammoo](https://github.com/bammoo)
 
 ###	特别感谢
 
