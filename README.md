@@ -25,8 +25,8 @@ TmodJS 一经启动，就无需人工干预，每次模板创建与更新都会�
 *	[使用模板](#使用模板)
 *	[演示](#演示)
 *	[配置](#配置)
-*	[gruntJS](#gruntJS)
-*	[gulpJS](#gulpJS)
+*	[grunt](#grunt)
+*	[gulp](#gulp)
 *	[常见问题](#常见问题)
 *	[更新日志](#更新日志)
 *	[加入我们](#加入我们)
@@ -171,9 +171,9 @@ combo | Boolean | ``true`` | 是否合并模板（仅针对于 default 类型的
 minify | Boolean | ``true`` | 是否输出为压缩的格式
 cache | Boolean | ``true`` | 是否开启编译缓存
 	
-##	gruntJS
+##	grunt
 
-让 TmodJS 作为 GruntJS 的一个插件使用：
+让 TmodJS 作为 Grunt 的一个插件使用：
 
 ```
 npm install grunt-tmod --save-dev
@@ -183,9 +183,9 @@ npm install grunt-tmod --save-dev
 
 <https://github.com/Jsonzhang/grunt-tmod>
 
-## gulpJS
+## gulp
 
-让 TmodJS 作为 GulpJS 的一个插件使用：
+让 TmodJS 作为 Gulp 的一个插件使用：
 
 ```
 npm install gulp-tmod --save-dev
