@@ -130,7 +130,7 @@ tmod test/tpl
 
 ##	配置
 
-TmodJS 的项目配置文件保存在模板目录的 package.json 中，省去每次输入命令行参数：
+TmodJS 的项目配置文件保存在模板目录的 package.json 文件中：
 
 ```
 {
@@ -158,7 +158,7 @@ TmodJS 的项目配置文件保存在模板目录的 package.json 中，省去�
 字段 | 类型 | 默认值| 说明
 ------------ | ------------- | ------------ | ------------
 output | String | ``"./build"`` | 编译输出目录设置
-charset | String | ``"utf-8"`` | 模板使用的编码
+charset | String | ``"utf-8"`` | 模板使用的编码（暂时只支持 utf-8）
 syntax | String | ``"simple"`` | 定义模板采用哪种语法。可选：``simple``、``native``
 helpers | String | ``null`` | 自定义辅助方法路径
 escape | Boolean | ``true`` | 是否过滤 XSS。如果后台给出的数据已经进行了 XSS 过滤，就可以关闭模板的过滤以提升模板渲染效率
