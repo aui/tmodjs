@@ -34,7 +34,7 @@
 	var html = tmpl('user_tmpl', data);
 	document.getElementById('content').innerHTML = html;
 	
-[在线示例](http://aui.github.io/artTemplate/demo/simple-syntax/basic.html)
+[在线示例](http://aui.github.io/artTemplate/demo/basic.html)
 	
 通过前端模板引擎将 UI 分离后，模板的书写与修改就变得简单多了，也提升了可维护性。但是，随着这种方式规模化后其弊端也随之而来。
 
