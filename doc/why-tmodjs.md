@@ -1,4 +1,3 @@
-<script>!function(a){function d(){for(c=0;c<b.length;c++)"viewport"==b[c].name&&(b[c].content="width=device-width, minimum-scale=0.25, maximum-scale=1.6")}var c,b=a.getElementsByTagName("meta");if(navigator.userAgent.match(/iPhone/i)){for(c=0;c<b.length;c++)"viewport"==b[c].name&&(b[c].content="width=device-width, minimum-scale=1.0, maximum-scale=1.0");a.addEventListener("gesturestart",d,!1)}}(document);</script>
 #	进击！前端模板工程化
 
 ######	基于 TmodJS 前端模板工程化解决方案
@@ -58,10 +57,7 @@
 
 ###	Ajax 拉取方案
 
-通过 Ajax 加载远程模板，然后再使用模板引擎解析。这种方式的好处就是模板可以按文件存放，书写起来也是十分便利，但弊端相当明显：
-
-1.	无法跨域部署。这是由浏览器同源策略限制的，导致模板无法部署到 CDN 网络。
-2.	复杂度比较高，难以接入主流的自动化部署、优化工具。
+通过 Ajax 加载远程模板，然后再使用模板引擎解析。这种方式的好处就是模板可以按文件存放，书写起来也是十分便利，但弊端相当明显：由于浏览器同源策略限制的，导致模板无法部署到 CDN 网络中。
 
 ###	在 JS 文件中存放模板
 
@@ -86,7 +82,7 @@
 ##	模板组织方案优劣总结
 
 存放方式 | 开发效率 | 优化空间 | 本地调试 | 代码复用 | 团队协作
------- | ------ | ------ | ------ | ------ | ------ | ------
+------ | ------ | ------ | ------ | ------ | ------
 内嵌业务页中 | ✓ | ✗ | ✗ | ✗ | ✗
 Ajax 远程加载 | ✓  | ✗| ✓ | ✓ | ✓
 嵌入 js 文件 | ✗ | ✓ | ✓ | ✓ | ✓
