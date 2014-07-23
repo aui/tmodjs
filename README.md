@@ -362,8 +362,8 @@ TmodJS 是一个开源项目，如果你喜欢，非常期待你通过微博或�
 ###	代码贡献名单
 
 *	[@aui](https://github.com/aui)
-*	[@Jsonzhang](https://github.com/Jsonzhang)(grunt 插件作者)
-*	[@lichunqiang](https://github.com/lichunqiang)(gulp 插件作者)
+*	[@Jsonzhang](https://github.com/Jsonzhang)（grunt 插件作者）
+*	[@lichunqiang](https://github.com/lichunqiang)（gulp 插件作者）
 *	[@TooBug](https://github.com/TooBug)
 *	[@bammoo](https://github.com/bammoo)
 
@@ -374,7 +374,3 @@ TmodJS 是一个开源项目，如果你喜欢，非常期待你通过微博或�
 ##	授权协议
 
 BSD.
-
------------------
-
-![tmodjs logo](./doc/logo.png)
