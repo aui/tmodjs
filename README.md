@@ -345,8 +345,6 @@ NodeJS 版本：
 
 TmodJS 是一个开源项目，如果你喜欢，非常期待你通过微博或者博客等来宣传 TmodJS。
 
-如果你使用了 TmodJS，那么还请留下项目名，我们将在主页展示你的项目。[提交](https://github.com/aui/tmodjs/issues/1)
-
 ###	使用 TmodJS 的项目
 
 *	QQ空间
@@ -358,6 +356,8 @@ TmodJS 是一个开源项目，如果你喜欢，非常期待你通过微博或�
 *	Tracker（腾讯）
 *	UR（腾讯）
 *	……
+
+如果你使用了 TmodJS 敬请留下项目名，我们将在 TmodJS 主页展示你的项目。[提交](https://github.com/aui/tmodjs/issues/1)
 
 ###	代码贡献名单
 
