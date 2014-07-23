@@ -213,6 +213,6 @@ TmodJS 与 artTemplate 模板引擎使用同样的模板语法，而 artTemplate
 
 ###	愿景
 
-希望 TmodJS 能成为每个前端开发者必备的利器！
+请忘记前端模板。
 
 
