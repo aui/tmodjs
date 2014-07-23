@@ -29,7 +29,7 @@ TmodJS 一经启动，就无需人工干预，每次模板创建与更新都会�
 9.	支持模板运行时调试
 10.	配置文件支持多人共享
 
-若想深入了解，请阅读：《[进击！前端模板工程化](http://aui.github.io/tmodjs/)》
+若想深入了解，请阅读：《[进击！前端模板工程化](https://github.com/aui/tmodjs/blob/master/doc/why-tmodjs.md)》
 
 ##	文档目录
 
