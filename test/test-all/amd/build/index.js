@@ -1,4 +1,4 @@
-/*TMODJS:{"version":9,"md5":"d7b17ca0cce05bcb005720730d51c288"}*/
+/*TMODJS:{"version":10,"md5":"8804d1e566c02e1752278f059521998e"}*/
 define([ "./template", "./public/header", "./public/footer" ], function(template) {
     return template("index", function($data, $filename) {
         "use strict";

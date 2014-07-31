@@ -1,4 +1,4 @@
-/*TMODJS:{"version":9,"md5":"611dbb7dc160f8466b57a49c418d9e68"}*/
+/*TMODJS:{"version":10,"md5":"59c2faf9fb8603adb836ad83babc2cd3"}*/
 define([ "../template", "../copyright" ], function(template) {
     return template("public/footer", function($data, $filename) {
         "use strict";

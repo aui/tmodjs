@@ -1,6 +1,6 @@
 /*! Template Runtime */
 
-var runtime = function (String) {
+var runtime = function () {
 
     function template (filename, content) {
         return (
@@ -72,7 +72,6 @@ var runtime = function (String) {
 
     function resolve (from, to) {
         var DOUBLE_DOT_RE = /(\/)[^/]+\1\.\.\1/;
-        //var dirname = from.replace(/^([^.])/, './$1').replace(/[^/]+$/, "");
         var dirname = ('./' + from).replace(/[^/]+$/, "");
         var filename = dirname + to;
         filename = filename.replace(/\/\.\//g, "/");
@@ -174,30 +173,67 @@ var runtime = function (String) {
     };
 
 
-    // RequireJS && SeaJS
-    if (typeof define === 'function') {
-        define(function() {
-            return template;
-        });
-
-    // NodeJS
-    } else if (typeof exports !== 'undefined') {
-        module.exports = template;
-    } else {
-        this.template = template;
-    }
-
+    '<:namespace:>'
     '<:helpers:>'
     '<:templates:>'
 
 }.toString();
 
 
+var getNamespaceCode = function (type) {
+    var code = '';
+
+    switch (type) {
+
+        // RequireJS / SeaJS 兼容模块格式
+        case 'cmd':
+        // RequireJS 模块格式
+        case 'amd':
+
+            code
+            = "define(function(){"
+            +      "return template;"
+            + "});";
+            break;
+
+        // NodeJS 模块格式
+        case 'commonjs':
+
+            code = "module.exports = template;"
+            break;
+
+        // 在全局定义
+        case 'global':
+
+            code = 'this.template = template;';
+            break;
+
+        // 自适应格式
+        default:
+
+            code 
+            = "if (typeof define === 'function') {"
+            +    "define(function() {"
+            +         "return template;"
+            +     "});"
+            + "} else if (typeof exports !== 'undefined') {"
+            +     "module.exports = template;"
+            + "} else {"
+            +     "this.template = template;"
+            + "}";
+
+    }
+
+    return code;
+};
 
 
 var VAR_RE = /['"]<\:(.*)\:>['"]/g;
 
 module.exports = function (data) {
+
+    data.namespace = getNamespaceCode(data.type);
+
     var code = runtime
     .replace(VAR_RE, function ($1, $2) {
         return data[$2] || '';

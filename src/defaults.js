@@ -31,15 +31,15 @@ module.exports = {
     // commonjs:    编译为 NodeJS 模块
     type: 'default',
 
-    // 设置输出的运行时名称
+    // 设置输出的运行时文件名
     runtime: 'template.js',
 
     // 设置模块依赖的运行时路径
-    // 仅针对于非``default``的类型模块配置字段。如果不指定模块内部会自动使用相对 runtime 的路径
+    // 仅针对于非``type:'default'``的模块配置字段。如果不指定模块内部会自动使用相对``runtime``的路径
     alias: null,
 
     // 是否合并模板
-    // 仅针对于 default 类型的模块
+    // 仅针对于``type:'default'``的模块
     combo: true,
 
     // 是否输出为压缩的格式

@@ -1,4 +1,4 @@
-/*TMODJS:{}*/
+/*TMODJS:{"version":"1.0.1"}*/
 !function() {
     function template(filename, content) {
         return (/string|function/.test(typeof content) ? compile : renderFile)(filename, content);
@@ -75,7 +75,41 @@
         return cache[filename.replace(/^\.\//, "")];
     }, template.helper = function(name, helper) {
         helpers[name] = helper;
-    }, define(function() {
-        return template;
-    });
+    }, this.template = template, /*v:1*/
+    template("copyright", "(c) 2013"), /*v:1*/
+    template("index", function($data, $filename) {
+        "use strict";
+        var $utils = this, include = ($utils.$helpers, function(filename, data) {
+            data = data || $data;
+            var text = $utils.$include(filename, data, $filename);
+            return $out += text;
+        }), $escape = $utils.$escape, title = $data.title, $each = $utils.$each, list = $data.list, $out = ($data.$value, 
+        $data.$index, "");
+        return include("./public/header"), $out += ' <div id="main"> <h3>', $out += $escape(title), 
+        $out += "</h3> <ul> ", $each(list, function($value) {
+            $out += ' <li><a href="', $out += $escape($value.url), $out += '">', $out += $escape($value.title), 
+            $out += "</a></li> ";
+        }), $out += " </ul> </div> ", include("./public/footer"), new String($out);
+    }), /*v:1*/
+    template("public/footer", function($data, $filename) {
+        "use strict";
+        var $utils = this, time = ($utils.$helpers, $data.time), $escape = $utils.$escape, include = function(filename, data) {
+            data = data || $data;
+            var text = $utils.$include(filename, data, $filename);
+            return $out += text;
+        }, $out = "";
+        return $out += '<div id="footer"> ', time && ($out += " <p class='time'>", $out += $escape(time), 
+        $out += "</p> "), $out += " ", include("../copyright"), $out += " </div>", new String($out);
+    }), /*v:1*/
+    template("public/header", function($data, $filename) {
+        "use strict";
+        var $utils = this, include = ($utils.$helpers, function(filename, data) {
+            data = data || $data;
+            var text = $utils.$include(filename, data, $filename);
+            return $out += text;
+        }), $out = "";
+        return $out += ' <div id="header"> ', include("./logo"), $out += ' <ul id="nav"> <li><a href="http://www.qq.com">首页</a></li> <li><a href="http://news.qq.com/">新闻</a></li> <li><a href="http://pp.qq.com/">图片</a></li> <li><a href="http://mil.qq.com/">军事</a></li> </ul> </div>  ', 
+        new String($out);
+    }), /*v:1*/
+    template("public/logo", "");
 }();

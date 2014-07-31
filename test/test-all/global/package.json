@@ -11,10 +11,10 @@
         "helpers": null,
         "escape": true,
         "compress": true,
-        "type": "default",
+        "type": "global",
         "runtime": "template.js",
         "combo": true,
-        "minify": true,
+        "minify": false,
         "cache": true
     }
 }

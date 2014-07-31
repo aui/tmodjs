@@ -1,4 +1,4 @@
-/*TMODJS:{"version":9,"md5":"1b08291b07538e26d351d02c635b2d46"}*/
+/*TMODJS:{"version":10,"md5":"f131eb7300f7037adc98bcd30bfc38db"}*/
 define([ "../template", "./logo" ], function(template) {
     return template("public/header", function($data, $filename) {
         "use strict";

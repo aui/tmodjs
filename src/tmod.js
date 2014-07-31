@@ -524,7 +524,7 @@ Tmod.prototype = {
 
 
         // 根据生成模块的类型删除不支持的配置字段
-        if (options.type === 'default') {
+        if (options.type === 'default' || options.type === 'global') {
             delete options.alias;
         } else {
             delete options.combo;
@@ -692,6 +692,7 @@ Tmod.prototype = {
         var error = null;
 
         var runtimeCode = runtime({
+            type: this.options.type,
             helpers: this._helpersCode,
             templates: templates
         });
