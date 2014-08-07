@@ -629,7 +629,7 @@ Tmod.prototype = {
 
     // 获取元数据
     _getMetadata: function (js) {
-        var data = js.match(/\/\*TMODJS\:(.*)\*\//);
+        var data = js.match(/\/\*TMODJS\:(.*?)\*\//);
         if (data) {
             return JSON.parse(data[1]);
         }
@@ -654,7 +654,7 @@ Tmod.prototype = {
     _setMetadata: function (js, data) {
         data = JSON.stringify(data || {});
         js = '/*TMODJS:' + data + '*/\n' + js
-        .replace(/\/\*TMODJS\:(.*)\*\//, '');
+        .replace(/\/\*TMODJS\:(.*?)\*\//, '');
         return js;
     },
 

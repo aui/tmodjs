@@ -228,7 +228,7 @@ var getNamespaceCode = function (type) {
 };
 
 
-var VAR_RE = /['"]<\:(.*)\:>['"]/g;
+var VAR_RE = /['"]<\:(.*?)\:>['"]/g;
 
 module.exports = function (data) {
 
