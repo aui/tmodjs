@@ -128,7 +128,6 @@ var Tmod = function (base, options) {
 
         if (error) {
             this.log(' [inverse][red]{{Syntax Error}}[/red][/inverse]\n\n');
-
         } else {
 
             this.log(this.options.debug ? ' [grey]<DEBUG>[/grey]' : '');
@@ -1064,6 +1063,7 @@ Tmod.prototype = {
         
 
         if (compileError || writeError) {
+            this.emit('debug', compileError || writeError);
             return null;
         } else {
             return compileInfo;

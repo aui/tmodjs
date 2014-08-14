@@ -190,7 +190,6 @@ module.exports = function (template) {
 
             var error = {
                 name: 'Syntax Error',
-                type: 1,
                 line: line,
                 source: source,
                 message: 'Template must be a relative path, and can not have a suffix.'
