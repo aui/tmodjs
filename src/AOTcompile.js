@@ -252,7 +252,7 @@ module.exports = function (template) {
     var compressHTML = function (code) {
         code = code
         .replace(/\s+/g, ' ')
-        .replace(/<!--[\w\W]*-->/g, '');
+        .replace(/<!--[\w\W]*?-->/g, '');
 
         return code;
     };
