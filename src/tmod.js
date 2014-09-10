@@ -15,6 +15,7 @@ var stdout = require('./stdout.js');
 var watch = require('./watch.js');
 var path = require('./path.js');
 var semver = require('semver');
+var iconv = require('iconv-lite');
 
 
 
@@ -552,14 +553,25 @@ Tmod.prototype = {
     // 文件写入
     _fsWrite: function (file, data, charset) {
         this._fsMkdir(path.dirname(file));
-        fs.writeFileSync(file, data, charset || 'utf-8');
+        if (charset !== 'utf-8') {
+            var buf = iconv.encode(data, charset);
+            fs.writeFileSync(file, buf, null);
+        } else {
+            fs.writeFileSync(file, data, charset || 'utf-8');
+        }
     },
 
 
     // 文件读取
     _fsRead: function (file, charset) {
         if (fs.existsSync(file)) {
-            return fs.readFileSync(file, charset || 'utf-8');
+            if (charset === 'utf-8' || charset === '') {
+                return fs.readFileSync(file, charset || 'utf-8');
+            } else {
+                var buf = fs.readFileSync(file, null);
+                var str = iconv.decode(buf, charset);
+                return str;
+            }
         }
     },
 
@@ -700,8 +712,7 @@ Tmod.prototype = {
         runtimeCode = this._setMetadata(runtimeCode, metadata);
 
         try {
-            this._fsMkdir(path.dirname(this.runtime));
-            fs.writeFileSync(this.runtime, runtimeCode, this.options.charset);
+            this._fsWrite(this.runtime, runtimeCode, this.options.charset);
         } catch (e) {
             error = e;
         }
@@ -866,7 +877,7 @@ Tmod.prototype = {
 
 
         try {
-            source = fs.readFileSync(file, this.options.charset);
+            source = this._fsRead(file, this.options.charset)
         } catch (e) {
             readError = e;
         }
@@ -965,8 +976,7 @@ Tmod.prototype = {
 
 
             try {
-                this._fsMkdir(path.dirname(target));//////
-                fs.writeFileSync(target, mod, this.options.charset);
+                this._fsWrite(target, mod, this.options.charset);
             } catch (e) {
                 writeError = e;
             }
