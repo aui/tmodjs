@@ -57,6 +57,10 @@ var Tmod = function (base, options) {
     this.runtime = path.resolve(this.output, options.runtime);
 
 
+    // 编译结果存储
+    this._cache = {};
+
+
     // 清理模板项目临时文件
     this._clear();
 
@@ -1075,9 +1079,6 @@ Tmod.prototype = {
     _getByteLength: function (content) {
         return content.replace(/[^\x00-\xff]/gi, '--').length;
     },
-
-
-    _cache: {},
 
 
     // 获取缓存
