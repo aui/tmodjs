@@ -649,7 +649,7 @@ Tmod.prototype = {
             newText = '/*v:' + data.version + '*/';
         }
 
-        return js.replace(/^\/\*TMODJS\:[\w\W]*\*\//, newText);
+        return js.replace(/^\/\*TMODJS\:(?:.*)\*\//, newText);
     },
 
 
