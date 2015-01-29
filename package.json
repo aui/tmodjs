@@ -1,6 +1,6 @@
 {
     "name": "tmodjs",
-    "version": "1.0.1-rc9",
+    "version": "1.0.2",
     "readmeFilename": "README.md",
     "description": "Template Compiler",
     "homepage": "https://github.com/aui/tmodjs",
