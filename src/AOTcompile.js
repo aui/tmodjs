@@ -98,7 +98,7 @@ module.exports = function (template) {
 
                 code
                 = "define("
-                + "['" + getRuntime() + "','" + requires.join("','") + "'],"
+                + (requires.length > 0 )? "['" + getRuntime() + "','" + requires.join("','") + "']," : "['" + getRuntime() + "'],"
                 + "function(template){"
                 +      "return template('" + filename + "', " + code + ");"  
                 + "});";
