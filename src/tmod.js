@@ -37,7 +37,7 @@ var log = function (message) {
     console.log(message);
 };
 
-
+ 
 var Tmod = function (base, options) {
 
 
@@ -227,6 +227,13 @@ Tmod.prototype = {
 
         }
 
+        //有些项目的package.json里只有devDependencies而没有dependencies
+        //那么下面的replace那行代码就会出现can't read property 'tmodjs' of undefined的错误
+        //这里添加容错逻辑
+        
+        if (!json.dependencies) {
+            json.dependencies = json.devDependencies;
+        }
 
         var targetVersion = json.dependencies.tmodjs.replace(/^~/, '');
 
