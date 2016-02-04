@@ -37,7 +37,7 @@ var log = function (message) {
     console.log(message);
 };
 
- 
+
 var Tmod = function (base, options) {
 
 
@@ -48,13 +48,16 @@ var Tmod = function (base, options) {
     // 项目配置选项
     this.options = options = this.getConfig(options);
 
+    if (options.output !== false) {
+        // 输出路径
+        this.output = path.resolve(this.base, options.output);
 
-    // 输出路径
-    this.output = path.resolve(this.base, options.output);
 
-
-    // 运行时输出路径
-    this.runtime = path.resolve(this.output, options.runtime);
+        // 运行时输出路径
+        this.runtime = path.resolve(this.output, options.runtime);
+    } else {
+        this.output = defaults.output
+    }
 
 
     // 编译结果存储
@@ -146,7 +149,7 @@ var Tmod = function (base, options) {
 
     // 调试事件（异步事件）
     this.on('debug', function (error) {
-        
+
         this.log('[red]Debug info:[/red]\n');
 
         if (error.line && error.source) {
@@ -230,7 +233,7 @@ Tmod.prototype = {
         //有些项目的package.json里只有devDependencies而没有dependencies
         //那么下面的replace那行代码就会出现can't read property 'tmodjs' of undefined的错误
         //这里添加容错逻辑
-        
+
         if (!json.dependencies) {
             json.dependencies = json.devDependencies;
         }
@@ -238,7 +241,7 @@ Tmod.prototype = {
         var targetVersion = json.dependencies.tmodjs.replace(/^~/, '');
 
 
-        
+
         try {
             // 比较模板项目版本号
             if (semver.lt(version, targetVersion)) {
@@ -326,7 +329,7 @@ Tmod.prototype = {
 
         if (file) {
 
-            
+
             var fileList = typeof file === 'string' ? [file] : file;
 
             fileList = fileList.map(function (file) {
@@ -396,14 +399,14 @@ Tmod.prototype = {
      * @return  {Boolean}
      */
     filter: function (file) {
-        
+
         if (fs.existsSync(file)) {
             var stat = fs.statSync(file);
             if (stat.isDirectory()) {
-                
+
                 var dirs = file.split(path.sep);
                 var basedir = dirs[dirs.length - 1];
-                
+
                 return this.filterBasename(basedir) ? true : false;
 
             } else {
@@ -504,7 +507,9 @@ Tmod.prototype = {
      * @param   {String}    消息
      */
     log: function (message) {
-        stdout(message);
+        if (this.options.verbose) {
+            stdout(message);
+        }
     },
 
 
@@ -516,7 +521,7 @@ Tmod.prototype = {
 
         // 忽略大小写
         options.type = options.type.toLowerCase();
-  
+
 
         // 模板合并规则
         // 兼容 0.0.3-rc3 之前的配置
@@ -708,20 +713,22 @@ Tmod.prototype = {
         });
 
 
-        runtimeCode = this._setMetadata(runtimeCode, metadata);
+        this.runtimeCode = runtimeCode = this._setMetadata(runtimeCode, metadata);
 
-        try {
-            this._fsMkdir(path.dirname(this.runtime));
-            fs.writeFileSync(this.runtime, runtimeCode, this.options.charset);
-        } catch (e) {
-            error = e;
-        }
+        if (this.options.output !== false) {
+            try {
+                this._fsMkdir(path.dirname(this.runtime));
+                fs.writeFileSync(this.runtime, runtimeCode, this.options.charset);
+            } catch (e) {
+                error = e;
+            }
 
 
-        if (this.options.debug || !this.options.minify) {
-            this._beautify(this.runtime);
-        } else {
-            this._minify(this.runtime);
+            if (this.options.debug || !this.options.minify) {
+                this._beautify(this.runtime);
+            } else {
+                this._minify(this.runtime);
+            }
         }
 
         callback.call(this, error, runtimeCode);
@@ -871,7 +878,7 @@ Tmod.prototype = {
         var modObject = {};
         var metadata = {};
         var count = 0;
-        
+
         var isDebug = this.options.debug;
         var isCacheDir = this.options.combo;
 
@@ -974,20 +981,21 @@ Tmod.prototype = {
                 md5: newMd5
             });
 
+            if (this.options.output !== false) {
+                try {
+                    this._fsMkdir(path.dirname(target));//////
+                    fs.writeFileSync(target, mod, this.options.charset);
+                } catch (e) {
+                    writeError = e;
+                }
 
-            try {
-                this._fsMkdir(path.dirname(target));//////
-                fs.writeFileSync(target, mod, this.options.charset);
-            } catch (e) {
-                writeError = e;
-            }
 
-
-            if (!isCacheDir && !writeError) {
-                if (isDebug || !this.options.minify) {
-                    this._beautify(target);
-                } else {
-                    this._minify(target);
+                if (!isCacheDir && !writeError) {
+                    if (isDebug || !this.options.minify) {
+                        this._beautify(target);
+                    } else {
+                        this._minify(target);
+                    }
                 }
             }
 
@@ -1069,9 +1077,9 @@ Tmod.prototype = {
             this._setCache(file, mod);
         }
 
-        
+
         this.emit('compile', compileError || writeError, compileInfo);
-        
+
 
         if (compileError || writeError) {
             this.emit('debug', compileError || writeError);
@@ -1127,7 +1135,7 @@ Tmod.prototype = {
             // 不再推荐使用动态加载自定义语法
             // 为了兼容 < v1.0 的功能
             default:
-                
+
                 var syntaxFile = path.resolve(this.base, options.syntax);
 
                 if (fs.existsSync(syntaxFile)) {
@@ -1146,7 +1154,7 @@ Tmod.prototype = {
                     this.log('[red]Not found: ' + syntaxFile + '[/red]');
                     process.exit(1);
 
-                }   
+                }
         }
 
 
@@ -1173,7 +1181,7 @@ Tmod.prototype = {
 
 
         this.template = AOTcompile(template);
-        
+
     },
 
 

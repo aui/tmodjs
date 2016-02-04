@@ -46,6 +46,9 @@ module.exports = {
     minify: true,
 
     // 是否开启编译缓存
-    cache: true
+    cache: true,
+
+    // 是否输出日志
+    verbose: true
 
 };

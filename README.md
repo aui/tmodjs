@@ -158,7 +158,7 @@ TmodJS 的项目配置文件保存在模板目录的 package.json 文件中：
 
 字段 | 类型 | 默认值| 说明
 ------------ | ------------- | ------------ | ------------
-output | String | ``"./build"`` | 编译输出目录设置
+output | String | ``"./build"`` | 编译输出目录设置。如果设置为 false 则不输出
 charset | String | ``"utf-8"`` | 模板使用的编码（暂时只支持 utf-8）
 syntax | String | ``"simple"`` | 定义模板采用哪种语法。可选：``simple``、``native``
 helpers | String | ``null`` | 自定义辅助方法路径
@@ -170,6 +170,7 @@ alias | String | ``null`` | 设置模块依赖的运行时路径（仅针对于�
 combo | Boolean | ``true`` | 是否合并模板（仅针对于 default 类型的模块）
 minify | Boolean | ``true`` | 是否输出为压缩的格式
 cache | Boolean | ``true`` | 是否开启编译缓存
+verbose | Boolean | ``true`` | 是否打印日志
 	
 ##	grunt
 
@@ -242,6 +243,11 @@ npm install gulp-tmod --save-dev
 > 编辑配置文件，设置``combo:false``。
 
 ##	更新日志
+
+### v1.0.4 
+
+*   设置``"output":false``则不进行输出，方便Gulp插件利用
+*   新增``"verbose": true``选项，选择是否显示日志
 
 ### v1.0.1
 
