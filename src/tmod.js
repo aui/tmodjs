@@ -713,7 +713,7 @@ Tmod.prototype = {
         });
 
 
-        this.runtimeCode = runtimeCode = this._setMetadata(runtimeCode, metadata);
+        runtimeCode = this._setMetadata(runtimeCode, metadata);
 
         if (this.options.output !== false) {
             try {
