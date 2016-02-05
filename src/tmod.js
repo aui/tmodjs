@@ -724,9 +724,11 @@ Tmod.prototype = {
             }
 
 
-            if (this.options.debug || !this.options.minify) {
+            if (this.options.debug) {
                 this._beautify(this.runtime);
-            } else {
+            }
+
+            if (!this.options.debug && this.options.minify) {
                 this._minify(this.runtime);
             }
         }
@@ -991,9 +993,11 @@ Tmod.prototype = {
 
 
                 if (!isCacheDir && !writeError) {
-                    if (isDebug || !this.options.minify) {
+                    if (isDebug) {
                         this._beautify(target);
-                    } else {
+                    }
+
+                    if (!isDebug && this.options.minify) {
                         this._minify(target);
                     }
                 }
