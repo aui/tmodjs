@@ -36,7 +36,7 @@ module.exports = function (files, dest, options) {
         // The src file name must be relative to the source map for things to work
         var basename = path.basename(file);
         var fileDir = path.dirname(file);
-        var sourceMapDir = path.dirname(options.generatedSourceMapName);
+        var sourceMapDir = path.dirname(options.generatedSourceMapName || '');
         var relativePath = path.relative(sourceMapDir, fileDir);
         var pathPrefix = relativePath ? (relativePath + path.sep) : '';
 
