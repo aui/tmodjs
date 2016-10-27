@@ -95,10 +95,10 @@ module.exports = function (template) {
 
             // RequireJS 模块格式
             case 'amd':
-
+                var dependencies = (requires.length > 0 )? "['" + getRuntime() + "','" + requires.join("','") + "']," : "['" + getRuntime() + "'],";
                 code
                 = "define("
-                + "['" + getRuntime() + "','" + requires.join("','") + "'],"
+                + dependencies
                 + "function(template){"
                 +      "return template('" + filename + "', " + code + ");"  
                 + "});";
