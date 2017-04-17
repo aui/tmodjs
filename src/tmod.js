@@ -232,10 +232,13 @@ Tmod.prototype = {
 
         //有些项目的package.json里只有devDependencies而没有dependencies
         //那么下面的replace那行代码就会出现can't read property 'tmodjs' of undefined的错误
-        //这里添加容错逻辑
-
-        if (!json.dependencies) {
-            json.dependencies = json.devDependencies;
+        //这里添加容错逻辑，如果devDependencies里面也没有tmodjs就结束运行。
+        if (!json.dependencies.tmodjs) {
+            if (!json.devDependencies.tmodjs) {
+                this.log('[red]can\'t read property "tmodjs" of undefined in package.json![/red]\n');
+                process.exit(1);
+            }
+            json.dependencies.tmodjs = json.devDependencies.tmodjs;
         }
 
         var targetVersion = json.dependencies.tmodjs.replace(/^~/, '');
@@ -507,7 +510,10 @@ Tmod.prototype = {
      * @param   {String}    消息
      */
     log: function (message) {
-        if (this.options.verbose) {
+        var verbose = (typeof this.options === 'undefined' && Tmod.defaults.verbose)
+            || this.options.verbose;
+
+        if (verbose) {
             stdout(message);
         }
     },
